@@ -1,5 +1,6 @@
 package com.mlc.mlcgames;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -21,15 +22,27 @@ public final class Mlcgames extends JavaPlugin {
     public static List<Player> ingamepalyer = new ArrayList<>();
     public static List<Player> ateam = new ArrayList<>();
     public static List<Player> bteam = new ArrayList<>();
-    public static Inventory ainv = Bukkit.createInventory(null,6*9);
-    public static Inventory binv = Bukkit.createInventory(null,6*9);
+    public static Inventory ainv;
+    public static Inventory binv;
+    public static MiniMessage miniMessage;
+
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        //minimessage初始化
+        miniMessage = MiniMessage.miniMessage();
+
+        //初始化数值
         isstart = false;
         instance = this;
         gamemode = 0;
         fileConfiguration = this.getConfig();
+        ainv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>a</color>"));
+        binv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>b</color>"));
+        //初始化选择界面
+        new Initinv(ainv,1);
+        new Initinv(binv,2);
+
+
 
         Bukkit.getPluginManager().registerEvents(new Gamelistener(),this);
         Objects.requireNonNull(Bukkit.getPluginCommand("mlcgame")).setExecutor((new mlcgame()));
@@ -41,7 +54,5 @@ public final class Mlcgames extends JavaPlugin {
         // Plugin shutdown logic
         getLogger().info("\n\nmlcgame插件卸载成功\n\n");
     }
-
-
 
 }

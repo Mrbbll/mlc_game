@@ -11,7 +11,10 @@ import static com.mlc.mlcgames.Mlcgames.isstart;
 public class mlcgame implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
-        switch (args[1]){
+        if(args.length<=1){
+            return false;
+        }
+        switch (args[0]){
             case "prepare":{
                 new Gameprepare();
             }
@@ -23,13 +26,13 @@ public class mlcgame implements CommandExecutor {
                 if (isstart){
                     return false;
                 }
-                if (args[2].matches("^[-+]?\\d+$")){
-                    gamemode = Integer.parseInt(args[2]);
+                if (args[1].matches("^[-+]?\\d+$")){
+                    gamemode = Integer.parseInt(args[1]);
                 }
             }
             case "kit":{
-                if(args[2].matches("^[-+]?\\d+$")){
-                    gamemode = Integer.parseInt(args[2]);
+                if(args[1].matches("^[-+]?\\d+$")){
+                    gamemode = Integer.parseInt(args[1]);
                 }
             }
         }

@@ -39,7 +39,7 @@ public class Gamelistener implements Listener {
                     new openinv(player,"a");
                 }
                 else if(bteam.contains(player)){
-                    new openinv(player,"a");
+                    new openinv(player,"b");
                 }
             }
             }

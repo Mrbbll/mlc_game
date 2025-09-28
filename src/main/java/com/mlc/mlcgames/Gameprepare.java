@@ -7,6 +7,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
 import static com.mlc.mlcgames.Mlcgames.ingamepalyer;
+import static com.mlc.mlcgames.Mlcgames.mlcmenu;
 
 public class Gameprepare {
     public Gameprepare(){
@@ -14,7 +15,9 @@ public class Gameprepare {
             player.clearActivePotionEffects();
             PlayerInventory inv = player.getInventory();
             inv.clear();
-            inv.setItem(0, ItemStack.of(Material.AIR));
+
+            inv.setItem(0, mlcmenu);
+
         }
     }
 

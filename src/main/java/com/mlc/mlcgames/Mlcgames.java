@@ -1,11 +1,17 @@
 package com.mlc.mlcgames;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -25,6 +31,7 @@ public final class Mlcgames extends JavaPlugin {
     public static Inventory ainv;
     public static Inventory binv;
     public static MiniMessage miniMessage;
+    public static ItemStack mlcmenu;
 
     @Override
     public void onEnable() {
@@ -38,6 +45,12 @@ public final class Mlcgames extends JavaPlugin {
         fileConfiguration = this.getConfig();
         ainv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>a</color>"));
         binv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>b</color>"));
+
+        mlcmenu= ItemStack.of(Material.ECHO_SHARD);
+        ItemMeta itemMeta = mlcmenu.getItemMeta();
+        itemMeta.setItemModel(NamespacedKey.fromString("mlcgames:mlcmenu"));
+        itemMeta.itemName(Component.text("菜单", TextColor.fromHexString("#eea468")));
+
         //初始化选择界面
         new Initinv(ainv,1);
         new Initinv(binv,2);

@@ -1,0 +1,9 @@
+name: mlcgames
+version: '1.0-SNAPSHOT'
+main: com.mlc.mlcgames.Mlcgames
+api-version: '1.21'
+authors: [ Mr_bl ]
+commands:
+  mlcgame:
+    description: 主入口
+

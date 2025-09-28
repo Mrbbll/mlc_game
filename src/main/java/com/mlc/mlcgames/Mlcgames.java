@@ -1,6 +1,7 @@
 package com.mlc.mlcgames;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -13,6 +14,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,12 +29,15 @@ public final class Mlcgames extends JavaPlugin {
     public static boolean isstart;
     public static int gamemode;
     public static List<Player> ingamepalyer = new ArrayList<>();
-    public static List<Player> ateam = new ArrayList<>();
-    public static List<Player> bteam = new ArrayList<>();
+
+    public static Team ateam;
+    public static Team bteam;
+    public static Teammanager teammanager = new Teammanager();
     public static Inventory ainv;
     public static Inventory binv;
     public static MiniMessage miniMessage;
     public static ItemStack mlcmenu;
+    public static ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
 
     @Override
     public void onEnable() {
@@ -45,6 +51,9 @@ public final class Mlcgames extends JavaPlugin {
         fileConfiguration = this.getConfig();
         ainv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>a</color>"));
         binv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>b</color>"));
+        ateam = teammanager.createTeam("a", NamedTextColor.AQUA);
+        bteam = teammanager.createTeam("a", NamedTextColor.RED);
+
 
         mlcmenu= ItemStack.of(Material.ECHO_SHARD);
         ItemMeta itemMeta = mlcmenu.getItemMeta();

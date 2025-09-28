@@ -40,10 +40,10 @@ public class Gamelistener implements Listener {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta.hasItemModel()){
             if(Objects.equals(itemMeta.getItemModel(), NamespacedKey.fromString("mlc:mlcmenu"))){
-                if(ateam.contains(player)){
+                if(teammanager.isPlayerInTeam(player,ateam)){
                     new openinv(player,"a");
                 }
-                else if(bteam.contains(player)){
+                else if(teammanager.isPlayerInTeam(player,bteam)){
                     new openinv(player,"b");
                 }
             }

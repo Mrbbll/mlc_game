@@ -1,23 +1,15 @@
 package com.mlc.mlcgames;
 
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,10 +25,12 @@ public final class Mlcgames extends JavaPlugin {
     public static Team ateam;
     public static Team bteam;
     public static Teammanager teammanager = new Teammanager();
+    public static Itemmanger itemmanger = new Itemmanger();
     public static Inventory ainv;
     public static Inventory binv;
     public static MiniMessage miniMessage;
-    public static ItemStack mlcmenu;
+//    public static ItemStack mlcmenu;
+
     public static ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
 
     @Override
@@ -55,10 +49,7 @@ public final class Mlcgames extends JavaPlugin {
         bteam = teammanager.createTeam("a", NamedTextColor.RED);
 
 
-        mlcmenu= ItemStack.of(Material.ECHO_SHARD);
-        ItemMeta itemMeta = mlcmenu.getItemMeta();
-        itemMeta.setItemModel(NamespacedKey.fromString("mlcgames:mlcmenu"));
-        itemMeta.itemName(Component.text("菜单", TextColor.fromHexString("#eea468")));
+
 
         //初始化选择界面
         new Initinv(ainv,1);

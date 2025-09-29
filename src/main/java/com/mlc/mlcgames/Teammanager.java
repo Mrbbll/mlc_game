@@ -9,6 +9,10 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.mlc.mlcgames.Mlcgames.scoreboardManager;
 
 public class Teammanager {
@@ -22,7 +26,7 @@ public class Teammanager {
     public Team createTeam(String teamName, NamedTextColor color) {
         // 检查队伍是否已存在
         if (scoreboard.getTeam(teamName) != null) {
-            return null;
+            return scoreboard.getTeam(teamName);
         }
 
         // 创建新队伍
@@ -53,6 +57,16 @@ public class Teammanager {
     //检查是否存在
     public boolean isPlayerInTeam(Player player, Team team) {
         return team.hasEntry(player.getName());
+    }
+
+    public Set<Player> getteamplayer(Team team){
+        Set<Player> players = new HashSet<>();
+        for (String entry : team.getEntries()) players.add(Bukkit.getPlayer(entry));
+        return players;
+    }
+
+    public Team getPlayerTeam(Player player) {
+        return scoreboard.getEntryTeam(player.getName());
     }
 
 }

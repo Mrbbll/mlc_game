@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Objects;
+import java.util.Set;
 
 import static com.mlc.mlcgames.Mlcgames.*;
 
@@ -69,7 +70,29 @@ public class Gamelistener implements Listener {
                 return;
             }
             case Material.STONE_SWORD:{
-                player.addScoreboardTag("sword");
+                Set<String> tags = player.getScoreboardTags();
+                for(String tag : tags) player.removeScoreboardTag(tag);
+                player.addScoreboardTag("STONE_SWORD");
+            }
+            case Material.SHIELD:{
+                Set<String> tags = player.getScoreboardTags();
+                for(String tag : tags) player.removeScoreboardTag(tag);
+                player.addScoreboardTag("SHIELD");
+            }
+            case Material.CROSSBOW:{
+                Set<String> tags = player.getScoreboardTags();
+                for(String tag : tags) player.removeScoreboardTag(tag);
+                player.addScoreboardTag("CROSSBOW");
+            }
+            case Material.WOLF_SPAWN_EGG:{
+                Set<String> tags = player.getScoreboardTags();
+                for(String tag : tags) player.removeScoreboardTag(tag);
+                player.addScoreboardTag("WOLF_SPAWN_EGG");
+            }
+            case Material.POTION:{
+                Set<String> tags = player.getScoreboardTags();
+                for(String tag : tags) player.removeScoreboardTag(tag);
+                player.addScoreboardTag("POTION");
             }
 
         }

@@ -1,5 +1,7 @@
 package com.mlc.mlcgames;
 
+import com.mlc.mlcgames.bank.Gameprepare;
+import com.mlc.mlcgames.bank.Gamestart;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import static com.mlc.mlcgames.Mlcgames.gamemode;
 import static com.mlc.mlcgames.Mlcgames.isstart;
 
-public class mlcgame implements CommandExecutor {
+public class mlcgame_bank implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if(args.length<=1){

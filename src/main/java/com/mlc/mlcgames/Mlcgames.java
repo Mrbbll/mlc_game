@@ -1,5 +1,7 @@
 package com.mlc.mlcgames;
 
+import com.mlc.mlcgames.bank.Gamelistener;
+import com.mlc.mlcgames.bank.Initinv;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -22,16 +24,23 @@ public final class Mlcgames extends JavaPlugin {
     public static int gamemode;
     public static List<Player> ingamepalyer = new ArrayList<>();
 
-    public static Team ateam;
-    public static Team bteam;
-    public static Teammanager teammanager = new Teammanager();
-    public static Itemmanger itemmanger = new Itemmanger();
+    public static Team team_1;
+    public static Team team_2;
+    public static Team team_3;
+    public static Team team_4;
+    public static Team team_5;
+    public static Team team_6;
+    public static Team team_7;
+    public static Team team_8;
+
+    public static Teammanager teammanager;
+    public static Itemmanger itemmanger;
     public static Inventory ainv;
     public static Inventory binv;
     public static MiniMessage miniMessage;
 //    public static ItemStack mlcmenu;
 
-    public static ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+    public static ScoreboardManager scoreboardManager;
 
     @Override
     public void onEnable() {
@@ -43,22 +52,31 @@ public final class Mlcgames extends JavaPlugin {
         instance = this;
         gamemode = 0;
         fileConfiguration = this.getConfig();
+
+        itemmanger = new Itemmanger();
         ainv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>a</color>"));
         binv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>b</color>"));
-        ateam = teammanager.createTeam("a", NamedTextColor.AQUA);
-        bteam = teammanager.createTeam("a", NamedTextColor.RED);
 
 
-
+        scoreboardManager = Bukkit.getScoreboardManager();
+        teammanager = new Teammanager();
+        teammanager.clearallTeam();
+        team_1 = teammanager.createTeam("青队", NamedTextColor.AQUA);
+        team_2 = teammanager.createTeam("红队", NamedTextColor.RED);
+        team_3 = teammanager.createTeam("橙队", NamedTextColor.GOLD);
+        team_4 = teammanager.createTeam("黄队", NamedTextColor.YELLOW);
+        team_5 = teammanager.createTeam("绿队", NamedTextColor.GREEN);
+        team_6 = teammanager.createTeam("紫队", NamedTextColor.LIGHT_PURPLE);
+        team_7 = teammanager.createTeam("蓝队", NamedTextColor.BLUE);
+        team_8 = teammanager.createTeam("白队", NamedTextColor.WHITE);
 
         //初始化选择界面
         new Initinv(ainv,1);
         new Initinv(binv,2);
 
 
-
         Bukkit.getPluginManager().registerEvents(new Gamelistener(),this);
-        Objects.requireNonNull(Bukkit.getPluginCommand("mlcgame")).setExecutor((new mlcgame()));
+        Objects.requireNonNull(Bukkit.getPluginCommand("mlcgame_bank")).setExecutor((new mlcgame_bank()));
         getLogger().info("\n\nmlcgame插件加载成功\n\n");
     }
 

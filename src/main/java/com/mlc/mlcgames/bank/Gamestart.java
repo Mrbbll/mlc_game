@@ -1,11 +1,9 @@
-package com.mlc.mlcgames;
+package com.mlc.mlcgames.bank;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.time.Duration;
 import java.util.Set;
@@ -53,7 +51,7 @@ public class Gamestart {
 
     public void giveitem(Player player){
 
-        if(teammanager.isPlayerInTeam(player,ateam)){
+        if(teammanager.isPlayerInTeam(player, team_1)){
             Set<String> tags = player.getScoreboardTags();
             for(String tag : tags){
                 switch (tag){
@@ -75,7 +73,7 @@ public class Gamestart {
                 }
             };
         }
-        if(teammanager.isPlayerInTeam(player,bteam)){
+        if(teammanager.isPlayerInTeam(player, team_2)){
             Set<String> tags = player.getScoreboardTags();
             for(String tag : tags){
                 switch (tag){

@@ -1,2 +1,13 @@
-respawnloc_1:
+lobby: ''
+game_bank:
+  lobby: ''
+  ateam:
+    loc1: ''
+    loc2: ''
+    loc3: ''
+  bteam:
+    loc1: ''
+    loc2: ''
+    loc3: ''
+
 

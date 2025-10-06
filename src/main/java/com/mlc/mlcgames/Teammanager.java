@@ -22,6 +22,14 @@ public class Teammanager {
         this.scoreboard = scoreboardManager.getMainScoreboard();
     }
 
+    //清除队伍
+    public void clearallTeam(){
+        for (Team team : scoreboard.getTeams()) {
+            team.unregister();
+        }
+    }
+
+
     //创新队伍
     public Team createTeam(String teamName, NamedTextColor color) {
         // 检查队伍是否已存在

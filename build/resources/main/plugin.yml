@@ -4,6 +4,6 @@ main: com.mlc.mlcgames.Mlcgames
 api-version: '1.21'
 authors: [ Mr_bl ]
 commands:
-  mlcgame:
+  mlcgame_bank:
     description: 主入口
 

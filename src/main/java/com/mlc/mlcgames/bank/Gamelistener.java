@@ -1,8 +1,6 @@
-package com.mlc.mlcgames;
+package com.mlc.mlcgames.bank;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import org.apache.commons.lang3.ObjectUtils;
+import com.mlc.mlcgames.openinv;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -41,10 +39,10 @@ public class Gamelistener implements Listener {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if(itemMeta.hasItemModel()){
             if(Objects.equals(itemMeta.getItemModel(), NamespacedKey.fromString("mlc:mlcmenu"))){
-                if(teammanager.isPlayerInTeam(player,ateam)){
+                if(teammanager.isPlayerInTeam(player, team_1)){
                     new openinv(player,"a");
                 }
-                else if(teammanager.isPlayerInTeam(player,bteam)){
+                else if(teammanager.isPlayerInTeam(player, team_2)){
                     new openinv(player,"b");
                 }
             }

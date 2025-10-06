@@ -1,4 +1,4 @@
-package com.mlc.mlcgames;
+package com.mlc.mlcgames.bank;
 
 import static com.mlc.mlcgames.Mlcgames.isstart;
 

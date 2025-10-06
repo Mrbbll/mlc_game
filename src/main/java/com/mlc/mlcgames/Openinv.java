@@ -7,8 +7,8 @@ import org.bukkit.inventory.Inventory;
 import static com.mlc.mlcgames.Mlcgames.ainv;
 import static com.mlc.mlcgames.Mlcgames.binv;
 
-public class openinv {
-    public openinv(Player player,String team){
+public class Openinv {
+    public Openinv(Player player, String team){
         Inventory inventory = Bukkit.createInventory(player,9*5);
         switch (team){
             case "a":{

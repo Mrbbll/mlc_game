@@ -9,13 +9,20 @@ import java.time.Duration;
 import java.util.Set;
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.Teammanager.team_1;
+import static com.mlc.mlcgames.Teammanager.team_2;
+import static com.mlc.mlcgames.bank.Gameinit.bank_1;
 
 public class Gamestart {
     public Gamestart(){
         switch (gamemode){
             //battlebox模式
             case 0:{
+                isstart = true;
                 //传送
+                for(Player player:ingamepalyer){
+                    player.teleport(bank_1);
+                }
 
                 //给东西
                 for(Player player:ingamepalyer){
@@ -23,18 +30,21 @@ public class Gamestart {
                 }
 
                 //出字
-                for(Player player:ingamepalyer){
-                    final int[] i = {0};
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            player.showTitle(Title.title(Component.text(5-i[0]),Component.text(""), Title.Times.times(Duration.ZERO,Duration.ofSeconds(1),Duration.ZERO)));
+
+                final int[] i = {0};
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (Player player1:ingamepalyer){
+                            player1.showTitle(Title.title(Component.text(5-i[0]),Component.text(""), Title.Times.times(Duration.ZERO,Duration.ofSeconds(1),Duration.ZERO)));
                             if(i[0] >5) this.cancel();
                             i[0]++;
                         }
-                    }.runTaskTimer(instance,20,20);
-                }
+                    }
+                }.runTaskTimer(instance,20,20);
+
                 //开门
+
 
                 //计时
 

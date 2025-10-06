@@ -5,6 +5,7 @@ import com.mlc.mlcgames.bank.Initinv;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -23,27 +24,21 @@ public final class Mlcgames extends JavaPlugin {
     public static boolean isstart;
     public static int gamemode;
     public static List<Player> ingamepalyer = new ArrayList<>();
-
-    public static Team team_1;
-    public static Team team_2;
-    public static Team team_3;
-    public static Team team_4;
-    public static Team team_5;
-    public static Team team_6;
-    public static Team team_7;
-    public static Team team_8;
+    public static List<World> worlds;
 
     public static Teammanager teammanager;
     public static Itemmanger itemmanger;
     public static Inventory ainv;
     public static Inventory binv;
     public static MiniMessage miniMessage;
-//    public static ItemStack mlcmenu;
+
 
     public static ScoreboardManager scoreboardManager;
 
     @Override
     public void onEnable() {
+
+        worlds = Bukkit.getWorlds();
         //minimessage初始化
         miniMessage = MiniMessage.miniMessage();
 
@@ -57,18 +52,10 @@ public final class Mlcgames extends JavaPlugin {
         ainv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>a</color>"));
         binv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>b</color>"));
 
-
         scoreboardManager = Bukkit.getScoreboardManager();
         teammanager = new Teammanager();
-        teammanager.clearallTeam();
-        team_1 = teammanager.createTeam("青队", NamedTextColor.AQUA);
-        team_2 = teammanager.createTeam("红队", NamedTextColor.RED);
-        team_3 = teammanager.createTeam("橙队", NamedTextColor.GOLD);
-        team_4 = teammanager.createTeam("黄队", NamedTextColor.YELLOW);
-        team_5 = teammanager.createTeam("绿队", NamedTextColor.GREEN);
-        team_6 = teammanager.createTeam("紫队", NamedTextColor.LIGHT_PURPLE);
-        team_7 = teammanager.createTeam("蓝队", NamedTextColor.BLUE);
-        team_8 = teammanager.createTeam("白队", NamedTextColor.WHITE);
+
+
 
         //初始化选择界面
         new Initinv(ainv,1);

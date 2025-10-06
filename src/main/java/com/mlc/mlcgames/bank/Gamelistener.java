@@ -1,6 +1,6 @@
 package com.mlc.mlcgames.bank;
 
-import com.mlc.mlcgames.openinv;
+import com.mlc.mlcgames.Openinv;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -20,6 +20,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.Teammanager.team_1;
+import static com.mlc.mlcgames.Teammanager.team_2;
 
 
 public class Gamelistener implements Listener {
@@ -29,7 +31,7 @@ public class Gamelistener implements Listener {
     }
     @EventHandler
     public void playerQuitEvent(PlayerQuitEvent event){
-
+        ingamepalyer.remove(event.getPlayer());
     }
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event){
@@ -40,10 +42,10 @@ public class Gamelistener implements Listener {
         if(itemMeta.hasItemModel()){
             if(Objects.equals(itemMeta.getItemModel(), NamespacedKey.fromString("mlc:mlcmenu"))){
                 if(teammanager.isPlayerInTeam(player, team_1)){
-                    new openinv(player,"a");
+                    new Openinv(player,"a");
                 }
                 else if(teammanager.isPlayerInTeam(player, team_2)){
-                    new openinv(player,"b");
+                    new Openinv(player,"b");
                 }
             }
             }
@@ -71,26 +73,31 @@ public class Gamelistener implements Listener {
                 Set<String> tags = player.getScoreboardTags();
                 for(String tag : tags) player.removeScoreboardTag(tag);
                 player.addScoreboardTag("STONE_SWORD");
+                break;
             }
             case Material.SHIELD:{
                 Set<String> tags = player.getScoreboardTags();
                 for(String tag : tags) player.removeScoreboardTag(tag);
                 player.addScoreboardTag("SHIELD");
+                break;
             }
             case Material.CROSSBOW:{
                 Set<String> tags = player.getScoreboardTags();
                 for(String tag : tags) player.removeScoreboardTag(tag);
                 player.addScoreboardTag("CROSSBOW");
+                break;
             }
             case Material.WOLF_SPAWN_EGG:{
                 Set<String> tags = player.getScoreboardTags();
                 for(String tag : tags) player.removeScoreboardTag(tag);
                 player.addScoreboardTag("WOLF_SPAWN_EGG");
+                break;
             }
             case Material.POTION:{
                 Set<String> tags = player.getScoreboardTags();
                 for(String tag : tags) player.removeScoreboardTag(tag);
                 player.addScoreboardTag("POTION");
+                break;
             }
 
         }

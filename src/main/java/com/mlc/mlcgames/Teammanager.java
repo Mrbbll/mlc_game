@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,9 +18,37 @@ import static com.mlc.mlcgames.Mlcgames.scoreboardManager;
 
 public class Teammanager {
     public final Scoreboard scoreboard;
+    public static Team team_1;
+    public static Team team_2;
+    public static Team team_3;
+    public static Team team_4;
+    public static Team team_5;
+    public static Team team_6;
+    public static Team team_7;
+    public static Team team_8;
 
     public Teammanager() {
         this.scoreboard = scoreboardManager.getMainScoreboard();
+        this.clearallTeam();
+        team_1 = this.createTeam("AQUA", NamedTextColor.AQUA);
+        team_1.displayName(Component.text("青队"));
+        team_2 = this.createTeam("RED", NamedTextColor.RED);
+        team_2.displayName(Component.text("红队"));
+        team_3 = this.createTeam("GOLD", NamedTextColor.GOLD);
+        team_3.displayName(Component.text("橙队"));
+        team_4 = this.createTeam("YELLOW", NamedTextColor.YELLOW);
+        team_4.displayName(Component.text("黄队"));
+        team_5 = this.createTeam("GREEN", NamedTextColor.GREEN);
+        team_5.displayName(Component.text("绿队"));
+        team_6 = this.createTeam("LIGHT_PURPLE", NamedTextColor.LIGHT_PURPLE);
+        team_6.displayName(Component.text("紫队"));
+        team_7 = this.createTeam("BLUE", NamedTextColor.BLUE);
+        team_7.displayName(Component.text("蓝队"));
+        team_8 = this.createTeam("WHITE", NamedTextColor.WHITE);
+        team_8.displayName(Component.text("白队"));
+
+
+
     }
 
     //清除队伍
@@ -75,6 +104,7 @@ public class Teammanager {
 
     public Team getPlayerTeam(Player player) {
         return scoreboard.getEntryTeam(player.getName());
+
     }
 
 }

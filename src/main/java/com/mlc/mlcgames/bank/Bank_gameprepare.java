@@ -12,10 +12,9 @@ import static com.mlc.mlcgames.Gameinit.bank_lobby;
 import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Teammanager.team_1;
 import static com.mlc.mlcgames.Teammanager.team_2;
-import static com.mlc.mlcgames.Gameinit.bank_1;
 
-public class Gameprepare {
-    public Gameprepare(){
+public class Bank_gameprepare {
+    public Bank_gameprepare(){
         //加入在队伍的玩家
         ingamepalyer.addAll(teammanager.getteamplayer(team_1));
         ingamepalyer.addAll(teammanager.getteamplayer(team_2));
@@ -30,9 +29,6 @@ public class Gameprepare {
             player.clearActivePotionEffects();
             PlayerInventory inv = player.getInventory();
             inv.clear();
-            teammanager.cleanTeam(team_1);
-            teammanager.cleanTeam(team_2);
-
             //传送
 
             player.teleport(bank_lobby);

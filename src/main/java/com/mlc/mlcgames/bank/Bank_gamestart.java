@@ -2,6 +2,7 @@ package com.mlc.mlcgames.bank;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,10 +14,13 @@ import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Teammanager.team_1;
 import static com.mlc.mlcgames.Teammanager.team_2;
 
-public class Gamestart {
-    public Gamestart(){
+public class Bank_gamestart {
+    public Bank_gamestart(){
+        Bukkit.broadcast(Component.text("游戏开始"));
+
         switch (bank_gamemode){
             //battlebox模式
+
             case 0:{
                 isstart = true;
                 //传送
@@ -37,7 +41,7 @@ public class Gamestart {
                     public void run() {
                         for (Player player1:ingamepalyer){
                             player1.showTitle(Title.title(Component.text(5-i[0]),Component.text(""), Title.Times.times(Duration.ZERO,Duration.ofSeconds(1),Duration.ZERO)));
-                            if(i[0] >5) this.cancel();
+                            if(i[0] > 4 ) this.cancel();
                             i[0]++;
                         }
                     }

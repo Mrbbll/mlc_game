@@ -26,18 +26,21 @@ public class Itemmanger {
     public final ItemStack b_itemStack3;
     public final ItemStack b_itemStack4;
     public final ItemStack b_itemStack5;
+
     Itemmanger(){
 
-        this.mlcmenu = ItemStack.of(Material.ECHO_SHARD);
+        mlcmenu = ItemStack.of(Material.ECHO_SHARD);
         ItemMeta itemMeta = mlcmenu.getItemMeta();
         itemMeta.setItemModel(NamespacedKey.fromString("mlcgames:mlcmenu"));
         itemMeta.itemName(Component.text("菜单", TextColor.fromHexString("#eea468")));
+        mlcmenu.setItemMeta(itemMeta);
 
         a_itemStack1 = ItemStack.of(Material.SHIELD);
         a_itemStack2 = ItemStack.of(Material.STONE_SWORD);
         a_itemStack3 = ItemStack.of(Material.CROSSBOW);
         a_itemStack4 = ItemStack.of(Material.WOLF_SPAWN_EGG);
         a_itemStack5 = ItemStack.of(Material.POTION);
+
         ItemMeta a_itemMeta1 = a_itemStack1.getItemMeta();
         ItemMeta a_itemMeta2 = a_itemStack2.getItemMeta();
         ItemMeta a_itemMeta3 = a_itemStack3.getItemMeta();
@@ -90,6 +93,7 @@ public class Itemmanger {
         b_itemStack3 = ItemStack.of(Material.CROSSBOW);
         b_itemStack4 = ItemStack.of(Material.WOLF_SPAWN_EGG);
         b_itemStack5 = ItemStack.of(Material.POTION);
+
         ItemMeta b_itemMeta1 = b_itemStack1.getItemMeta();
         ItemMeta b_itemMeta2 = b_itemStack2.getItemMeta();
         ItemMeta b_itemMeta3 = b_itemStack3.getItemMeta();

@@ -93,7 +93,7 @@ public class Teammanager {
 
     //检查是否存在
     public boolean isPlayerInTeam(Player player, Team team) {
-        return team.hasEntry(player.getName());
+        return team.hasPlayer(player);
     }
 
     public Set<Player> getteamplayer(Team team){

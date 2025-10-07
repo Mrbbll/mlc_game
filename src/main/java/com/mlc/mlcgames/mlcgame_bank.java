@@ -1,7 +1,7 @@
 package com.mlc.mlcgames;
 
-import com.mlc.mlcgames.bank.Gameprepare;
-import com.mlc.mlcgames.bank.Gamestart;
+import com.mlc.mlcgames.bank.Bank_gameprepare;
+import com.mlc.mlcgames.bank.Bank_gamestart;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -27,12 +27,12 @@ public class mlcgame_bank implements CommandExecutor {
                 sender.sendMessage(player.getWorld().getName());
                 Bukkit.broadcast(Component.text("prepare"));
                 ingamepalyer.clear();
-                new Gameprepare();
+                new Bank_gameprepare();
                 break;
             }
             case "start":{
                 isstart = true;
-                new Gamestart();
+                new Bank_gamestart();
                 break;
             }
             case "gamemode":{

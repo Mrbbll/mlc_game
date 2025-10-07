@@ -2,17 +2,17 @@ package com.mlc.mlcgames.bank;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Set;
 
 
+import static com.mlc.mlcgames.Gameinit.bank_lobby;
 import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Teammanager.team_1;
 import static com.mlc.mlcgames.Teammanager.team_2;
-import static com.mlc.mlcgames.bank.Gameinit.bank_1;
+import static com.mlc.mlcgames.Gameinit.bank_1;
 
 public class Gameprepare {
     public Gameprepare(){
@@ -35,7 +35,7 @@ public class Gameprepare {
 
             //传送
 
-            player.teleport(bank_1);
+            player.teleport(bank_lobby);
             Bukkit.broadcast(Component.text("传送ok"));
 
             //给菜单

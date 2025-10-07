@@ -7,11 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import static com.mlc.mlcgames.Mlcgames.*;
-import static com.mlc.mlcgames.Teammanager.team_1;
-import static com.mlc.mlcgames.Teammanager.team_2;
+import static com.mlc.mlcgames.Gameinit.*;
 
 public class mlcgame_bank implements CommandExecutor {
     @Override
@@ -22,6 +22,9 @@ public class mlcgame_bank implements CommandExecutor {
         }
         switch (args[0]){
             case "prepare":{
+
+                Player player = (Player) sender;
+                sender.sendMessage(player.getWorld().getName());
                 Bukkit.broadcast(Component.text("prepare"));
                 ingamepalyer.clear();
                 new Gameprepare();
@@ -37,13 +40,13 @@ public class mlcgame_bank implements CommandExecutor {
                     return false;
                 }
                 if (args[1].matches("^[-+]?\\d+$")){
-                    gamemode = Integer.parseInt(args[1]);
+                    bank_gamemode = Integer.parseInt(args[1]);
                 }
                 break;
             }
             case "kit":{
                 if(args[1].matches("^[-+]?\\d+$")){
-                    gamemode = Integer.parseInt(args[1]);
+                    bank_gamemode = Integer.parseInt(args[1]);
                 }
                 break;
             }

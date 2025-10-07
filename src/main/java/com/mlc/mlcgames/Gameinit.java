@@ -1,12 +1,15 @@
-package com.mlc.mlcgames.bank;
+package com.mlc.mlcgames;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
-import static com.mlc.mlcgames.Mlcgames.worlds;
+import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.isstart;
 
 public class Gameinit {
+
+
+    public static int bank_gamemode;
     public static Location bank_1;
     public static Location bank_2;
     public static Location bank_3;
@@ -16,7 +19,11 @@ public class Gameinit {
     public static Location bank_lobby;
 
     public Gameinit(){
-        bank_1 = new Location(worlds.getFirst(),0,70,0);
+        bank_1 = new Location(Bukkit.getWorld("world"),0,70,0);
+
+        bank_lobby = new Location(Bukkit.getWorld("world"),0 , 70,0 );
+        bank_gamemode = 0;
+        isstart = false;
 
     }
 }

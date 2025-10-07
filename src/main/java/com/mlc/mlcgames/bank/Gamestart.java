@@ -8,20 +8,20 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.time.Duration;
 import java.util.Set;
 
+import static com.mlc.mlcgames.Gameinit.*;
 import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Teammanager.team_1;
 import static com.mlc.mlcgames.Teammanager.team_2;
-import static com.mlc.mlcgames.bank.Gameinit.bank_1;
 
 public class Gamestart {
     public Gamestart(){
-        switch (gamemode){
+        switch (bank_gamemode){
             //battlebox模式
             case 0:{
                 isstart = true;
                 //传送
                 for(Player player:ingamepalyer){
-                    player.teleport(bank_1);
+                    player.teleport(bank_lobby);
                 }
 
                 //给东西

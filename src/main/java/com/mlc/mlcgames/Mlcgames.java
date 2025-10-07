@@ -2,7 +2,6 @@ package com.mlc.mlcgames;
 
 import com.mlc.mlcgames.bank.Gamelistener;
 import com.mlc.mlcgames.bank.Initinv;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -11,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +20,8 @@ public final class Mlcgames extends JavaPlugin {
     public static JavaPlugin instance;
     public static FileConfiguration fileConfiguration;
     public static boolean isstart;
-    public static int gamemode;
+
     public static List<Player> ingamepalyer = new ArrayList<>();
-    public static List<World> worlds;
 
     public static Teammanager teammanager;
     public static Itemmanger itemmanger;
@@ -38,14 +35,14 @@ public final class Mlcgames extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        worlds = Bukkit.getWorlds();
+
         //minimessage初始化
         miniMessage = MiniMessage.miniMessage();
 
         //初始化数值
         isstart = false;
         instance = this;
-        gamemode = 0;
+
         fileConfiguration = this.getConfig();
 
         itemmanger = new Itemmanger();
@@ -54,7 +51,7 @@ public final class Mlcgames extends JavaPlugin {
 
         scoreboardManager = Bukkit.getScoreboardManager();
         teammanager = new Teammanager();
-
+        new Gameinit();
 
 
         //初始化选择界面

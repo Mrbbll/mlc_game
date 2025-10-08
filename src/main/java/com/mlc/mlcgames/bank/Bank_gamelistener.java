@@ -1,6 +1,8 @@
 package com.mlc.mlcgames.bank;
 
 import com.mlc.mlcgames.Invmanger;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -57,11 +59,14 @@ public class Bank_gamelistener implements Listener {
             }
             }
     }
+
     @EventHandler
     public void inventoryClickEvent(InventoryClickEvent event){
+        Bukkit.broadcast(Component.text("检测有菜单受到点击"));
         Player player = (Player) event.getWhoClicked();
         InventoryView inventoryView = player.getOpenInventory();
-        if(!inventoryView.getTopInventory().equals(invmanger.ainv)||!inventoryView.getTopInventory().equals(invmanger.binv)){
+        if(!inventoryView.title().equals(Component.text("a"))&&!inventoryView.title().equals(Component.text("b"))){
+            player.sendMessage("不是目标菜单");
             return;
         };
         int num = event.getHotbarButton();

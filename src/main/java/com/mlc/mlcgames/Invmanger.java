@@ -1,5 +1,6 @@
 package com.mlc.mlcgames;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -13,7 +14,8 @@ public class Invmanger {
 
 
     public Invmanger(){
-        ainv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>a</color>"));
+        ainv = Bukkit.createInventory(null,6*9, Component.text("a"));
+
         ainv.setItem(2, itemmanger.a_itemStack1);
         ainv.setItem(11, itemmanger.a_itemStack2);
         ainv.setItem(20, itemmanger.a_itemStack3);
@@ -21,7 +23,7 @@ public class Invmanger {
         ainv.setItem(38, itemmanger.a_itemStack5);
 
 
-        binv = Bukkit.createInventory(null,6*9,miniMessage.deserialize("<!i><color:#38deff>b</color>"));
+        binv = Bukkit.createInventory(null,6*9,Component.text("b"));
         binv.setItem(2, itemmanger.b_itemStack1);
         binv.setItem(11, itemmanger.b_itemStack2);
         binv.setItem(20, itemmanger.b_itemStack3);

@@ -2,6 +2,7 @@ package com.mlc.mlcgames.bank;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -22,6 +23,7 @@ public class Bank_gameprepare {
 
         for(Player player:ingamepalyer){
             //清状态，物品栏
+            //player.setGameMode(GameMode.ADVENTURE);
             player.sendMessage(Component.text("prepare"));
             Set<String> tags = player.getScoreboardTags();
             for(String tag : tags) player.removeScoreboardTag(tag);

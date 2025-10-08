@@ -28,6 +28,8 @@ public final class Mlcgames extends JavaPlugin {
 
     public static ScoreboardManager scoreboardManager;
 
+
+
     @Override
     public void onEnable() {
 
@@ -62,3 +64,10 @@ public final class Mlcgames extends JavaPlugin {
     }
 
 }
+
+
+//bankgame
+//选队，中途不能加队
+//prepare
+//start，计时
+//时间到或人全走了end

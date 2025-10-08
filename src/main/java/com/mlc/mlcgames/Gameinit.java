@@ -3,7 +3,6 @@ package com.mlc.mlcgames;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.isstart;
 
 public class Gameinit {

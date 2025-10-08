@@ -2,15 +2,11 @@ package com.mlc.mlcgames;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import org.checkerframework.checker.units.qual.C;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -1,9 +1,9 @@
 package com.mlc.mlcgames.bank;
 
-import com.mlc.mlcgames.Invmanger;
+
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,13 +13,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
+
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Objects;
-import java.util.Set;
+
 
 import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Teammanager.team_1;
@@ -68,7 +68,7 @@ public class Bank_gamelistener implements Listener {
         if(!inventoryView.title().equals(Component.text("a"))&&!inventoryView.title().equals(Component.text("b"))){
             player.sendMessage("不是目标菜单");
             return;
-        };
+        }
         int num = event.getHotbarButton();
         if(num != -1){
             event.setCancelled(true);

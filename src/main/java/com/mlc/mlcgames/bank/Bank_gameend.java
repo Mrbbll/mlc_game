@@ -13,19 +13,12 @@ public class Bank_gameend {
     public Bank_gameend(){
         isstart=false;
     }
-
     public void endgame(BossBar bossBar){
         for(Player player:ingamepalyer){
             player.teleport(bank_lobby);
             player.hideBossBar(bossBar);
         }
         Bukkit.broadcast(Component.text("game over"));
-
         ingamepalyer.clear();
-
-    }
-
-    public void winner(){
-
     }
 }

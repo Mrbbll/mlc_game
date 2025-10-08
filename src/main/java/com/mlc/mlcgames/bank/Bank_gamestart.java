@@ -115,7 +115,7 @@ public class Bank_gamestart {
                         break;
                     }
                 }
-            };
+            }
         }
         if(teammanager.isPlayerInTeam(player, team_2)){
             Set<String> tags = player.getScoreboardTags();
@@ -142,7 +142,7 @@ public class Bank_gamestart {
                         break;
                     }
                 }
-            };
+            }
         }
     }
 

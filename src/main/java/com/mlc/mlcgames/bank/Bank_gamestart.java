@@ -66,6 +66,22 @@ public class Bank_gamestart {
                 //每次重新设置值
                 time[0] = 10;
 
+
+                //倒计时结束
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        if(time[0] <= 0){
+                            new Bank_gameend().endgame(bankBossbar.bossBar);
+                            this.cancel();
+                        }
+                        bankBossbar.progress = (float) time[0]--/ timemax;
+                        bankBossbar.bossBar.progress(bankBossbar.progress);
+                    }
+                }.runTaskTimer(instance,0,20);
+
+
+                //抢东西结束
                 new BukkitRunnable(){
                     @Override
                     public void run() {
@@ -78,6 +94,8 @@ public class Bank_gamestart {
                     }
                 }.runTaskTimer(instance,0,20);
                 break;
+
+
             }
 
             //小偷模式

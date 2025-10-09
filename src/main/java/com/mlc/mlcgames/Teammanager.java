@@ -22,6 +22,7 @@ public class Teammanager {
     public static Team team_6;
     public static Team team_7;
     public static Team team_8;
+    public static Team team_9;
 
     public Teammanager() {
         this.scoreboard = scoreboardManager.getMainScoreboard();
@@ -40,11 +41,10 @@ public class Teammanager {
         team_6.displayName(Component.text("紫队"));
         team_7 = this.createTeam("BLUE", NamedTextColor.BLUE);
         team_7.displayName(Component.text("蓝队"));
-        team_8 = this.createTeam("WHITE", NamedTextColor.WHITE);
-        team_8.displayName(Component.text("白队"));
-
-
-
+        team_8 = this.createTeam("DARK_BLUE", NamedTextColor.DARK_BLUE);
+        team_7.displayName(Component.text("深蓝队"));
+        team_9 = this.createTeam("WHITE", NamedTextColor.WHITE);
+        team_9.displayName(Component.text("白队"));
     }
 
     //清除队伍
@@ -75,7 +75,6 @@ public class Teammanager {
 
     //加队伍
     public boolean addPlayerToTeam(Team team, Player player) {
-
         // 加入新队伍
         team.addEntry(player.getName());
         player.setScoreboard(scoreboard); // 确保玩家使用这个计分板

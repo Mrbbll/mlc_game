@@ -14,6 +14,9 @@ import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Gameinit.*;
 
 public class mlcgame_bank implements CommandExecutor {
+    public final Bank_gameprepare bankGameprepare = new Bank_gameprepare();
+    public final Bank_gamestart bankGamestart = new Bank_gamestart();
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if(args.length<1){
@@ -27,12 +30,12 @@ public class mlcgame_bank implements CommandExecutor {
                 sender.sendMessage(player.getWorld().getName());
                 Bukkit.broadcast(Component.text("prepare"));
                 ingamepalyer.clear();
-                new Bank_gameprepare();
+                bankGameprepare.start();
                 break;
             }
             case "start":{
                 isstart = true;
-                new Bank_gamestart();
+                bankGamestart.start();
                 break;
             }
             case "gamemode":{

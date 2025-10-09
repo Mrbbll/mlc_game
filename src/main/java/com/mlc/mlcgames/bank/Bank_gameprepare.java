@@ -1,5 +1,6 @@
 package com.mlc.mlcgames.bank;
 
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,14 +15,21 @@ import static com.mlc.mlcgames.Teammanager.team_2;
 
 public class Bank_gameprepare {
     public Bank_gameprepare(){
+
+    }
+
+    public void start(){
         //加入在队伍的玩家
         ingamepalyer.addAll(teammanager.getteamplayer(team_1));
         ingamepalyer.addAll(teammanager.getteamplayer(team_2));
         Bukkit.broadcast(Component.text("队列加队ok"));
 
         for(Player player:ingamepalyer){
-            //清状态，物品栏
+            //清状态，物品栏,bossbar
             //player.setGameMode(GameMode.ADVENTURE);
+            for (BossBar bossBar : player.activeBossBars()) {
+                player.hideBossBar(bossBar);
+            };
             player.sendMessage(Component.text("prepare"));
             Set<String> tags = player.getScoreboardTags();
             for(String tag : tags) player.removeScoreboardTag(tag);

@@ -4,11 +4,13 @@ package com.mlc.mlcgames.bank;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 
+import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -35,6 +37,18 @@ public class Bank_gamelistener implements Listener {
     public void playerQuitEvent(PlayerQuitEvent event){
         ingamepalyer.remove(event.getPlayer());
     }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getPlayer();
+        player.setGameMode(GameMode.SPECTATOR);
+        checkgameover(player);
+    }
+
+    private void checkgameover(Player player) {
+
+    }
+
 
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event){

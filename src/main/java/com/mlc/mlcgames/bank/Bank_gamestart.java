@@ -20,6 +20,7 @@ public class Bank_gamestart {
     int[] time = {0,0};
     int timemax;
     public BukkitTask bossbar_timer;
+    public BukkitTask dely_title;
     public BukkitTask title_timer;
 
     public Bank_gamestart(){
@@ -48,26 +49,25 @@ public class Bank_gamestart {
                     giveitem(player);
                 }
 
+                //bossbar init
+                bankBossbar.init();
                 //出字
                 title_timer = new BukkitRunnable() {
                     @Override
                     public void run() {
                         for (Player player:ingamepalyer){
                             player.showTitle(Title.title(Component.text(5-time[0]),Component.text(""), Title.Times.times(Duration.ZERO,Duration.ofSeconds(1),Duration.ZERO)));
-                            if(time[0] > 3 ) this.cancel();
+                            if(time[0] > 4 ){
+                                player.showTitle(Title.title(Component.text("game start!!"),Component.text("")));
+                                player.showBossBar(bankBossbar.bossBar);
+                                this.cancel();
+                            }
                             time[0]++;
                         }
                     }
                 }.runTaskTimer(instance,20,20);
 
                 //开门
-
-                //计时和bossbar
-                bankBossbar.init();
-                for(Player player :ingamepalyer){
-                    player.showTitle(Title.title(Component.text("game start!!"),Component.text("")));
-                    player.showBossBar(bankBossbar.bossBar);
-                }
 
 
                 //倒计时结束

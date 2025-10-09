@@ -40,9 +40,11 @@ public class Bank_gamelistener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        Player player = event.getPlayer();
-        player.setGameMode(GameMode.SPECTATOR);
-        checkgameover(player);
+        if(isstart) {
+            Player player = event.getPlayer();
+            player.setGameMode(GameMode.SPECTATOR);
+            checkgameover(player);
+        }
     }
 
     private void checkgameover(Player player) {

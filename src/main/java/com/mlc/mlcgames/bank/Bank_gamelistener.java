@@ -19,7 +19,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import java.util.Objects;
 
 
@@ -40,16 +39,13 @@ public class Bank_gamelistener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if(isstart) {
+        if(Bank_isstart) {
             Player player = event.getPlayer();
             player.setGameMode(GameMode.SPECTATOR);
             checkgameover(player);
         }
     }
 
-    private void checkgameover(Player player) {
-
-    }
 
 
     @EventHandler
@@ -94,6 +90,11 @@ public class Bank_gamelistener implements Listener {
         ItemStack itemStack1 = event.getCurrentItem();
         invclickhander.clickhander(player,itemStack1);
         event.setCancelled(true);
+
+    }
+
+
+    private void checkgameover(Player player) {
 
     }
 }

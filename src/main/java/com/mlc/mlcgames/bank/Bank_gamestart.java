@@ -36,7 +36,7 @@ public class Bank_gamestart {
                 time[1] = 10;//bossbar and game time
                 timemax = time[1];
 
-                isstart = true;
+                Bank_isstart = true;
                 Bukkit.broadcast(Component.text("battlebox model"));
                 //传送和设置重生点
                 for(Player player:ingamepalyer){

@@ -16,7 +16,8 @@ public final class Mlcgames extends JavaPlugin {
 
     public static JavaPlugin instance;
     public static FileConfiguration fileConfiguration;
-    public static boolean isstart;
+    public static boolean Bank_isstart;
+
 
     public static List<Player> ingamepalyer = new ArrayList<>();
 
@@ -38,7 +39,7 @@ public final class Mlcgames extends JavaPlugin {
         miniMessage = MiniMessage.miniMessage();
 
         //初始化数值
-        isstart = false;
+        Bank_isstart = false;
         instance = this;
 
         fileConfiguration = this.getConfig();

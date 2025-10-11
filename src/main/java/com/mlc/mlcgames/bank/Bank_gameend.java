@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 
 import static com.mlc.mlcgames.Gameinit.bank_lobby;
 import static com.mlc.mlcgames.Mlcgames.ingamepalyer;
-import static com.mlc.mlcgames.Mlcgames.isstart;
+import static com.mlc.mlcgames.Mlcgames.Bank_isstart;
 
 public class Bank_gameend {
     public Bank_gameend(){
-        isstart=false;
+        Bank_isstart=false;
     }
     public void endgame(BossBar bossBar){
         for(Player player:ingamepalyer){

@@ -3,7 +3,7 @@ package com.mlc.mlcgames;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import static com.mlc.mlcgames.Mlcgames.isstart;
+import static com.mlc.mlcgames.Mlcgames.Bank_isstart;
 
 public class Gameinit {
 
@@ -23,7 +23,7 @@ public class Gameinit {
         bank_lobby = new Location(Bukkit.getWorld("world"),0 , 70,0 );
         bank_respawn = new Location(Bukkit.getWorld("world"),0 , 70,0);
         bank_gamemode = 0;
-        isstart = false;
+        Bank_isstart = false;
 
     }
 }

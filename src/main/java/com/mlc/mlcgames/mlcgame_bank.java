@@ -34,12 +34,12 @@ public class mlcgame_bank implements CommandExecutor {
                 break;
             }
             case "start":{
-                isstart = true;
+                Bank_isstart = true;
                 bankGamestart.start();
                 break;
             }
             case "gamemode":{
-                if (isstart){
+                if (Bank_isstart){
                     return false;
                 }
                 if (args[1].matches("^[-+]?\\d+$")){

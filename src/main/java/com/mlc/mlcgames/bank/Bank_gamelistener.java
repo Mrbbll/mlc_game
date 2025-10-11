@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -42,10 +43,14 @@ public class Bank_gamelistener implements Listener {
         if(Bank_isstart) {
             Player player = event.getPlayer();
             player.setGameMode(GameMode.SPECTATOR);
-            checkgameover(player);
         }
     }
 
+
+    @EventHandler
+    public void blockPlaceEvent(BlockPlaceEvent event){
+
+    }
 
 
     @EventHandler
@@ -93,8 +98,4 @@ public class Bank_gamelistener implements Listener {
 
     }
 
-
-    private void checkgameover(Player player) {
-
-    }
 }

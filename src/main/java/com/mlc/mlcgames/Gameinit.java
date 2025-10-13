@@ -20,6 +20,7 @@ public class Gameinit {
     public Gameinit(){
         bank_1 = new Location(Bukkit.getWorld("world"),0,70,0);
 
+
         bank_lobby = new Location(Bukkit.getWorld("world"),0 , 70,0 );
         bank_respawn = new Location(Bukkit.getWorld("world"),0 , 70,0);
         bank_gamemode = 0;

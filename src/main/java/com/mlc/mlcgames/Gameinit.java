@@ -25,5 +25,6 @@ public class Gameinit {
         bank_gamemode = 0;
         Bank_isstart = false;
 
+
     }
 }

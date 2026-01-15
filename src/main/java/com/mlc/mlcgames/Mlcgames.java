@@ -1,6 +1,6 @@
 package com.mlc.mlcgames;
 
-import com.mlc.mlcgames.bank.Bank_gamelistener;
+import com.mlc.mlcgames.bank.utils.Bankgame;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,25 +10,17 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public final class Mlcgames extends JavaPlugin {
 
     public static JavaPlugin instance;
     public static FileConfiguration fileConfiguration;
-    public static boolean Bank_isstart;
 
-
-    public static List<Player> ingamepalyer = new ArrayList<>();
-
-    public static Teammanager teammanager;
-    public static Itemmanger itemmanger;
     public static MiniMessage miniMessage;
-    public static Invmanger invmanger;
-    public static Invclickhander invclickhander;
-
     public static ScoreboardManager scoreboardManager;
 
+
+    public static Bankgame bankgame = new Bankgame();
 
 
     @Override
@@ -39,22 +31,13 @@ public final class Mlcgames extends JavaPlugin {
         miniMessage = MiniMessage.miniMessage();
 
         //初始化数值
-        Bank_isstart = false;
         instance = this;
-
         fileConfiguration = this.getConfig();
 
         //管理器初始化
-        itemmanger = new Itemmanger();
         scoreboardManager = Bukkit.getScoreboardManager();
-        teammanager = new Teammanager();
-        invmanger = new Invmanger();
-        invclickhander = new Invclickhander();
-        new Gameinit();
-
-
-        Bukkit.getPluginManager().registerEvents(new Bank_gamelistener(),this);
-        Objects.requireNonNull(Bukkit.getPluginCommand("mlcgame_bank")).setExecutor((new mlcgame_bank()));
+        Teammanager.initTeammanager();
+        Task.runtask();//注册监听，命令
         getLogger().info("\n\nmlcgame插件加载成功\n\n");
     }
 

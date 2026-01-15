@@ -13,7 +13,15 @@ import java.util.Set;
 import static com.mlc.mlcgames.Mlcgames.scoreboardManager;
 
 public class Teammanager {
-    public final Scoreboard scoreboard;
+    public static Scoreboard scoreboard;
+
+    public static Team bankgame_prepareteam;
+    public static Team bankgame_pliceteam;
+    public static Team bankgame_thifeteam;
+    public static Team bankgame_sepecteam;
+
+
+
     public static Team team_1;
     public static Team team_2;
     public static Team team_3;
@@ -24,31 +32,36 @@ public class Teammanager {
     public static Team team_8;
     public static Team team_9;
 
-    public Teammanager() {
-        this.scoreboard = scoreboardManager.getMainScoreboard();
-        this.clearallTeam();
-        team_1 = this.createTeam("AQUA", NamedTextColor.AQUA);
+    public static void initTeammanager() {
+        scoreboard = scoreboardManager.getMainScoreboard();
+        clearallTeam();
+        bankgame_prepareteam = createTeam("bankgame_prepareteam", NamedTextColor.YELLOW);
+        bankgame_pliceteam = createTeam("bankgame_pliceteam", NamedTextColor.AQUA);
+        bankgame_thifeteam = createTeam("bankgame_thifeteam", NamedTextColor.RED);
+        bankgame_sepecteam = createTeam("bankgame_sepecteam", NamedTextColor.GRAY);
+
+        team_1 = createTeam("AQUA", NamedTextColor.AQUA);
         team_1.displayName(Component.text("青队"));
-        team_2 = this.createTeam("RED", NamedTextColor.RED);
+        team_2 = createTeam("RED", NamedTextColor.RED);
         team_2.displayName(Component.text("红队"));
-        team_3 = this.createTeam("GOLD", NamedTextColor.GOLD);
+        team_3 = createTeam("GOLD", NamedTextColor.GOLD);
         team_3.displayName(Component.text("橙队"));
-        team_4 = this.createTeam("YELLOW", NamedTextColor.YELLOW);
+        team_4 = createTeam("YELLOW", NamedTextColor.YELLOW);
         team_4.displayName(Component.text("黄队"));
-        team_5 = this.createTeam("GREEN", NamedTextColor.GREEN);
+        team_5 = createTeam("GREEN", NamedTextColor.GREEN);
         team_5.displayName(Component.text("绿队"));
-        team_6 = this.createTeam("LIGHT_PURPLE", NamedTextColor.LIGHT_PURPLE);
+        team_6 = createTeam("LIGHT_PURPLE", NamedTextColor.LIGHT_PURPLE);
         team_6.displayName(Component.text("紫队"));
-        team_7 = this.createTeam("BLUE", NamedTextColor.BLUE);
+        team_7 = createTeam("BLUE", NamedTextColor.BLUE);
         team_7.displayName(Component.text("蓝队"));
-        team_8 = this.createTeam("DARK_BLUE", NamedTextColor.DARK_BLUE);
-        team_7.displayName(Component.text("深蓝队"));
-        team_9 = this.createTeam("WHITE", NamedTextColor.WHITE);
+        team_8 = createTeam("DARK_BLUE", NamedTextColor.DARK_BLUE);
+        team_8.displayName(Component.text("深蓝队"));
+        team_9 = createTeam("WHITE", NamedTextColor.WHITE);
         team_9.displayName(Component.text("白队"));
     }
 
     //清除队伍
-    public void clearallTeam(){
+    public static void clearallTeam(){
         for (Team team : scoreboard.getTeams()) {
             team.unregister();
         }
@@ -56,7 +69,7 @@ public class Teammanager {
 
 
     //创新队伍
-    public Team createTeam(String teamName, NamedTextColor color) {
+    public static Team createTeam(String teamName, NamedTextColor color) {
         // 检查队伍是否已存在
         if (scoreboard.getTeam(teamName) != null) {
             return scoreboard.getTeam(teamName);
@@ -74,7 +87,7 @@ public class Teammanager {
     }
 
     //加队伍
-    public boolean addPlayerToTeam(Team team, Player player) {
+    public static boolean addPlayerToTeam(Team team, Player player) {
         // 加入新队伍
         team.addEntry(player.getName());
         player.setScoreboard(scoreboard); // 确保玩家使用这个计分板
@@ -82,22 +95,24 @@ public class Teammanager {
     }
 
     //清空队伍
-    public void cleanTeam(Team team) {
+    public static void cleanTeam(Team team) {
         for (String entry : team.getEntries()) team.removeEntry(entry);
     }
 
     //检查是否存在
-    public boolean isPlayerInTeam(Player player, Team team) {
+    public static boolean isPlayerInTeam(Player player, Team team) {
         return team.hasPlayer(player);
     }
 
-    public Set<Player> getteamplayer(Team team){
+    //获取队伍玩家
+    public static Set<Player> getteamplayer(Team team){
         Set<Player> players = new HashSet<>();
         for (String entry : team.getEntries()) players.add(Bukkit.getPlayer(entry));
         return players;
     }
 
-    public Team getPlayerTeam(Player player) {
+    //获取玩家队伍
+    public static Team getPlayerTeam(Player player) {
         return scoreboard.getEntryTeam(player.getName());
 
     }

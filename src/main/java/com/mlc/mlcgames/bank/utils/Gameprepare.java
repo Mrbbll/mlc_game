@@ -1,0 +1,37 @@
+package com.mlc.mlcgames.bank.utils;
+
+import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Player;
+
+import static com.mlc.mlcgames.Mlcgames.bankgame;
+
+public class Gameprepare {
+    public static void prepare(Player player, Gamemode gamemode){
+        switch (gamemode){
+            case thiefvsthief:
+                //传送
+                player.teleport(bankgame.bankgameLocation);
+                //设置玩家
+                player.setGameMode(GameMode.ADVENTURE);
+                AttributeInstance attributeInstance = player.getAttribute(Attribute.MAX_HEALTH);
+                if (attributeInstance != null) {
+                    attributeInstance.setBaseValue(20);
+                }
+                player.setHealth(20);
+                player.clearActivePotionEffects();
+                player.setFoodLevel(20);
+                player.getInventory().clear();
+                player.updateInventory();
+                player.give(Bankgameitemmanager.bankgamemenu);
+                if(!bankgame.players.contains(player)){
+                    bankgame.players.add(player);
+                }
+                break;
+            case thiefvspolice:
+                break;
+        }
+
+    }
+}

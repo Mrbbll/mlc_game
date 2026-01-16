@@ -4,6 +4,9 @@ main: com.mlc.mlcgames.Mlcgames
 api-version: '1.21'
 authors: [ Mr_bl ]
 commands:
-  mlcgame_bank:
-    description: 主入口
-
+  bankgameprepare:
+    description: 准备
+  bankgamereload:
+    description: 重载
+  bankgameend:
+    description: 结束

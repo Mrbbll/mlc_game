@@ -16,9 +16,9 @@ public class Teammanager {
     public static Scoreboard scoreboard;
 
     public static Team bankgame_prepareteam;
-    public static Team bankgame_pliceteam;
-    public static Team bankgame_thifeteam;
-    public static Team bankgame_sepecteam;
+    public static Team bankgame_policeteam;
+    public static Team bankgame_thiefteam;
+    public static Team bankgame_spectateteam;
 
 
 
@@ -36,9 +36,9 @@ public class Teammanager {
         scoreboard = scoreboardManager.getMainScoreboard();
         clearallTeam();
         bankgame_prepareteam = createTeam("bankgame_prepareteam", NamedTextColor.YELLOW);
-        bankgame_pliceteam = createTeam("bankgame_pliceteam", NamedTextColor.AQUA);
-        bankgame_thifeteam = createTeam("bankgame_thifeteam", NamedTextColor.RED);
-        bankgame_sepecteam = createTeam("bankgame_sepecteam", NamedTextColor.GRAY);
+        bankgame_policeteam = createTeam("bankgame_pliceteam", NamedTextColor.AQUA);
+        bankgame_thiefteam = createTeam("bankgame_thifeteam", NamedTextColor.RED);
+        bankgame_spectateteam = createTeam("bankgame_spectateteam", NamedTextColor.GRAY);
 
         team_1 = createTeam("AQUA", NamedTextColor.AQUA);
         team_1.displayName(Component.text("青队"));
@@ -66,7 +66,13 @@ public class Teammanager {
             team.unregister();
         }
     }
-
+    //移除玩家的队伍
+    public static void removePlayerFromTeam(Player player) {
+        Team team = getPlayerTeam(player);
+        if (team != null) {
+            team.removeEntry(player.getName());
+        }
+    }
 
     //创新队伍
     public static Team createTeam(String teamName, NamedTextColor color) {

@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInputEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -111,6 +112,7 @@ public class Bankgamelistener implements Listener {
         player.setRespawnLocation(bankgame.lobbyLocation);
         player.setGameMode(GameMode.ADVENTURE);
         player.teleport(bankgame.lobbyLocation);
+
     }
 
     @EventHandler
@@ -138,7 +140,8 @@ public class Bankgamelistener implements Listener {
             }
         }
     }
-
+//    @EventHandler
+//    public void onopendialog(Dialog)
 
 
 }

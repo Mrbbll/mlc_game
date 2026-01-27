@@ -6,6 +6,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 
 import static com.mlc.mlcgames.Mlcgames.bankgame;
+import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 
 public class Gameprepare {
     public static void prepare(Player player, Gamemode gamemode){
@@ -25,9 +26,13 @@ public class Gameprepare {
                 player.getInventory().clear();
                 player.updateInventory();
                 player.give(Bankgameitemmanager.bankgamemenu);
+
                 if(!bankgame.players.contains(player)){
                     bankgame.players.add(player);
                 }
+                //显示bossbar
+                bankgamebossbar.addViewer(player);
+                Bankgamebossbar.updatebossbar();
                 break;
             case thiefvspolice:
                 break;

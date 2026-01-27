@@ -1,5 +1,6 @@
 package com.mlc.mlcgames.bank.commmand;
 
+import com.mlc.mlcgames.bank.utils.Bankgameinit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +15,7 @@ public class bankgamereload implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         instance.reloadConfig();
         fileConfiguration = instance.getConfig();
-
+        Bankgameinit.init();
         return false;
     }
 }

@@ -20,7 +20,8 @@ public class Openmenu {
                         player.openInventory(bankmenus.thiefmenu);
                     } else if( Teammanager.isPlayerInTeam(player, Teammanager.bankgame_thiefteam)&&bankgame.gameprepared){
                         player.openInventory(bankmenus.thiefmenu);
-                    } else if( Teammanager.isPlayerInTeam(player, Teammanager.bankgame_spectateteam)){
+                    } else if( Teammanager.isPlayerInTeam(player, Teammanager.bankgame_spectateteam)&&!bankgame.gameprepared){
+                        player.openInventory(bankmenus.bankmenu);
                         return;
                     } else if(!bankgame.gameprepared){
                         //如果玩家不在队伍中返回

@@ -20,7 +20,6 @@ public class Startgame {
                 default -> {bankgame.remainTime = 10;}
             }
 
-
             //分别传送
             for(Player player : bankgame.players){
                 player.getInventory().clear();
@@ -44,7 +43,6 @@ public class Startgame {
                         if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
                             Bankgameitemmanager.givethiefitem(player);
                         }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
-                            player.getInventory().addItem(Bankgameitemmanager.police_stonesword);
                             Bankgameitemmanager.givethiefitem(player);
                         }
                     }
@@ -52,7 +50,6 @@ public class Startgame {
                         if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
                             Bankgameitemmanager.givepoliceitem(player);
                         }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
-                            player.getInventory().addItem(Bankgameitemmanager.police_stonesword);
                             Bankgameitemmanager.givethiefitem(player);
                         }
                     }

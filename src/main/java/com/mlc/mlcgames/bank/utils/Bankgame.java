@@ -1,6 +1,7 @@
 package com.mlc.mlcgames.bank.utils;
 
 import org.bukkit.Location;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -17,6 +18,7 @@ public class Bankgame {
     public int policescore;
     public int thiefscore;
     public String winnerteam;
+
     public Location bankgameLocation;
     public Location policeteamLocation;
     public Location thiefteamLocation;

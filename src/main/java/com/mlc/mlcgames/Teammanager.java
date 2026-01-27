@@ -88,7 +88,6 @@ public class Teammanager {
         team.color(color);
         team.setAllowFriendlyFire(false); // 禁止友方伤害
         team.setCanSeeFriendlyInvisibles(true); // 可以看到隐身的队友
-        team.displayName(Component.text(teamName)); // 显示名称带颜色
         return team;
     }
 

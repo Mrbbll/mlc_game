@@ -23,6 +23,7 @@ import static com.mlc.mlcgames.Mlcgames.miniMessage;
 public class Bankgamebossbar {
     public static BossBar bankgamebossbar;
     public static String bossbarstring = "";
+    public static int bossbarfulltime = 10;
     public static Component bossbarcomponent = Component.text("");
     public static void initBankgamebossbar() {
         bankgamebossbar = BossBar.bossBar(bossbarcomponent, 0, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS);
@@ -33,12 +34,7 @@ public class Bankgamebossbar {
         bankgamebossbar.name(bossbarcomponent);
 
     }
-    public static void updatebossbar(){
-        for(Player player : bankgame.players){
-            if(!bankgame.isStart){
-                bossbarcomponent = bossbarcomponent.append(miniMessage.deserialize("<head:" + player.getUniqueId()+">"));
-                bankgamebossbar.name(bossbarcomponent);
-            }
-        }
+    public static void updateBossbar(){
+        bankgamebossbar.progress((bankgame.remainTime /(float) bossbarfulltime));
     }
 }

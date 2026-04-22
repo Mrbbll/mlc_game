@@ -5,15 +5,9 @@ import com.mlc.mlcgames.bank.commmand.bankgameprepare;
 import com.mlc.mlcgames.bank.commmand.bankgamereload;
 import com.mlc.mlcgames.bank.listener.Bankgamelistener;
 import com.mlc.mlcgames.bank.utils.Bankgamebossbar;
-import com.mlc.mlcgames.bank.utils.Bankgamedialog;
 import com.mlc.mlcgames.bank.utils.Bankgameinit;
-import com.mlc.mlcgames.bank.utils.Bankgameitemmanager;
+import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.menus.bankmenus;
-import com.mlc.mlcgames.hook.placeholderapi;
-import io.papermc.paper.dialog.Dialog;
-import io.papermc.paper.dialog.DialogResponseView;
-import io.papermc.paper.registry.RegistryBuilderFactory;
-import io.papermc.paper.registry.data.dialog.DialogInstancesProvider;
 import org.bukkit.Bukkit;
 
 import java.util.Objects;
@@ -31,12 +25,7 @@ public class Task {
         Objects.requireNonNull(instance.getCommand("bankgamereload")).setExecutor(new bankgamereload());
         Objects.requireNonNull(instance.getCommand("bankgameend")).setExecutor(new bankgameend());
 
-        //placeholderapi注册
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new placeholderapi().register();
-            System.out.println("\n\nmlcdomain placeholder registered\n\n");
-        }
-
+        Objects.requireNonNull(instance.getCommand("bankgameprepare")).setTabCompleter(new bankgameprepare());
         //物品初始化
         Bankgameitemmanager.inititem();
         //bossbar初始化
@@ -44,8 +33,6 @@ public class Task {
 
         //菜单初始化
         bankmenus.init();
-        //对话框初始化
-        Bankgamedialog.create();
 
         //游戏初始化
         Bankgameinit.init();

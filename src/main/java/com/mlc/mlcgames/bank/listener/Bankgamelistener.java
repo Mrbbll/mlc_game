@@ -1,9 +1,9 @@
 package com.mlc.mlcgames.bank.listener;
 
 import com.mlc.mlcgames.Teammanager;
-import com.mlc.mlcgames.bank.utils.Endgame;
-import com.mlc.mlcgames.bank.utils.Jobselect;
-import com.mlc.mlcgames.bank.utils.Teamselect;
+import com.mlc.mlcgames.bank.utils.end.Endgame;
+import com.mlc.mlcgames.bank.listener.clickprocess.Jobselect;
+import com.mlc.mlcgames.bank.listener.clickprocess.Teamselect;
 import com.mlc.mlcgames.bank.menus.bankmenus;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -13,12 +13,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInputEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.Team;
 
 import java.util.Objects;
 

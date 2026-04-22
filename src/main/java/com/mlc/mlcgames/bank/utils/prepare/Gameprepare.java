@@ -1,5 +1,7 @@
-package com.mlc.mlcgames.bank.utils;
+package com.mlc.mlcgames.bank.utils.prepare;
 
+import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
+import com.mlc.mlcgames.bank.utils.Gamemode;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -30,11 +32,26 @@ public class Gameprepare {
                 if(!bankgame.players.contains(player)){
                     bankgame.players.add(player);
                 }
-                //显示bossbar
-                bankgamebossbar.addViewer(player);
-                Bankgamebossbar.updatebossbar();
                 break;
             case thiefvspolice:
+                //传送
+                player.teleport(bankgame.bankgameLocation);
+                //设置玩家
+                player.setGameMode(GameMode.ADVENTURE);
+                AttributeInstance attributeInstance1 = player.getAttribute(Attribute.MAX_HEALTH);
+                if (attributeInstance1 != null) {
+                    attributeInstance1.setBaseValue(20);
+                }
+                player.setHealth(20);
+                player.clearActivePotionEffects();
+                player.setFoodLevel(20);
+                player.getInventory().clear();
+                player.updateInventory();
+                player.give(Bankgameitemmanager.bankgamemenu);
+
+                if(!bankgame.players.contains(player)){
+                    bankgame.players.add(player);
+                }
                 break;
         }
 

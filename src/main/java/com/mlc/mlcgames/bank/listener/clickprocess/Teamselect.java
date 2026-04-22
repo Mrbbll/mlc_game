@@ -1,4 +1,4 @@
-package com.mlc.mlcgames.bank.utils;
+package com.mlc.mlcgames.bank.listener.clickprocess;
 
 import com.mlc.mlcgames.Teammanager;
 import net.kyori.adventure.text.Component;
@@ -22,7 +22,7 @@ public class Teamselect {
                 player.sendMessage("你选择了红队");
                 Teammanager.addPlayerToTeam(Teammanager.bankgame_thiefteam, player);
             }else if(itemStack.getType() == Material.LIGHT_BLUE_CONCRETE){
-                player.sendMessage("你选择了蓝队伍");
+                player.sendMessage("你选择了蓝队");
                 Teammanager.addPlayerToTeam(Teammanager.bankgame_policeteam, player);
             } else if (itemStack.getType() == Material.WHITE_CONCRETE) {
                 player.sendMessage("你选择了旁观队伍");

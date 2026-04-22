@@ -1,6 +1,6 @@
 package com.mlc.mlcgames.bank.commmand;
 
-import com.mlc.mlcgames.bank.utils.Endgame;
+import com.mlc.mlcgames.bank.utils.end.Endgame;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

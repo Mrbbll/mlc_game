@@ -44,6 +44,7 @@ public class Bankgameinit {
             bankgame.spectatelocation = new Location(instance.getServer().getWorld("world"),0,1,0);
         }
         fileConfiguration.set("bankgame.spectatelocation",bankgame.spectatelocation);
+
         bankgame.lobbyLocation = fileConfiguration.getLocation("lobby");
         if(bankgame.lobbyLocation == null){
             bankgame.lobbyLocation = new Location(instance.getServer().getWorld("world"),0,1,0);

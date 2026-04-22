@@ -1,7 +1,6 @@
-package com.mlc.mlcgames.bank.utils;
+package com.mlc.mlcgames.bank.utils.end;
 
 import com.mlc.mlcgames.Teammanager;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -10,6 +9,7 @@ import org.bukkit.scoreboard.Team;
 import static com.mlc.mlcgames.Mlcgames.bankgame;
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.bank.utils.Bankgame.gameendcountdown;
+import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 
 public class Endgame {
     public static void endgame(){
@@ -35,11 +35,15 @@ public class Endgame {
         }else if(bankgame.policescore < bankgame.thiefscore){
             bankgame.winnerteam = "红队";
         }else{
-            bankgame.winnerteam = "蓝队+红队";
+            bankgame.winnerteam = " -平- ";
         }
         instance.getServer().broadcast(net.kyori.adventure.text.Component.text("\n\n\n获胜队伍是" + bankgame.winnerteam, NamedTextColor.GREEN));
         bankgame.policescore = 0;
         bankgame.thiefscore = 0;
+        //移除bossbar
+        for(Player player : bankgame.players){
+            bankgamebossbar.removeViewer(player);
+        }
     }
 
     public static void endgame(Team team){

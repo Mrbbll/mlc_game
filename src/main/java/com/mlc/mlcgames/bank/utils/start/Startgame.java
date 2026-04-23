@@ -22,10 +22,15 @@ public class Startgame {
 
         public static void startgame(){
             bankgame.isStart = true;
+
             switch (bankgame.gamemode){
                 case thiefvsthief -> {bankgame.remainTime = fileConfiguration.getInt("bankgame.tvtgametime");}
                 case thiefvspolice -> {bankgame.remainTime = fileConfiguration.getInt("bankgame.tvpgametime");}
-                default -> {bankgame.remainTime = 10;}
+                default -> {bankgame.remainTime = 60;}
+            }
+            //如果游戏时间小于等于0,则默认时间为60秒
+            if(bankgame.remainTime<=0){
+                bankgame.remainTime = 60;
             }
             Bankgamebossbar.bossbarfulltime = bankgame.remainTime;
             //分别传送
@@ -59,10 +64,20 @@ public class Startgame {
                     }
                     case thiefvspolice -> {
                         if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
-                            Bankgameitemmanager.givepoliceitem(player);
-                        }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
                             Bankgameitemmanager.givethiefitem(player);
+                        }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
+                            Bankgameitemmanager.givepoliceitem(player);
                         }
+                        //监听事件
+                        //金库打开事件
+                        bankgame.Openlocklistener();
+
+                        //灯光破坏事件
+                        bankgame.Lightningbreaklistener();
+
+                        //灯光修复事件
+                        bankgame.Lightningfixlistener();
+
                     }
                 }
             }
@@ -90,14 +105,8 @@ public class Startgame {
                 }
             }.runTaskTimer(instance, 0, 20);
 
-            //监听事件
-            bankgame.Openlocklistener();
 
 
-            //灯光破坏事件
-            bankgame.Lightningbreaklistener();
-            //灯光修复事件
-            //开锁加速事件
             //道具事件
         }
 

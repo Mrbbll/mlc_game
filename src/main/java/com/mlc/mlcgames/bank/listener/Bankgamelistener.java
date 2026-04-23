@@ -1,6 +1,7 @@
 package com.mlc.mlcgames.bank.listener;
 
 import com.mlc.mlcgames.Teammanager;
+import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.utils.end.Endgame;
 import com.mlc.mlcgames.bank.listener.clickprocess.Jobselect;
 import com.mlc.mlcgames.bank.listener.clickprocess.Teamselect;
@@ -22,7 +23,7 @@ import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.bankgame;
 import static com.mlc.mlcgames.bank.utils.Bankgame.gameendcountdown;
-import static com.mlc.mlcgames.bank.utils.Openmenu.Openbankmenu;
+import static com.mlc.mlcgames.bank.listener.clickprocess.Openmenu.Openbankmenu;
 
 
 public class Bankgamelistener implements Listener {
@@ -90,6 +91,11 @@ public class Bankgamelistener implements Listener {
     @EventHandler
     public  void onquit(PlayerQuitEvent event){
         Player player = event.getPlayer();
+        //保证有金条
+        if(player.getInventory().contains(Bankgameitemmanager.golditem)){
+            player.getInventory().remove(Bankgameitemmanager.golditem);
+            player.dropItem(Bankgameitemmanager.golditem);
+        }
         bankgame.players.remove(player);
         Teammanager.removePlayerFromTeam(player);
         player.getInventory().clear();
@@ -99,6 +105,7 @@ public class Bankgamelistener implements Listener {
             Endgame.endgame();
             if(gameendcountdown!=null){
                 gameendcountdown.cancel();
+                gameendcountdown = null;
             }
         }
 
@@ -119,7 +126,10 @@ public class Bankgamelistener implements Listener {
             Player player = event.getPlayer();
             switch (bankgame.gamemode){
                 case thiefvspolice -> {
-                    player.setGameMode(GameMode.SPECTATOR);
+                    if(player.getInventory().contains(Bankgameitemmanager.golditem)){
+                        player.getInventory().remove(Bankgameitemmanager.golditem);
+                        player.dropItem(Bankgameitemmanager.golditem);
+                    }
                     if(Teammanager.isPlayerInTeam(player,Teammanager.bankgame_policeteam)){
                         bankgame.thiefscore+=1;
 

@@ -1,6 +1,8 @@
 package com.mlc.mlcgames.bank.utils.end;
 
 import com.mlc.mlcgames.Teammanager;
+import com.mlc.mlcgames.bank.utils.Bankgame;
+import com.mlc.mlcgames.bank.utils.Gamemode;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -14,9 +16,27 @@ import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 public class Endgame {
     public static void endgame(){
         bankgame.isStart = false;
+        bankgame.islockbreak = false;
+        bankgame.islightbreak1 = false;
+        bankgame.islightbreak2 = false;
+        bankgame.ispowerbreak = false;
         bankgame.gameprepared = false;
+        if(bankgame.breaklockevent!=null){
+            bankgame.breaklockevent.cancel();
+            bankgame.breaklockevent = null;
+        }
+        if(bankgame.lightbreakevent!=null){
+            bankgame.lightbreakevent.cancel();
+            bankgame.lightbreakevent = null;
+        }
+        if(bankgame.lightfixevent!=null){
+            bankgame.lightfixevent.cancel();
+            bankgame.lightfixevent = null;
+        }
+
         if(gameendcountdown!=null){
             gameendcountdown.cancel();
+            gameendcountdown = null;
         }
         instance.getServer().broadcast(net.kyori.adventure.text.Component.text("\n\n\n时间结束", NamedTextColor.RED));
         bankgame.playerJobs.clear();
@@ -30,6 +50,12 @@ public class Endgame {
         Teammanager.cleanTeam(Teammanager.bankgame_spectateteam);
         Teammanager.cleanTeam(Teammanager.bankgame_policeteam);
         Teammanager.cleanTeam(Teammanager.bankgame_thiefteam);
+
+        //保证时间正常结束时小偷没嬴警察一定嬴
+        if(bankgame.gamemode== Gamemode.thiefvspolice){
+            bankgame.policescore+=1000;
+        }
+
         if(bankgame.policescore > bankgame.thiefscore){
             bankgame.winnerteam = "蓝队";
         }else if(bankgame.policescore < bankgame.thiefscore){
@@ -44,26 +70,5 @@ public class Endgame {
         for(Player player : bankgame.players){
             bankgamebossbar.removeViewer(player);
         }
-    }
-
-    public static void endgame(Team team){
-        bankgame.isStart = false;
-        bankgame.gameprepared = false;
-        if(gameendcountdown!=null){
-            gameendcountdown.cancel();
-        }
-        instance.getServer().broadcast(net.kyori.adventure.text.Component.text("\n\n\n获胜队伍是" + bankgame.winnerteam, NamedTextColor.GREEN));
-        bankgame.playerJobs.clear();
-        for(Player player : bankgame.players){
-            player.teleport(bankgame.lobbyLocation);
-            player.setGameMode(GameMode.ADVENTURE);
-            player.getInventory().clear();
-
-        }
-        Teammanager.cleanTeam(Teammanager.bankgame_spectateteam);
-        Teammanager.cleanTeam(Teammanager.bankgame_policeteam);
-        Teammanager.cleanTeam(Teammanager.bankgame_thiefteam);
-        bankgame.policescore = 0;
-        bankgame.thiefscore = 0;
     }
 }

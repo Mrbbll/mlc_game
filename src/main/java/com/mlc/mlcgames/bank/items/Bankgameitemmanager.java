@@ -12,12 +12,16 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
+
 import static com.mlc.mlcgames.Mlcgames.bankgame;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class Bankgameitemmanager {
     //菜单物品
     public static ItemStack bankgamemenu;
+    //金库内物品
+    public static ItemStack golditem;
 
     //队伍选择物品
     public static ItemStack whiteconcrete;
@@ -81,67 +85,87 @@ public class Bankgameitemmanager {
         itemMeta.setItemModel(NamespacedKey.fromString("mlcgames:mlcmenu"));
         bankgamemenu.setItemMeta(itemMeta);
 
+        //金库内物品
+        golditem = new ItemStack(Material.GOLD_INGOT);
+        itemMeta = golditem.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i><#ffc403>金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条"));
+        List<Component> lore = List.of(miniMessage.deserialize("<!i><#ffc403>金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条金条"));
+        itemMeta.lore(lore);
+        golditem.setItemMeta(itemMeta);
+
         //队伍选择物品
         whiteconcrete = new ItemStack(Material.WHITE_CONCRETE);
         itemMeta = whiteconcrete.getItemMeta();
-        itemMeta.displayName(Component.text("旁观"));
+        itemMeta.displayName(miniMessage.deserialize("<!i>旁观"));
         whiteconcrete.setItemMeta(itemMeta);
 
         lightblueconcrete = new ItemStack(Material.LIGHT_BLUE_CONCRETE);
         itemMeta = lightblueconcrete.getItemMeta();
-        itemMeta.displayName(Component.text("蓝队"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><#0de3ff>蓝队"));
+        lore = List.of(miniMessage.deserialize("<!i>如果有警察队，则这队是警察"));
+        itemMeta.lore(lore);
         lightblueconcrete.setItemMeta(itemMeta);
 
         redconcrete = new ItemStack(Material.RED_CONCRETE);
         itemMeta = redconcrete.getItemMeta();
-        itemMeta.displayName(Component.text("红队"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><#ff5340>红队"));
         redconcrete.setItemMeta(itemMeta);
 
         netheritesword = new ItemStack(Material.NETHERITE_SWORD);
         itemMeta = netheritesword.getItemMeta();
-        itemMeta.displayName(Component.text("检测开始"));
+        itemMeta.displayName(miniMessage.deserialize("<!i>开始"));
         netheritesword.setItemMeta(itemMeta);
 
 
         //职业菜单显示物品
         police_stonesword = new ItemStack(Material.STONE_SWORD);
         itemMeta = police_stonesword.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>全副武装的警察"));
         police_stonesword.setItemMeta(itemMeta);
 
         police_crossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = police_crossbow.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>带远程攻击上debuff的警察"));
         police_crossbow.setItemMeta(itemMeta);
 
         police_woodenaxe = new ItemStack(Material.WOODEN_AXE);
         itemMeta = police_woodenaxe.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>爱上debuff的警察"));
         police_woodenaxe.setItemMeta(itemMeta);
 
         police_wolfspawnegg = new ItemStack(Material.WOLF_SPAWN_EGG);
         itemMeta = police_wolfspawnegg.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢养狗的警察"));
         police_wolfspawnegg.setItemMeta(itemMeta);
 
         police_bow = new ItemStack(Material.BOW);
         itemMeta = police_bow.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>远程攻击的警察"));
         police_bow.setItemMeta(itemMeta);
 
         thief_stonesword = new ItemStack(Material.STONE_SWORD);
         itemMeta = thief_stonesword.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢打架的贼"));
         thief_stonesword.setItemMeta(itemMeta);
 
         thief_crossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = thief_crossbow.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢远程加debuff的贼"));
         thief_crossbow.setItemMeta(itemMeta);
 
         thief_woodenaxe = new ItemStack(Material.WOODEN_AXE);
         itemMeta = thief_woodenaxe.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢喷水的贼"));
         thief_woodenaxe.setItemMeta(itemMeta);
 
         thief_wolfspawnegg = new ItemStack(Material.WOLF_SPAWN_EGG);
         itemMeta = thief_wolfspawnegg.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢养狗的贼"));
         thief_wolfspawnegg.setItemMeta(itemMeta);
 
         thief_bow = new ItemStack(Material.BOW);
         itemMeta = thief_bow.getItemMeta();
+        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢射的贼"));
         thief_bow.setItemMeta(itemMeta);
 
 
@@ -194,7 +218,8 @@ public class Bankgameitemmanager {
         itemMeta = spectral_arrow.getItemMeta();
         spectral_arrow.setItemMeta(itemMeta);
 
-        itemMeta.addEnchant(Enchantment.PUNCH,1,true);
+        bow = new ItemStack(Material.BOW);
+        itemMeta = bow.getItemMeta();
         bow.setItemMeta(itemMeta);
 
         normal_bow = new ItemStack(Material.BOW);
@@ -398,10 +423,8 @@ public class Bankgameitemmanager {
             case Jobs.crossbow:
                 player.getInventory().addItem(crossbow);
                 player.getInventory().addItem(arrow);
-                player.getInventory().addItem(arrow);
-                player.getInventory().addItem(arrow);
-                player.getInventory().addItem(arrow);
-                player.getInventory().addItem(arrow);
+                player.getInventory().addItem(slow_arrow);
+                player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(diamond_helmet);
                 player.getInventory().addItem(diamond_boots);
                 player.getInventory().addItem(beef);

@@ -37,7 +37,12 @@ public class bankgameprepare implements TabExecutor {
                         bankgame.gamemode= Gamemode.thiefvspolice;
                         break;
                     default:
-                        bankgame.gamemode= Gamemode.thiefvsthief;
+                        if (bankgame.gamemode==Gamemode.thiefvspolice){
+                            break;
+                        }
+                        else {
+                            bankgame.gamemode= Gamemode.thiefvsthief;
+                        }
                         break;
                 }
                 player.setGameMode(GameMode.ADVENTURE);

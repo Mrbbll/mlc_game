@@ -21,6 +21,12 @@ public class Bankgameinit {
         bankgame.thiefscore = 0;
         bankgame.winnerteam = "";
         bankgame.playerJobs.clear();
+
+        bankgame.ispowerbreak = false;
+        bankgame.islockbreak = false;
+        bankgame.islightbreak1 = false;
+        bankgame.islightbreak2 = false;
+
         bankgame.bankgameLocation = fileConfiguration.getLocation("bankgame.bankgameLocation");
         if(bankgame.bankgameLocation == null){
             bankgame.bankgameLocation = new Location(instance.getServer().getWorld("world"),0,1,0);
@@ -50,6 +56,31 @@ public class Bankgameinit {
             bankgame.lobbyLocation = new Location(instance.getServer().getWorld("world"),0,1,0);
         }
         fileConfiguration.set("lobby",bankgame.lobbyLocation);
+
+
+        bankgame.powerLocation1 = fileConfiguration.getLocation("bankgame.powerLocation1");
+        if(bankgame.powerLocation1 == null){
+            bankgame.powerLocation1 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.powerLocation1",bankgame.powerLocation1);
+
+        bankgame.powerLocation2 = fileConfiguration.getLocation("bankgame.powerLocation2");
+        if(bankgame.powerLocation2 == null){
+            bankgame.powerLocation2 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.powerLocation2",bankgame.powerLocation2);
+
+        bankgame.leaveLocation1 = fileConfiguration.getLocation("bankgame.leaveLocation1");
+        if(bankgame.leaveLocation1 == null){
+            bankgame.leaveLocation1 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.leaveLocation1",bankgame.leaveLocation1);
+
+        bankgame.leaveLocation2 = fileConfiguration.getLocation("bankgame.leaveLocation2");
+        if(bankgame.leaveLocation2 == null){
+            bankgame.leaveLocation2 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.leaveLocation2",bankgame.leaveLocation2);
 
         //保存配置文件
         instance.saveConfig();

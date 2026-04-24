@@ -82,6 +82,18 @@ public class Bankgameinit {
         }
         fileConfiguration.set("bankgame.leaveLocation2", bankgame.leaveLocation2);
 
+        bankgame.cornerLocation1 = fileConfiguration.getLocation("bankgame.cornerLocation1");
+        if(bankgame.cornerLocation1 == null){
+            bankgame.cornerLocation1 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.cornerLocation1", bankgame.cornerLocation1);
+
+        bankgame.cornerLocation2 = fileConfiguration.getLocation("bankgame.cornerLocation2");
+        if(bankgame.cornerLocation2 == null){
+            bankgame.cornerLocation2 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.cornerLocation2", bankgame.cornerLocation2);
+
         //保存配置文件
         instance.saveConfig();
     }

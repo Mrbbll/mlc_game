@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -40,6 +41,8 @@ public class Bankgame {
     public Location leaveLocation;
     public Location leaveLocation1;
     public Location leaveLocation2;
+    public Location cornerLocation1;
+    public Location cornerLocation2;
 
     public Map<Player, Jobs> playerJobs = new HashMap<>();
     public static BukkitTask gameendcountdown;
@@ -211,6 +214,7 @@ public class Bankgame {
             Teammanager.bankgame_policeteam.getEntries().forEach(player -> {
                 Player player1 = Bukkit.getPlayer(player);
                 if (player1 != null) {
+                    Fillutils.replaceblock(cornerLocation1, cornerLocation2, Material.LIGHT, Material.CAVE_AIR);
                     player1.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999, 1));
                     player1.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 999999, 1));
                 }
@@ -290,6 +294,7 @@ public class Bankgame {
             Teammanager.bankgame_policeteam.getEntries().forEach(player -> {
                 Player player1 = Bukkit.getPlayer(player);
                 if (player1 != null) {
+                    Fillutils.replaceblock(cornerLocation1, cornerLocation2, Material.CAVE_AIR, Material.LIGHT);
                     player1.removePotionEffect(PotionEffectType.BLINDNESS);
                     player1.removePotionEffect(PotionEffectType.DARKNESS);
                 }

@@ -11,6 +11,8 @@ bankgame:
   powerLocation2: ''
   leaveLocation1: ''
   leaveLocation2: ''
+  cornerLocation1: ''
+  cornerLocation2: ''
 
 
 

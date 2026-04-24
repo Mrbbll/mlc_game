@@ -2,13 +2,15 @@ package com.mlc.mlcgames.bank.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
+import com.mlc.mlcgames.bank.items.Bankgameloottable;
 import com.mlc.mlcgames.bank.utils.end.Endgame;
 import com.mlc.mlcgames.bank.listener.clickprocess.Jobselect;
 import com.mlc.mlcgames.bank.listener.clickprocess.Teamselect;
 import com.mlc.mlcgames.bank.menus.bankmenus;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -151,5 +153,30 @@ public class Bankgamelistener implements Listener {
 //    @EventHandler
 //    public void onopendialog(Dialog)
 
+    @EventHandler
+    public void onplayeropenchest(PlayerInteractEvent event){
+        if(!bankgame.isStart){
+            return;
+        }
+        if(!event.getAction().isRightClick()){
+            return;
+        }
+        if(event.getClickedBlock()==null){
+            return;
+        }
+        if(event.getClickedBlock().getType()!=Material.BARREL){
+            return;
+        }
+        for (Entity entity : event.getClickedBlock().getLocation().getNearbyEntities(0.1,0.1,0.1)){
+            if(entity instanceof ItemDisplay){
+                return;
+            }
+        }
+        //往里面加随机物品
+        Bankgameloottable.addrandomitem(event.getClickedBlock());
+        //在附近生成标记
+        event.getClickedBlock().getLocation().getWorld().spawnEntity(event.getClickedBlock().getLocation(), EntityType.ITEM_DISPLAY);
+
+    }
 
 }

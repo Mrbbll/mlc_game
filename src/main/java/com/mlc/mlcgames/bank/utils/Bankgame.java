@@ -37,9 +37,9 @@ public class Bankgame {
     public Location lobbyLocation;
     public Location powerLocation1;
     public Location powerLocation2;
-    public static Location leaveLocation;
-    public static Location leaveLocation1;
-    public static Location leaveLocation2;
+    public Location leaveLocation;
+    public Location leaveLocation1;
+    public Location leaveLocation2;
 
     public Map<Player, Jobs> playerJobs = new HashMap<>();
     public static BukkitTask gameendcountdown;
@@ -110,7 +110,7 @@ public class Bankgame {
     }
 
 
-    private static void Openlock( Player player) {
+    private void Openlock( Player player) {
         //金库打开
         instance.getServer().broadcast(Component.text("金库被" + player.getName() + "打开").color(TextColor.color(0xFF0816)));
         player.getInventory().addItem(golditem);

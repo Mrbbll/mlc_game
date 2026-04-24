@@ -74,13 +74,13 @@ public class Bankgameinit {
         if(bankgame.leaveLocation1 == null){
             bankgame.leaveLocation1 = new Location(instance.getServer().getWorld("world"),0,1,0);
         }
-        fileConfiguration.set("bankgame.leaveLocation1",bankgame.leaveLocation1);
+        fileConfiguration.set("bankgame.leaveLocation1", bankgame.leaveLocation1);
 
         bankgame.leaveLocation2 = fileConfiguration.getLocation("bankgame.leaveLocation2");
         if(bankgame.leaveLocation2 == null){
             bankgame.leaveLocation2 = new Location(instance.getServer().getWorld("world"),0,1,0);
         }
-        fileConfiguration.set("bankgame.leaveLocation2",bankgame.leaveLocation2);
+        fileConfiguration.set("bankgame.leaveLocation2", bankgame.leaveLocation2);
 
         //保存配置文件
         instance.saveConfig();

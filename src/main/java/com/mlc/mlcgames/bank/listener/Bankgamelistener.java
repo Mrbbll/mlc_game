@@ -8,10 +8,8 @@ import com.mlc.mlcgames.bank.listener.clickprocess.Jobselect;
 import com.mlc.mlcgames.bank.listener.clickprocess.Teamselect;
 import com.mlc.mlcgames.bank.menus.bankmenus;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
+import org.bukkit.block.Block;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -49,6 +47,31 @@ public class Bankgamelistener implements Listener {
             }
         }
     }
+
+    //召唤狗事件
+    @EventHandler
+    public void onusespawnegg(PlayerInteractEvent event){
+        if(!bankgame.isStart){
+            return;
+        }
+        if(!event.getAction().isRightClick() || event.getClickedBlock() == null || event.getItem() == null){
+            return;
+        }
+        if (event.getItem().getType().equals(Bankgameitemmanager.wolfspawnegg.getType())) {
+            Block block = event.getClickedBlock();
+            Location location = block.getLocation().add(0.5,1,0.5);
+            Entity entity = location.getWorld().spawnEntity(location, EntityType.WOLF);
+            Wolf wolf = (Wolf) entity;
+            wolf.setTamed(true);
+            wolf.setOwner(event.getPlayer());
+
+            wolf.setAdult();
+
+            wolf.getEquipment().setChestplate(Bankgameitemmanager.wolf_armor);
+            event.getItem().setAmount(event.getItem().getAmount()-1);
+        }
+    }
+
 
     @EventHandler
     public void inventoryclick(InventoryClickEvent event){
@@ -128,6 +151,7 @@ public class Bankgamelistener implements Listener {
             Player player = event.getPlayer();
             switch (bankgame.gamemode){
                 case thiefvspolice -> {
+                    player.setGameMode(GameMode.SURVIVAL);
                     if(player.getInventory().contains(Bankgameitemmanager.golditem)){
                         player.getInventory().remove(Bankgameitemmanager.golditem);
                         player.dropItem(Bankgameitemmanager.golditem);

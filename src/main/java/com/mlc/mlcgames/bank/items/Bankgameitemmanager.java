@@ -49,7 +49,9 @@ public class Bankgameitemmanager {
     public static ItemStack slow_arrow;
     public static ItemStack stonesword;
     public static ItemStack crossbow;
+    public static ItemStack quickcrossbow;
     public static ItemStack woodenaxe;
+    public static ItemStack stoneaxe;
     public static ItemStack wolfspawnegg;
     public static ItemStack bow;
     public static ItemStack normal_bow;
@@ -102,70 +104,75 @@ public class Bankgameitemmanager {
         lightblueconcrete = new ItemStack(Material.LIGHT_BLUE_CONCRETE);
         itemMeta = lightblueconcrete.getItemMeta();
         itemMeta.displayName(miniMessage.deserialize("<!i><#0de3ff>蓝队"));
-        lore = List.of(miniMessage.deserialize("<!i>如果有警察队，则这队是警察"));
+        lore = List.of(miniMessage.deserialize("<!i><#0de3ff>如果有警察队，则这队是警察"));
         itemMeta.lore(lore);
         lightblueconcrete.setItemMeta(itemMeta);
 
         redconcrete = new ItemStack(Material.RED_CONCRETE);
         itemMeta = redconcrete.getItemMeta();
         itemMeta.displayName(miniMessage.deserialize("<!i><#ff5340>红队"));
+        lore = List.of(miniMessage.deserialize("<!i><#ff5340>如果有警察队，则这队是小偷"));
+        itemMeta.lore(lore);
         redconcrete.setItemMeta(itemMeta);
 
         netheritesword = new ItemStack(Material.NETHERITE_SWORD);
         itemMeta = netheritesword.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>开始"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold>开始"));
+        lore = List.of(miniMessage.deserialize("<!i><bold><#fffb00>需要管理员权限"));
+        itemMeta.lore(lore);
+
         netheritesword.setItemMeta(itemMeta);
 
 
         //职业菜单显示物品
         police_stonesword = new ItemStack(Material.STONE_SWORD);
         itemMeta = police_stonesword.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>全副武装的警察"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#2efff8>全副武装的警察"));
         police_stonesword.setItemMeta(itemMeta);
 
         police_crossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = police_crossbow.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>带远程攻击上debuff的警察"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#ffd342>带远程攻击上debuff的警察"));
         police_crossbow.setItemMeta(itemMeta);
 
         police_woodenaxe = new ItemStack(Material.WOODEN_AXE);
         itemMeta = police_woodenaxe.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>爱上debuff的警察"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#d16eff>爱上debuff的警察"));
         police_woodenaxe.setItemMeta(itemMeta);
 
         police_wolfspawnegg = new ItemStack(Material.WOLF_SPAWN_EGG);
         itemMeta = police_wolfspawnegg.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢养狗的警察"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#ff3d6e>喜欢养狗的警察"));
         police_wolfspawnegg.setItemMeta(itemMeta);
 
         police_bow = new ItemStack(Material.BOW);
         itemMeta = police_bow.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>远程攻击的警察"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#99ff1c>远程攻击的警察"));
         police_bow.setItemMeta(itemMeta);
 
         thief_stonesword = new ItemStack(Material.STONE_SWORD);
         itemMeta = thief_stonesword.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢打架的贼"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#2efff8>喜欢打架的贼"));
         thief_stonesword.setItemMeta(itemMeta);
 
         thief_crossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = thief_crossbow.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢远程加debuff的贼"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#ffd342>喜欢远程加debuff的贼"));
         thief_crossbow.setItemMeta(itemMeta);
 
         thief_woodenaxe = new ItemStack(Material.WOODEN_AXE);
         itemMeta = thief_woodenaxe.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢喷水的贼"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#d16eff>喜欢喷水的贼"));
         thief_woodenaxe.setItemMeta(itemMeta);
 
         thief_wolfspawnegg = new ItemStack(Material.WOLF_SPAWN_EGG);
         itemMeta = thief_wolfspawnegg.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢养狗的贼"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#ff3d6e>喜欢养狗的贼"));
         thief_wolfspawnegg.setItemMeta(itemMeta);
 
         thief_bow = new ItemStack(Material.BOW);
         itemMeta = thief_bow.getItemMeta();
-        itemMeta.displayName(miniMessage.deserialize("<!i>喜欢射的贼"));
+        itemMeta.displayName(miniMessage.deserialize("<!i><bold><#99ff1c>喜欢射的贼"));
         thief_bow.setItemMeta(itemMeta);
 
 
@@ -185,15 +192,25 @@ public class Bankgameitemmanager {
         itemMeta = iron_sword.getItemMeta();
         iron_sword.setItemMeta(itemMeta);
 
-
         crossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = crossbow.getItemMeta();
-        itemMeta.addEnchant(Enchantment.QUICK_CHARGE,2,true);
         crossbow.setItemMeta(itemMeta);
+
+        quickcrossbow = new ItemStack(Material.CROSSBOW);
+        itemMeta = quickcrossbow.getItemMeta();
+        itemMeta.addEnchant(Enchantment.QUICK_CHARGE,2,true);
+        quickcrossbow.setItemMeta(itemMeta);
 
         woodenaxe = new ItemStack(Material.WOODEN_AXE);
         itemMeta = woodenaxe.getItemMeta();
         woodenaxe.setItemMeta(itemMeta);
+
+        stoneaxe = new ItemStack(Material.STONE_AXE);
+        itemMeta = stoneaxe.getItemMeta();
+        stoneaxe.setItemMeta(itemMeta);
+
+
+
 
         wolfspawnegg = new ItemStack(Material.WOLF_SPAWN_EGG);
         itemMeta = wolfspawnegg.getItemMeta();
@@ -209,7 +226,7 @@ public class Bankgameitemmanager {
         itemMeta = slow_arrow.getItemMeta();
         itemMeta.displayName(miniMessage.deserialize("<!i>迟缓箭"));
         PotionMeta slowPotionMeta = (PotionMeta) itemMeta;
-        PotionEffect slowPotionEffect = new PotionEffect(PotionEffectType.SLOWNESS, 15, 0);
+        PotionEffect slowPotionEffect = new PotionEffect(PotionEffectType.SLOWNESS, 15*20, 0);
         slowPotionMeta.addCustomEffect(slowPotionEffect, true);
         slow_arrow.setItemMeta(itemMeta);
 
@@ -294,7 +311,7 @@ public class Bankgameitemmanager {
         itemMeta = damage_potion.getItemMeta();
         itemMeta.displayName(miniMessage.deserialize("<!i>伤害瓶"));
         PotionMeta damagePotionMeta = (PotionMeta) itemMeta;
-        PotionEffect damageEffect = new PotionEffect(PotionEffectType.INSTANT_DAMAGE, 1, 0);
+        PotionEffect damageEffect = new PotionEffect(PotionEffectType.INSTANT_DAMAGE, 20, 0);
         damagePotionMeta.addCustomEffect(damageEffect, true);
         damage_potion.setItemMeta(itemMeta);
 
@@ -331,7 +348,10 @@ public class Bankgameitemmanager {
         switch (bankgame.playerJobs.get(player)) {
             case Jobs.sword:
                 player.getInventory().addItem(iron_sword);
-                player.getInventory().addItem(shield);
+                player.getInventory().setItemInOffHand(shield);
+                player.getInventory().addItem(normal_bow);
+                player.getInventory().addItem(arrow);
+                player.getInventory().addItem(arrow);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
@@ -341,12 +361,14 @@ public class Bankgameitemmanager {
                 player.getInventory().setBoots(diamond_boots);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
                 break;
             case Jobs.crossbow:
-                player.getInventory().addItem(crossbow);
+                player.getInventory().addItem(stonesword);
+                player.getInventory().addItem(quickcrossbow);
                 player.getInventory().addItem(golden_apple);
-                player.getInventory().addItem(arrow);
-                player.getInventory().addItem(arrow);
+                player.getInventory().addItem(spectral_arrow);
+                player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(slow_arrow);
                 player.getInventory().setHelmet(diamond_helmet);
@@ -357,16 +379,25 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(beef);
                 break;
             case Jobs.woodenaxe:
-                player.getInventory().addItem(woodenaxe);
+                player.getInventory().addItem(stoneaxe);
+                player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().setHelmet(diamond_helmet);
                 player.getInventory().setChestplate(diamond_chestplate);
                 player.getInventory().setLeggings(diamond_leggings);
                 player.getInventory().setBoots(diamond_boots);
+                player.getInventory().addItem(heal_potion);
+                player.getInventory().addItem(heal_potion);
+                player.getInventory().addItem(weakness_potion);
+                player.getInventory().addItem(weakness_potion);
+                player.getInventory().addItem(damage_potion);
+                player.getInventory().addItem(damage_potion);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
+
                 break;
             case Jobs.wolfspawnegg:
+                player.getInventory().addItem(stonesword);
                 player.getInventory().addItem(wolfspawnegg);
                 player.getInventory().addItem(wolfspawnegg);
                 player.getInventory().addItem(wolfspawnegg);
@@ -387,6 +418,7 @@ public class Bankgameitemmanager {
                 break;
             case Jobs.bow:
                 player.getInventory().addItem(bow);
+                player.getInventory().addItem(stonesword);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(arrow);
                 player.getInventory().addItem(arrow);
@@ -402,6 +434,7 @@ public class Bankgameitemmanager {
                 player.getInventory().setChestplate(diamond_chestplate);
                 player.getInventory().setLeggings(diamond_leggings);
                 player.getInventory().setBoots(diamond_boots);
+                player.getInventory().addItem(bone);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 break;
@@ -412,17 +445,16 @@ public class Bankgameitemmanager {
         switch (bankgame.playerJobs.get(player)) {
             case Jobs.sword:
                 player.getInventory().addItem(stonesword);
-                player.getInventory().addItem(lether_boots);
-                player.getInventory().addItem(iron_helmet);
-                player.getInventory().addItem(iron_chestplate);
-                player.getInventory().addItem(lether_leggings);
+                player.getInventory().setBoots(lether_boots);
+                player.getInventory().setHelmet(iron_helmet);
+                player.getInventory().setChestplate(iron_chestplate);
+                player.getInventory().setLeggings(lether_leggings);
                 player.getInventory().addItem(normal_bow);
                 player.getInventory().addItem(arrow);
                 player.getInventory().addItem(beef);
                 break;
             case Jobs.crossbow:
                 player.getInventory().addItem(crossbow);
-                player.getInventory().addItem(arrow);
                 player.getInventory().addItem(slow_arrow);
                 player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(diamond_helmet);
@@ -434,21 +466,18 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(heal_potion);
                 player.getInventory().addItem(heal_potion);
                 player.getInventory().addItem(damage_potion);
-                player.getInventory().addItem(damage_potion);
-                player.getInventory().addItem(iron_chestplate);
-                player.getInventory().addItem(lether_boots);
-                player.getInventory().addItem(lether_helmet);
+                player.getInventory().setChestplate(iron_chestplate);
+                player.getInventory().setBoots(lether_boots);
+                player.getInventory().setHelmet(lether_helmet);
                 player.getInventory().addItem(beef);
                 break;
             case Jobs.wolfspawnegg:
                 player.getInventory().addItem(wolfspawnegg);
                 player.getInventory().addItem(wolfspawnegg);
-                player.getInventory().addItem(wolfspawnegg);
-                player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(bone);
-                player.getInventory().addItem(lether_helmet);
+                player.getInventory().setHelmet(lether_helmet);
                 player.getInventory().addItem(beef);
                 break;
             case Jobs.bow:
@@ -457,9 +486,8 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(arrow);
                 player.getInventory().addItem(arrow);
                 player.getInventory().addItem(arrow);
-                player.getInventory().addItem(iron_helmet);
-                player.getInventory().addItem(lether_boots);
-                player.getInventory().addItem(iron_helmet);
+                player.getInventory().setHelmet(iron_helmet);
+                player.getInventory().setBoots(lether_boots);
 
                 break;
         }

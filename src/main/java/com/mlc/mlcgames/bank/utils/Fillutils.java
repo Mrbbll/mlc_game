@@ -1,28 +1,53 @@
 package com.mlc.mlcgames.bank.utils;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.mlc.mlcgames.Mlcgames.instance;
+
+
 public class Fillutils {
-    public static void replaceblock(Location location1, Location location2, Material material1,Material material2){
-        int x = location1.getBlockX();
-        int y = location1.getBlockY();
-        int z = location1.getBlockZ();
-        int x2 = location2.getBlockX();
-        int y2 = location2.getBlockY();
-        int z2 = location2.getBlockZ();
-        for(int i = x;i<=x2;i++){
-            for(int j = y;j<=y2;j++){
-                for(int k = z;k<=z2;k++){
+    public static List<Block> replaceblocks = new ArrayList<>();
+
+    public static void getreplaceblock(Location location1, Location location2, Material material1,Material material2){
+        int minX = Math.min(location1.getBlockX(), location2.getBlockX());
+        int maxX = Math.max(location1.getBlockX(), location2.getBlockX());
+        int minY = Math.min(location1.getBlockY(), location2.getBlockY());
+        int maxY = Math.max(location1.getBlockY(), location2.getBlockY());
+        int minZ = Math.min(location1.getBlockZ(), location2.getBlockZ());
+        int maxZ = Math.max(location1.getBlockZ(), location2.getBlockZ());
+        replaceblocks.clear();
+        for(int i = minX;i<=maxX;i++){
+            for(int j = minY;j<=maxY;j++){
+                for(int k = minZ;k<=maxZ;k++){
+                    Chunk chunk = location1.getWorld().getChunkAt(i,k);
+                    if(!chunk.isLoaded()){
+                        chunk.load();
+                    }
                     Material material = location1.getWorld().getBlockAt(i,j,k).getType();
                     if(material == material1){
-                        location1.getWorld().getBlockAt(i,j,k).setType(material2);
-
+                        replaceblocks.add(location1.getWorld().getBlockAt(i,j,k));
                     }
                 }
             }
         }
     }
+
+
+
+    public static void replaceblock(Material material){
+        instance.getServer().broadcast(Component.text("替换中"));
+        for(Block block : replaceblocks){
+            block.setType(material);
+        }
+        instance.getServer().broadcast(Component.text("替换成功"));
+        }
+
 
 }

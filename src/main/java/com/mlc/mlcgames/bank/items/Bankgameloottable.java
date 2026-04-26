@@ -3,11 +3,15 @@ package com.mlc.mlcgames.bank.items;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.components.UseCooldownComponent;
@@ -16,6 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -79,51 +84,53 @@ public class Bankgameloottable {
         arrow = new ItemStack(Material.ARROW);
         arrow.setAmount(4);
 
-        knockbackstick = new ItemStack(Material.STICK);
+        knockbackstick = new ItemStack(Material.WOODEN_SWORD);
         ItemMeta meta = knockbackstick.getItemMeta();
-        meta.customName(miniMessage.deserialize("<!i>击退棒棒"));
+        meta.customName(miniMessage.deserialize("<!i>击退剑"));
         meta.addEnchant(Enchantment.KNOCKBACK,5,true);
-        UseCooldownComponent component = (UseCooldownComponent) meta;
-        component.setCooldownSeconds(10);
+
+        Damageable damageable = (Damageable) meta;
+        damageable.setUnbreakable(false);
+        damageable.setMaxDamage(2);
+        damageable.setDamage(0);
+        AttributeModifier attributeModifier = new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgame:knockback")),-0.5,AttributeModifier.Operation.ADD_NUMBER);
+        meta.addAttributeModifier(Attribute.ATTACK_DAMAGE, attributeModifier);
         knockbackstick.setItemMeta(meta);
 
         speedpotion = new ItemStack(Material.POTION);
         ItemMeta speedpotionmeta = speedpotion.getItemMeta();
         speedpotionmeta.customName(miniMessage.deserialize("<!i>速度药水"));
         PotionMeta meta1= (PotionMeta) speedpotionmeta;
-        meta1.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 30, 0),true);
+        meta1.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 30*20, 0),true);
         speedpotion.setItemMeta(speedpotionmeta);
 
         jumppotion = new ItemStack(Material.POTION);
         ItemMeta jumppotionmeta = jumppotion.getItemMeta();
         jumppotionmeta.customName(miniMessage.deserialize("<!i>跳跃药水"));
         PotionMeta meta2= (PotionMeta) jumppotionmeta;
-        meta2.addCustomEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 60, 0),true);
+        meta2.addCustomEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 60*20, 0),true);
         jumppotion.setItemMeta(jumppotionmeta);
 
         regenpotion = new ItemStack(Material.POTION);
         ItemMeta regenpotionmeta = regenpotion.getItemMeta();
         regenpotionmeta.customName(miniMessage.deserialize("<!i>再生药水"));
         PotionMeta meta3= (PotionMeta) regenpotionmeta;
-        meta3.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 30, 0),true);
+        meta3.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 30*20, 0),true);
         regenpotion.setItemMeta(regenpotionmeta);
 
         strengthpotion = new ItemStack(Material.POTION);
         ItemMeta strengthpotionmeta = strengthpotion.getItemMeta();
         strengthpotionmeta.customName(miniMessage.deserialize("<!i>力量药水"));
         PotionMeta meta4= (PotionMeta) strengthpotionmeta;
-        meta4.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 30, 0),true);
+        meta4.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 30*20, 0),true);
         strengthpotion.setItemMeta(strengthpotionmeta);
 
         invisibilitypotion = new ItemStack(Material.POTION);
         ItemMeta invisibilitypotionmeta = invisibilitypotion.getItemMeta();
         invisibilitypotionmeta.customName(miniMessage.deserialize("<!i>隐身药水"));
         PotionMeta meta5= (PotionMeta) invisibilitypotionmeta;
-        meta5.addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30, 0),true);
+        meta5.addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30*20, 1),true);
         invisibilitypotion.setItemMeta(invisibilitypotionmeta);
-
-
-        invisibilitypotion = new ItemStack(Material.POTION);
 
 
         book1 = new ItemStack(Material.BOOK);
@@ -304,6 +311,29 @@ public class Bankgameloottable {
 
         loottable = List.of(
                 air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+                air,
+
                 bone,
                 diamond,
                 gold,
@@ -354,8 +384,8 @@ public class Bankgameloottable {
         if(clickedBlock.getType()!= Material.BARREL){
             return;
         }
-        Barrel barrel = (Barrel) clickedBlock;
-        Inventory inv = barrel.getSnapshotInventory();
+        Barrel barrel = (Barrel) clickedBlock.getState();
+        Inventory inv = barrel.getInventory();
         inv.clear();
         Random random = new Random();
         int turn = random.nextInt(27);

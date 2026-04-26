@@ -43,6 +43,8 @@ public class Bankgame {
     public Location leaveLocation2;
     public Location cornerLocation1;
     public Location cornerLocation2;
+    public Location thiefteamLocation1;
+    public Location thiefteamLocation2;
 
     public Map<Player, Jobs> playerJobs = new HashMap<>();
     public static BukkitTask gameendcountdown;
@@ -74,6 +76,9 @@ public class Bankgame {
                 if(islockbreak){
                     return;
                 }
+                if(ispowerbreak){
+                    return;
+                }
                 if(!isStart){
                     this.cancel();
                 }
@@ -87,12 +92,7 @@ public class Bankgame {
                         if (Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)) {
 
                             nearhavethief = true;
-                            //没电打开速度翻倍
-                            if(ispowerbreak){
-                                breaklocktime-= 2;
-                            }else{
-                                breaklocktime-= 1;
-                            }
+                            breaklocktime-= 1;
 
                             player.sendMessage(Component.text("剩余时间：" + breaklocktime).color(TextColor.color(0xF4FF26)));
                             if (breaklocktime <= 0) {
@@ -163,6 +163,8 @@ public class Bankgame {
                                     islightbreak1 = true;
                                     breaklightevent();
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
+                                    lightbreaktime1 = 20;
+                                    return;
                                 }
                                 break;
                             }
@@ -186,6 +188,8 @@ public class Bankgame {
                                     islightbreak2 = true;
                                     breaklightevent();
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
+                                    lightbreaktime2 = 20;
+                                    return;
                                 }
                                 break;
                             }
@@ -214,9 +218,9 @@ public class Bankgame {
             Teammanager.bankgame_policeteam.getEntries().forEach(player -> {
                 Player player1 = Bukkit.getPlayer(player);
                 if (player1 != null) {
-                    Fillutils.replaceblock(cornerLocation1, cornerLocation2, Material.LIGHT, Material.CAVE_AIR);
-                    player1.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999, 1));
+                    Fillutils.replaceblock(Material.CAVE_AIR);
                     player1.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 999999, 1));
+                    player1.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999, 1));
                 }
 
             });
@@ -249,6 +253,8 @@ public class Bankgame {
                                     islightbreak1 = false;
                                     fixlightevent();
                                     player.sendMessage(Component.text("修复成功").color(TextColor.color(0xFF00)));
+                                    lightfixtime1 = 20;
+                                    return;
                                 }
                                 break;
                             }
@@ -273,6 +279,8 @@ public class Bankgame {
                                     islightbreak2 = false;
                                     fixlightevent();
                                     player.sendMessage(Component.text("修复成功").color(TextColor.color(0xFF00)));
+                                    lightfixtime2 = 20;
+                                    return;
                                 }
                                 break;
                             }
@@ -294,9 +302,9 @@ public class Bankgame {
             Teammanager.bankgame_policeteam.getEntries().forEach(player -> {
                 Player player1 = Bukkit.getPlayer(player);
                 if (player1 != null) {
-                    Fillutils.replaceblock(cornerLocation1, cornerLocation2, Material.CAVE_AIR, Material.LIGHT);
-                    player1.removePotionEffect(PotionEffectType.BLINDNESS);
+                    Fillutils.replaceblock(Material.LIGHT);
                     player1.removePotionEffect(PotionEffectType.DARKNESS);
+                    player1.removePotionEffect(PotionEffectType.BLINDNESS);
                 }
 
             });
@@ -313,7 +321,8 @@ public class Bankgame {
                 for(String player : Teammanager.bankgame_thiefteam.getEntries()){
                     Player player1 = Bukkit.getPlayer(player);
                     if(player1 != null){
-                        player1.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 1, 0));
+                        player1.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20, 0));
+
                     }
                 }
             }

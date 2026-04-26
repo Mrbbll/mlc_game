@@ -3,6 +3,7 @@ package com.mlc.mlcgames;
 import com.mlc.mlcgames.bank.commmand.bankgameend;
 import com.mlc.mlcgames.bank.commmand.bankgameprepare;
 import com.mlc.mlcgames.bank.commmand.bankgamereload;
+import com.mlc.mlcgames.bank.items.Bankgameloottable;
 import com.mlc.mlcgames.bank.listener.Bankgamelistener;
 import com.mlc.mlcgames.bank.utils.Bankgamebossbar;
 import com.mlc.mlcgames.bank.utils.Bankgameinit;
@@ -28,6 +29,7 @@ public class Task {
         Objects.requireNonNull(instance.getCommand("bankgameprepare")).setTabCompleter(new bankgameprepare());
         //物品初始化
         Bankgameitemmanager.inititem();
+        Bankgameloottable.init();
         //bossbar初始化
         Bankgamebossbar.initBankgamebossbar();
 

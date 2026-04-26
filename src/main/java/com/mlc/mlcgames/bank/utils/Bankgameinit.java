@@ -1,10 +1,14 @@
 package com.mlc.mlcgames.bank.utils;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.bank.utils.Fillutils.getreplaceblock;
 
 public class Bankgameinit {
     public static void init(){
@@ -94,7 +98,24 @@ public class Bankgameinit {
         }
         fileConfiguration.set("bankgame.cornerLocation2", bankgame.cornerLocation2);
 
+
+        bankgame.thiefteamLocation1 = fileConfiguration.getLocation("bankgame.thiefteamLocation1");
+        if(bankgame.thiefteamLocation1 == null){
+            bankgame.thiefteamLocation1 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.thiefteamLocation1", bankgame.thiefteamLocation1);
+
+        bankgame.thiefteamLocation2 = fileConfiguration.getLocation("bankgame.thiefteamLocation2");
+        if(bankgame.thiefteamLocation2 == null){
+            bankgame.thiefteamLocation2 = new Location(instance.getServer().getWorld("world"),0,1,0);
+        }
+        fileConfiguration.set("bankgame.thiefteamLocation2", bankgame.thiefteamLocation2);
+
         //保存配置文件
         instance.saveConfig();
+
+        //获取替换块
+        Fillutils.getreplaceblock(bankgame.cornerLocation1, bankgame.cornerLocation2, Material.LIGHT, Material.CAVE_AIR);
+
     }
 }

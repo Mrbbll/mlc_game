@@ -5,16 +5,28 @@ import com.mlc.mlcgames.bank.utils.Bankgame;
 import com.mlc.mlcgames.bank.utils.Gamemode;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
-import static com.mlc.mlcgames.Mlcgames.bankgame;
-import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.bank.utils.Bankgame.gameendcountdown;
 import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 
 public class Endgame {
     public static void endgame(){
+
+        //清除展示实体
+        bankgame.bankgameLocation.getWorld().getEntities().forEach(entity -> {
+            if(entity instanceof ItemDisplay){
+                Block block = entity.getLocation().getBlock();
+                if(block.getType() == Material.BARREL){
+                    entity.remove();
+                }
+            }
+        });
         bankgame.isStart = false;
         bankgame.islockbreak = false;
         bankgame.islightbreak1 = false;
@@ -46,6 +58,7 @@ public class Endgame {
             player.setGameMode(GameMode.ADVENTURE);
             player.getInventory().clear();
             player.updateInventory();
+            player.clearActivePotionEffects();
         }
         Teammanager.cleanTeam(Teammanager.bankgame_spectateteam);
         Teammanager.cleanTeam(Teammanager.bankgame_policeteam);
@@ -63,12 +76,13 @@ public class Endgame {
         }else{
             bankgame.winnerteam = " -平- ";
         }
-        instance.getServer().broadcast(net.kyori.adventure.text.Component.text("\n\n\n获胜队伍是" + bankgame.winnerteam, NamedTextColor.GREEN));
+        instance.getServer().broadcast(miniMessage.deserialize("<bold><green>获胜队伍是" + bankgame.winnerteam) );
         bankgame.policescore = 0;
         bankgame.thiefscore = 0;
         //移除bossbar
         for(Player player : bankgame.players){
             bankgamebossbar.removeViewer(player);
         }
+
     }
 }

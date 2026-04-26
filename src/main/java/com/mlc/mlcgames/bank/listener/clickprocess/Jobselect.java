@@ -10,23 +10,23 @@ import org.bukkit.inventory.ItemStack;
 
 import static com.mlc.mlcgames.Mlcgames.bankgame;
 import static com.mlc.mlcgames.Mlcgames.instance;
-
+//🏹 🪓 🗡 🛡 ☀
 public class Jobselect {
     public static void selectplicejob(ItemStack itemStack, Player player) {
         if(itemStack.getType()== Material.STONE_SWORD){
-                player.sendMessage("你选择了" + Jobs.sword);
+                player.sendMessage("你选择了 \uD83D\uDDE1" + Jobs.sword);
                 bankgame.playerJobs.put(player, Jobs.sword);
         }else if(itemStack.getType()== Material.CROSSBOW){
-                player.sendMessage("你选择了" + Jobs.crossbow);
+                player.sendMessage("你选择了 ☀" + Jobs.crossbow);
                 bankgame.playerJobs.put(player, Jobs.crossbow);
         }else if(itemStack.getType()== Material.WOODEN_AXE){
-                player.sendMessage("你选择了" + Jobs.woodenaxe);
+                player.sendMessage("你选择了 \uD83E\uDE93" + Jobs.woodenaxe);
                 bankgame.playerJobs.put(player, Jobs.woodenaxe);
         }else if(itemStack.getType()== Material.WOLF_SPAWN_EGG){
-                player.sendMessage("你选择了" + Jobs.wolfspawnegg);
+                player.sendMessage("你选择了 \uD83D\uDEE1" + Jobs.wolfspawnegg);
                 bankgame.playerJobs.put(player, Jobs.wolfspawnegg);
         }else if(itemStack.getType()== Material.BOW){
-                player.sendMessage("你选择了" + Jobs.bow);
+                player.sendMessage("你选择了 \uD83C\uDFF9" + Jobs.bow);
                 bankgame.playerJobs.put(player, Jobs.bow);
         }
         checkgamestart();
@@ -35,19 +35,19 @@ public class Jobselect {
 
     public static void selectthiefjob(ItemStack itemStack, Player player) {
         if(itemStack.getType()== Material.STONE_SWORD){
-                player.sendMessage("你选择了" + Jobs.sword);
+                player.sendMessage("你选择了 \uD83D\uDDE1" + Jobs.sword);
                 bankgame.playerJobs.put(player, Jobs.sword);
         }else if(itemStack.getType()== Material.CROSSBOW){
-                player.sendMessage("你选择了" + Jobs.crossbow);
+                player.sendMessage("你选择了 ☀" + Jobs.crossbow);
                 bankgame.playerJobs.put(player, Jobs.crossbow);
         }else if(itemStack.getType()== Material.WOODEN_AXE){
-                player.sendMessage("你选择了" + Jobs.woodenaxe);
+                player.sendMessage("你选择了 \uD83E\uDE93" + Jobs.woodenaxe);
                 bankgame.playerJobs.put(player, Jobs.woodenaxe);
         }else if(itemStack.getType()== Material.WOLF_SPAWN_EGG){
-                player.sendMessage("你选择了" + Jobs.wolfspawnegg);
+                player.sendMessage("你选择了 \uD83D\uDEE1" + Jobs.wolfspawnegg);
                 bankgame.playerJobs.put(player, Jobs.wolfspawnegg);
         }else if(itemStack.getType()== Material.BOW){
-                player.sendMessage("你选择了" + Jobs.bow);
+                player.sendMessage("你选择了 \uD83C\uDFF9" + Jobs.bow);
                 bankgame.playerJobs.put(player, Jobs.bow);
         }
         checkgamestart();

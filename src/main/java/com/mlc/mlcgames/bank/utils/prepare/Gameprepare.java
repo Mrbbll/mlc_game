@@ -2,16 +2,20 @@ package com.mlc.mlcgames.bank.utils.prepare;
 
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.utils.Gamemode;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 
 import static com.mlc.mlcgames.Mlcgames.bankgame;
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
 import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 
 public class Gameprepare {
     public static void prepare(Player player, Gamemode gamemode){
+
+
         switch (gamemode){
             case thiefvsthief:
                 //传送
@@ -28,7 +32,7 @@ public class Gameprepare {
                 player.getInventory().clear();
                 player.updateInventory();
                 player.give(Bankgameitemmanager.bankgamemenu);
-
+                player.sendMessage(miniMessage.deserialize("\n\n<bold><#fffb00>右键菜单打开选队界面"));
                 if(!bankgame.players.contains(player)){
                     bankgame.players.add(player);
                 }
@@ -48,7 +52,7 @@ public class Gameprepare {
                 player.getInventory().clear();
                 player.updateInventory();
                 player.give(Bankgameitemmanager.bankgamemenu);
-
+                player.sendMessage(miniMessage.deserialize("\n\n<bold><#fffb00>右键菜单打开选队界面"));
                 if(!bankgame.players.contains(player)){
                     bankgame.players.add(player);
                 }

@@ -4,11 +4,16 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.utils.Bankgame;
 import com.mlc.mlcgames.bank.utils.Bankgamebossbar;
+import com.mlc.mlcgames.bank.utils.Fillutils;
+import com.mlc.mlcgames.bank.utils.Gamemode;
 import com.mlc.mlcgames.bank.utils.end.Endgame;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,9 +43,19 @@ public class Startgame {
                 player.getInventory().clear();
                 player.updateInventory();
                 if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
+                    if(bankgame.gamemode.equals(Gamemode.thiefvsthief)){
+                        player.setRespawnLocation(bankgame.thiefteamLocation1);
+                        player.teleport(bankgame.thiefteamLocation1);
+                        break;
+                    }
                     player.setRespawnLocation(bankgame.thiefteamLocation);
                     player.teleport(bankgame.thiefteamLocation);
                 }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
+                    if(bankgame.gamemode.equals(Gamemode.thiefvsthief)){
+                        player.setRespawnLocation(bankgame.thiefteamLocation2);
+                        player.teleport(bankgame.thiefteamLocation2);
+                        break;
+                    }
                     player.setRespawnLocation(bankgame.policeteamLocation);
                     player.teleport(bankgame.policeteamLocation);
                 }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_spectateteam)) {
@@ -88,7 +103,18 @@ public class Startgame {
                     entity.remove();
                 }
             }
+            //清除展示实体
+            bankgame.bankgameLocation.getWorld().getEntities().forEach(entity -> {
+                if(entity instanceof ItemDisplay){
+                    Block block = entity.getLocation().getBlock();
+                    if(block.getType() == Material.BARREL){
+                    entity.remove();
+                    }
+                }
+            });
+            //恢复照明
 
+            Fillutils.replaceblock(Material.LIGHT);
             //开始倒计时
             gameendcountdown = new BukkitRunnable() {
                 @Override

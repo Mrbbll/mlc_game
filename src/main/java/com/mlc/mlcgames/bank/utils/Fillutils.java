@@ -31,7 +31,7 @@ public class Fillutils {
                         chunk.load();
                     }
                     Material material = location1.getWorld().getBlockAt(i,j,k).getType();
-                    if(material == material1){
+                    if(material == material1||material == material2){
                         replaceblocks.add(location1.getWorld().getBlockAt(i,j,k));
                     }
                 }

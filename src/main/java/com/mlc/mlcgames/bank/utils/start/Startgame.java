@@ -12,9 +12,9 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
@@ -43,23 +43,27 @@ public class Startgame {
                 player.getInventory().clear();
                 player.updateInventory();
                 if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 1));
                     if(bankgame.gamemode.equals(Gamemode.thiefvsthief)){
                         player.setRespawnLocation(bankgame.thiefteamLocation1);
                         player.teleport(bankgame.thiefteamLocation1);
                         break;
                     }
-                    player.setRespawnLocation(bankgame.thiefteamLocation);
+
+                    player.setRespawnLocation(bankgame.thiefteamLocation,true);
                     player.teleport(bankgame.thiefteamLocation);
                 }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
                     if(bankgame.gamemode.equals(Gamemode.thiefvsthief)){
-                        player.setRespawnLocation(bankgame.thiefteamLocation2);
+                        player.setRespawnLocation(bankgame.thiefteamLocation2,true);
                         player.teleport(bankgame.thiefteamLocation2);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 1));
                         break;
                     }
-                    player.setRespawnLocation(bankgame.policeteamLocation);
+                    player.setRespawnLocation(bankgame.policeteamLocation,true);
                     player.teleport(bankgame.policeteamLocation);
                 }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_spectateteam)) {
-                    player.setRespawnLocation(bankgame.spectatelocation);
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 1));
+                    player.setRespawnLocation(bankgame.spectatelocation,true);
                     player.teleport(bankgame.spectatelocation);
                     player.setGameMode(GameMode.SPECTATOR);
                 }
@@ -77,6 +81,7 @@ public class Startgame {
                             Bankgameitemmanager.givethiefitem(player);
                         }
                     }
+
                     case thiefvspolice -> {
                         if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
                             Bankgameitemmanager.givethiefitem(player);
@@ -93,6 +98,7 @@ public class Startgame {
                         //灯光修复事件
                         bankgame.Lightningfixlistener();
 
+
                     }
                 }
             }
@@ -103,15 +109,48 @@ public class Startgame {
                     entity.remove();
                 }
             }
-            //清除展示实体
+            //清除展示实体,潜匿贝,狗,箭头
             bankgame.bankgameLocation.getWorld().getEntities().forEach(entity -> {
                 if(entity instanceof ItemDisplay){
                     Block block = entity.getLocation().getBlock();
                     if(block.getType() == Material.BARREL){
                     entity.remove();
                     }
+                }else if(entity instanceof Item ||entity instanceof Arrow ||entity instanceof Wolf||entity instanceof Shulker){
+                    entity.remove();
                 }
             });
+            //如果是tvp，生成潜匿贝
+            //生成潜匿贝
+            if(bankgame.gamemode.equals(Gamemode.thiefvspolice)) {
+
+                bankgame.pow1locentity = (Shulker) bankgame.powerLocation1.getWorld().spawnEntity(bankgame.powerLocation1, EntityType.SHULKER);
+
+                bankgame.pow2locentity = (Shulker) bankgame.powerLocation2.getWorld().spawnEntity(bankgame.powerLocation2, EntityType.SHULKER);
+
+                bankgame.outlocentity1 = (Shulker) bankgame.leaveLocation1.getWorld().spawnEntity(bankgame.leaveLocation1, EntityType.SHULKER);
+
+                bankgame.outlocentity2 = (Shulker) bankgame.leaveLocation2.getWorld().spawnEntity(bankgame.leaveLocation2, EntityType.SHULKER);
+
+                bankgame.goldlocentity = (Shulker) bankgame.spectatelocation.getWorld().spawnEntity(bankgame.spectatelocation, EntityType.SHULKER);
+
+
+
+                Teammanager.addentityToTeam(Teammanager.bankgame_powerlocteam, bankgame.pow1locentity);
+                Teammanager.addentityToTeam(Teammanager.bankgame_powerlocteam, bankgame.pow2locentity);
+                Teammanager.addentityToTeam(Teammanager.bankgame_outlocteam, bankgame.outlocentity1);
+                Teammanager.addentityToTeam(Teammanager.bankgame_outlocteam, bankgame.outlocentity2);
+                Teammanager.addentityToTeam(Teammanager.bankgame_goldlocteam, bankgame.goldlocentity);
+
+                inilocentiy(bankgame.pow1locentity);
+                inilocentiy(bankgame.pow2locentity);
+                inilocentiy(bankgame.outlocentity1);
+                inilocentiy(bankgame.outlocentity2);
+                inilocentiy(bankgame.goldlocentity);
+                //给潜匿贝发光
+                bankgame.outlocentity1.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
+                bankgame.outlocentity2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
+            }
             //恢复照明
 
             Fillutils.replaceblock(Material.LIGHT);
@@ -119,6 +158,10 @@ public class Startgame {
             gameendcountdown = new BukkitRunnable() {
                 @Override
                 public void run() {
+                    if(bankgame.remainTime==30){
+                        instance.getServer().broadcast(miniMessage.deserialize("<b><red>>>> 还剩最后30秒"));
+                    }
+
                     if(bankgame.remainTime > 0){
                         bankgame.remainTime--;
                         //更新bossbar
@@ -131,10 +174,17 @@ public class Startgame {
                 }
             }.runTaskTimer(instance, 0, 20);
 
-
-
             //道具事件
-        }
 
+        }
+    private static void inilocentiy(Shulker shulker){
+        shulker.setAI(false);
+        shulker.setPeek(0);
+        shulker.setSilent(true);
+        shulker.setInvulnerable(true);
+        shulker.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999 * 20, 10));
+        shulker.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999 * 20, 10));
+        shulker.teleport(shulker.getLocation().add(0, -1, 0));
+    }
 
 }

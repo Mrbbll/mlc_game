@@ -4,12 +4,15 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.bank.utils.end.Endgame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Shulker;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,11 +20,16 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
-import static com.mlc.mlcgames.Mlcgames.bankgame;
-import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.bank.items.Bankgameitemmanager.golditem;
 
 public class Bankgame {
+    public Shulker pow1locentity;
+    public Shulker pow2locentity;
+    public Shulker outlocentity1;
+    public Shulker outlocentity2;
+    public Shulker goldlocentity;
+
     public int remainTime;
     public Gamemode gamemode;
     public List<Player> players;
@@ -31,18 +39,30 @@ public class Bankgame {
     public int thiefscore;
     public String winnerteam;
 
+    //等待或者中场大厅
     public Location bankgameLocation;
     public Location policeteamLocation;
     public Location thiefteamLocation;
     public Location spectatelocation;
+    //大厅
     public Location lobbyLocation;
+
+    //两个电站
     public Location powerLocation1;
     public Location powerLocation2;
+
+
+    //游戏内实际逃离点，金库破坏后开
     public Location leaveLocation;
+
+    //两个配置逃离点
     public Location leaveLocation1;
     public Location leaveLocation2;
+    //用于填充替换光源
     public Location cornerLocation1;
     public Location cornerLocation2;
+
+    //tvt模式下队伍
     public Location thiefteamLocation1;
     public Location thiefteamLocation2;
 
@@ -53,7 +73,7 @@ public class Bankgame {
     public BukkitTask lightfixevent;
     public BukkitTask effectgiveevent;
     public BukkitTask bringgoldoutevent;
-    public int breaklocktime = 40;
+    public int breaklocktime = 20;
     public int lightbreaktime1 = 20;
     public int lightbreaktime2 = 20;
     public int lightfixtime1 = 20;
@@ -66,8 +86,6 @@ public class Bankgame {
 
 
 
-
-
     public void Openlocklistener(){
         //金库破坏事件
         breaklockevent = new BukkitRunnable() {
@@ -76,7 +94,7 @@ public class Bankgame {
                 if(islockbreak){
                     return;
                 }
-                if(ispowerbreak){
+                if(!ispowerbreak){
                     return;
                 }
                 if(!isStart){
@@ -93,12 +111,13 @@ public class Bankgame {
 
                             nearhavethief = true;
                             breaklocktime-= 1;
-
-                            player.sendMessage(Component.text("剩余时间：" + breaklocktime).color(TextColor.color(0xF4FF26)));
+                            player.playSound(player,Sound.ENTITY_EXPERIENCE_ORB_PICKUP,2,2);
+                            player.sendActionBar(Component.text("剩余时间：" + breaklocktime).color(TextColor.color(0xF4FF26)));
                             if (breaklocktime <= 0) {
                                 //金库打开
                                 Openlock(player);
                                 islockbreak = true;
+                                return;
                             }
                             break;
                         }
@@ -109,13 +128,13 @@ public class Bankgame {
                     breaklocktime = 40;
                 }
             }
-        }.runTaskTimer(instance, 0, 10);
+        }.runTaskTimer(instance, 0, 20);
     }
 
 
     private void Openlock( Player player) {
         //金库打开
-        instance.getServer().broadcast(Component.text("金库被" + player.getName() + "打开").color(TextColor.color(0xFF0816)));
+        instance.getServer().broadcast(Component.text(">>> 金库被" + player.getName() + "打开").color(TextColor.color(0xFF0816)));
         player.getInventory().addItem(golditem);
 
         //效果给予
@@ -126,11 +145,14 @@ public class Bankgame {
         int locationindex = random.nextInt(2);
         if(locationindex == 1){
             leaveLocation = leaveLocation2;
-            player.sendMessage(Component.text("你将从出口2离开").color(TextColor.color(0xF4FF26)));
+            outlocentity1.removePotionEffect(PotionEffectType.GLOWING);
+            player.sendMessage(Component.text(">>> 你将从出口2离开").color(TextColor.color(0xF4FF26)));
         }else{
             leaveLocation = leaveLocation1;
-            player.sendMessage(Component.text("你将从出口1离开").color(TextColor.color(0xF4FF26)));
+            outlocentity2.removePotionEffect(PotionEffectType.GLOWING);
+            player.sendMessage(Component.text(">>> 你将从出口1离开").color(TextColor.color(0xF4FF26)));
         }
+        player.playSound(player,Sound.ENTITY_CHICKEN_HURT,1,1);
         //带金条离开事件
         bankgame.Bringgoldoutevent();
 
@@ -157,15 +179,17 @@ public class Bankgame {
                             if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
                                 nearhavethief1 = true;
                                 lightbreaktime1-= 1;
-                                player.sendMessage(Component.text("破坏剩余时间：" + lightbreaktime1).color(TextColor.color(0xF4FF26)));
+                                player.sendActionBar(Component.text("破坏剩余时间：" + lightbreaktime1).color(TextColor.color(0xF4FF26)));
                                 if (lightbreaktime1 <= 0) {
                                     //破坏成功
                                     islightbreak1 = true;
                                     breaklightevent();
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
+                                    player.playSound(player,Sound.ENTITY_PLAYER_LEVELUP,1,1);
                                     lightbreaktime1 = 20;
                                     return;
                                 }
+                                player.playSound(player,Sound.ENTITY_EXPERIENCE_ORB_PICKUP,2,2);
                                 break;
                             }
                         }
@@ -182,15 +206,17 @@ public class Bankgame {
                             if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
                                 nearhavethief2 = true;
                                 lightbreaktime2-= 1;
-                                player.sendMessage(Component.text("破坏剩余时间：" + lightbreaktime2).color(TextColor.color(0xF4FF26)));
+                                player.sendActionBar(Component.text("破坏剩余时间：" + lightbreaktime2).color(TextColor.color(0xF4FF26)));
                                 if (lightbreaktime2 <= 0) {
                                     //破坏成功
                                     islightbreak2 = true;
                                     breaklightevent();
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
+                                    player.playSound(player,Sound.ENTITY_PLAYER_LEVELUP,1,1);
                                     lightbreaktime2 = 20;
                                     return;
                                 }
+                                player.playSound(player,Sound.ENTITY_EXPERIENCE_ORB_PICKUP,2,2);
                                 break;
                             }
                         }
@@ -201,7 +227,7 @@ public class Bankgame {
                 }
 
             }
-        }.runTaskTimer(instance, 0, 10);
+        }.runTaskTimer(instance, 0, 20);
     }
 
     private void breaklightevent() {
@@ -219,8 +245,11 @@ public class Bankgame {
                 Player player1 = Bukkit.getPlayer(player);
                 if (player1 != null) {
                     Fillutils.replaceblock(Material.CAVE_AIR);
+
+                    player1.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("<b><red><!>"));
+                    player1.sendMessage(miniMessage.deserialize("<bold><red>>>> 某个电机被破坏了。。。"));
+                    player1.playSound(player1.getLocation(), Sound.ENTITY_GOAT_SCREAMING_PREPARE_RAM,1,1);
                     player1.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 999999, 1));
-                    player1.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999, 1));
                 }
 
             });
@@ -246,16 +275,19 @@ public class Bankgame {
                             Player player = (Player) ent;
                             if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
                                 nearhavepolice1 = true;
-                                lightfixtime1-= 2;
-                                player.sendMessage(Component.text("修复剩余时间：" + lightfixtime1).color(TextColor.color(0xF4FF26)));
+                                lightfixtime1-= 1;
+
+                                player.sendActionBar(Component.text("修复剩余时间：" + lightfixtime1).color(TextColor.color(0xF4FF26)));
                                 if (lightfixtime1 <= 0) {
                                     //修复成功
                                     islightbreak1 = false;
                                     fixlightevent();
                                     player.sendMessage(Component.text("修复成功").color(TextColor.color(0xFF00)));
+                                    player.playSound(player,Sound.ENTITY_ALLAY_AMBIENT_WITH_ITEM,2,1);
                                     lightfixtime1 = 20;
                                     return;
                                 }
+                                player.playSound(player,Sound.ENTITY_EXPERIENCE_ORB_PICKUP,2,2);
                                 break;
                             }
                         }
@@ -272,16 +304,19 @@ public class Bankgame {
                             Player player = (Player) ent;
                             if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
                                 nearhavepolice2 = true;
-                                lightfixtime2-= 2;
-                                player.sendMessage(Component.text("修复剩余时间：" + lightfixtime2).color(TextColor.color(0xF4FF26)));
+                                lightfixtime2-= 1;
+                                player.sendActionBar(Component.text("修复剩余时间：" + lightfixtime2).color(TextColor.color(0xF4FF26)));
+
                                 if (lightfixtime2 <= 0) {
                                     //修复成功
                                     islightbreak2 = false;
                                     fixlightevent();
                                     player.sendMessage(Component.text("修复成功").color(TextColor.color(0xFF00)));
+                                    player.playSound(player,Sound.ENTITY_ALLAY_AMBIENT_WITH_ITEM,2,1);
                                     lightfixtime2 = 20;
                                     return;
                                 }
+                                player.playSound(player,Sound.ENTITY_EXPERIENCE_ORB_PICKUP,2,2);
                                 break;
                             }
                         }
@@ -291,7 +326,7 @@ public class Bankgame {
                     }
                 };
             }
-        }.runTaskTimer(instance, 0, 10);
+        }.runTaskTimer(instance, 0, 20);
     }
 
     private void fixlightevent() {
@@ -302,13 +337,21 @@ public class Bankgame {
             Teammanager.bankgame_policeteam.getEntries().forEach(player -> {
                 Player player1 = Bukkit.getPlayer(player);
                 if (player1 != null) {
+                    player1.sendMessage(miniMessage.deserialize("<bold><green>>>> 两个电机都被修复了"));
                     Fillutils.replaceblock(Material.LIGHT);
                     player1.removePotionEffect(PotionEffectType.DARKNESS);
-                    player1.removePotionEffect(PotionEffectType.BLINDNESS);
                 }
 
             });
-        }
+        }else{
+            Teammanager.bankgame_policeteam.getEntries().forEach(player -> {
+                Player player1 = Bukkit.getPlayer(player);
+                if (player1 != null) {
+                    player1.sendMessage(miniMessage.deserialize("<bold><green>>>> 某个电机被修复了"));
+                }
+            });
+        };
+
     }
 
     public void Effectgive() {

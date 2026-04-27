@@ -18,10 +18,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Team;
 
 import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.bankgame;
+import static com.mlc.mlcgames.Teammanager.bankgame_policeteam;
+import static com.mlc.mlcgames.Teammanager.bankgame_thiefteam;
 import static com.mlc.mlcgames.bank.utils.Bankgame.gameendcountdown;
 import static com.mlc.mlcgames.bank.listener.clickprocess.Openmenu.Openbankmenu;
 
@@ -75,6 +78,9 @@ public class Bankgamelistener implements Listener {
 
     @EventHandler
     public void inventoryclick(InventoryClickEvent event){
+        if(bankgame.isStart){
+            return;
+        }
         if(event.getClickedInventory()==null){
             return;
         }
@@ -115,22 +121,24 @@ public class Bankgamelistener implements Listener {
 
     @EventHandler
     public  void onquit(PlayerQuitEvent event){
-        Player player = event.getPlayer();
-        //保证有金条
-        if(player.getInventory().contains(Bankgameitemmanager.golditem)){
-            player.getInventory().remove(Bankgameitemmanager.golditem);
-            player.dropItem(Bankgameitemmanager.golditem);
-        }
-        bankgame.players.remove(player);
-        Teammanager.removePlayerFromTeam(player);
-        player.getInventory().clear();
-        player.updateInventory();
-        //最后一个玩家则停止游戏
-        if(bankgame.players.isEmpty()){
-            Endgame.endgame();
-            if(gameendcountdown!=null){
-                gameendcountdown.cancel();
-                gameendcountdown = null;
+        if (bankgame.isStart) {
+            Player player = event.getPlayer();
+            //保证有金条
+            if(player.getInventory().contains(Bankgameitemmanager.golditem)){
+                player.getInventory().remove(Bankgameitemmanager.golditem);
+                player.dropItem(Bankgameitemmanager.golditem);
+            }
+            bankgame.players.remove(player);
+            Teammanager.removePlayerFromTeam(player);
+            player.getInventory().clear();
+            player.updateInventory();
+            //最后一个玩家则停止游戏
+            if(bankgame.players.isEmpty()){
+                Endgame.endgame();
+                if(gameendcountdown!=null){
+                    gameendcountdown.cancel();
+                    gameendcountdown = null;
+                }
             }
         }
 
@@ -138,10 +146,12 @@ public class Bankgamelistener implements Listener {
 
     @EventHandler
     public void onjoin(PlayerJoinEvent event){
-        Player player = event.getPlayer();
-        player.setRespawnLocation(bankgame.lobbyLocation);
-        player.setGameMode(GameMode.ADVENTURE);
-        player.teleport(bankgame.lobbyLocation);
+        if (bankgame.isStart) {
+            Player player = event.getPlayer();
+            player.setRespawnLocation(bankgame.lobbyLocation);
+            player.setGameMode(GameMode.SPECTATOR);
+            player.teleport(bankgame.spectatelocation);
+        }
 
     }
 
@@ -151,23 +161,41 @@ public class Bankgamelistener implements Listener {
             Player player = event.getPlayer();
             switch (bankgame.gamemode){
                 case thiefvspolice -> {
-                    player.setGameMode(GameMode.SURVIVAL);
+                    player.setGameMode(GameMode.SPECTATOR);
                     if(player.getInventory().contains(Bankgameitemmanager.golditem)){
                         player.getInventory().remove(Bankgameitemmanager.golditem);
                         player.dropItem(Bankgameitemmanager.golditem);
                     }
-                    if(Teammanager.isPlayerInTeam(player,Teammanager.bankgame_policeteam)){
+                    if(Teammanager.isPlayerInTeam(player, bankgame_policeteam)){
                         bankgame.thiefscore+=1;
 
-                    }else if(Teammanager.isPlayerInTeam(player,Teammanager.bankgame_thiefteam)){
+                    }else if(Teammanager.isPlayerInTeam(player, bankgame_thiefteam)){
                         bankgame.policescore+=1;
                     }
-                }
+
+                    boolean isteamenpty = true;
+                    Team team = Teammanager.getPlayerTeam(player);
+                    for(String string :team.getEntries()){
+                        //如果没或者玩家，直接结束游戏
+                        Player player1 = Bukkit.getPlayer(string);
+                        if(player1!=null){
+                            isteamenpty = false;
+                        }
+                    }
+                    if(isteamenpty){
+                        if(team.equals(bankgame_policeteam)){
+                            bankgame.thiefscore += 1000;
+                        }else if(team.equals(bankgame_thiefteam)){
+                            bankgame.policescore += 1000;
+                        }
+                        Endgame.endgame();
+                        }
+                    }
                 case thiefvsthief -> {
-                    if(Teammanager.isPlayerInTeam(player,Teammanager.bankgame_policeteam)){
+                    if(Teammanager.isPlayerInTeam(player, bankgame_policeteam)){
                         bankgame.thiefscore+=10;
 
-                    }else if(Teammanager.isPlayerInTeam(player,Teammanager.bankgame_thiefteam)){
+                    }else if(Teammanager.isPlayerInTeam(player, bankgame_thiefteam)){
                         bankgame.policescore+=10;
                     }
                 }

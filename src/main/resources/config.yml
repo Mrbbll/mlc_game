@@ -7,12 +7,14 @@ bankgame:
   pliceteamLocation: ''
   theifteamLocation: ''
   spectatelocation: ''
+  lobbyLocation: ''
   powerLocation1: ''
   powerLocation2: ''
   leaveLocation1: ''
   leaveLocation2: ''
   cornerLocation1: ''
   cornerLocation2: ''
-
+  thiefteamLocation1: ''
+  thiefteamLocation2: ''
 
 

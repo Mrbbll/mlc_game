@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,13 +26,16 @@ public class Teamselect {
                 return;
             }
             else if(itemStack.getType() == Material.RED_CONCRETE){
-                player.sendMessage(miniMessage.deserialize("你选择了<red>红队</red>"));
+                player.sendMessage(miniMessage.deserialize(">>> 你选择了<red>红队</red>"));
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,1.3f);
                 Teammanager.addPlayerToTeam(Teammanager.bankgame_thiefteam, player);
             }else if(itemStack.getType() == Material.LIGHT_BLUE_CONCRETE){
-                player.sendMessage(miniMessage.deserialize("你选择了<blue>蓝队</blue>"));
+                player.sendMessage(miniMessage.deserialize(">>> 你选择了<blue>蓝队</blue>"));
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,1.3f);
                 Teammanager.addPlayerToTeam(Teammanager.bankgame_policeteam, player);
             } else if (itemStack.getType() == Material.WHITE_CONCRETE) {
-                player.sendMessage(miniMessage.deserialize("你选择了<grey>旁观队</grey>"));
+                player.sendMessage(miniMessage.deserialize(">>> 你选择了<grey>旁观队</grey>"));
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,1.3f);
                 Teammanager.addPlayerToTeam(Teammanager.bankgame_spectateteam, player);
             } else if(itemStack.getType() == Material.NETHERITE_SWORD){
                 if(!player.isOp()){
@@ -46,10 +50,11 @@ public class Teamselect {
             if(bankgame.players.size() >= 2 && !Teammanager.bankgame_thiefteam.getEntries().isEmpty() && !Teammanager.bankgame_policeteam.getEntries().isEmpty()){
                 bankgame.gameprepared = true;
                 instance.getServer().broadcast(miniMessage.deserialize("<green><bold>玩家数量足够，游戏准备就绪"));
-                instance.getServer().broadcast(Component.text("再次右键菜单打开职业选择菜单").color(NamedTextColor.GREEN).style(Style.style(TextDecoration.BOLD)));
+                instance.getServer().broadcast(Component.text("<!>再次右键菜单打开职业选择菜单").color(NamedTextColor.GREEN).style(Style.style(TextDecoration.BOLD)));
 
             }else {
-                instance.getServer().broadcast(miniMessage.deserialize("<red><bold>玩家数量不足，无法开始游戏"));
+                instance.getServer().broadcast(miniMessage.deserialize("<red><bold><!>玩家数量不足，无法开始游戏"));
+
             }
     }
 }

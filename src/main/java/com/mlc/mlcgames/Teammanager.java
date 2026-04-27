@@ -3,6 +3,7 @@ package com.mlc.mlcgames;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -19,7 +20,9 @@ public class Teammanager {
     public static Team bankgame_policeteam;
     public static Team bankgame_thiefteam;
     public static Team bankgame_spectateteam;
-
+    public static Team bankgame_powerlocteam;
+    public static Team bankgame_goldlocteam;
+    public static Team bankgame_outlocteam;
 
 
     public static Team team_1;
@@ -39,6 +42,13 @@ public class Teammanager {
         bankgame_policeteam = createTeam("bankgame_pliceteam", NamedTextColor.AQUA);
         bankgame_thiefteam = createTeam("bankgame_thifeteam", NamedTextColor.RED);
         bankgame_spectateteam = createTeam("bankgame_spectateteam", NamedTextColor.GRAY);
+        bankgame_powerlocteam = createTeam("bankgame_powerlocteam", NamedTextColor.YELLOW);
+        bankgame_goldlocteam = createTeam("bankgame_goldlocteam", NamedTextColor.GOLD);
+        bankgame_outlocteam = createTeam("bankgame_outlocteam", NamedTextColor.GREEN);
+
+        bankgame_thiefteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OWN_TEAM);
+        bankgame_policeteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OWN_TEAM);
+
 
         team_1 = createTeam("AQUA", NamedTextColor.AQUA);
         team_1.displayName(Component.text("青队"));
@@ -99,6 +109,12 @@ public class Teammanager {
         return true;
     }
 
+    public static boolean addentityToTeam(Team team, Entity entity) {
+        team.addEntity(entity);
+
+        return true;
+    }
+
     //清空队伍
     public static void cleanTeam(Team team) {
         for (String entry : team.getEntries()) team.removeEntry(entry);
@@ -121,5 +137,6 @@ public class Teammanager {
         return scoreboard.getEntryTeam(player.getName());
 
     }
+
 
 }

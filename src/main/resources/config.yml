@@ -1,8 +1,13 @@
 lobby: ''
 
 bankgame:
-  tvtgametime: 10
-  tvpgametime: 10
+  requirescore: 2000
+  breaklocktime: 10
+  lightbreaktime: 10
+  lightfixtime: 20
+
+  tvtgametime: 400
+  tvpgametime: 400
   bankgameLocation: ''
   pliceteamLocation: ''
   theifteamLocation: ''

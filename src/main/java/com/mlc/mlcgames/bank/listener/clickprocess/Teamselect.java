@@ -51,7 +51,6 @@ public class Teamselect {
                 bankgame.gameprepared = true;
                 instance.getServer().broadcast(miniMessage.deserialize("<green><bold>玩家数量足够，游戏准备就绪"));
                 instance.getServer().broadcast(miniMessage.deserialize("<b><red><!>再次右键菜单打开职业选择菜单"));
-
             }else {
                 instance.getServer().broadcast(miniMessage.deserialize("<red><bold><!>玩家数量不足，无法开始游戏"));
 

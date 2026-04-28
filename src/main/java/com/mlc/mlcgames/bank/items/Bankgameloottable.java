@@ -26,6 +26,8 @@ import java.util.Random;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class Bankgameloottable {
+    public static int keycount = 20;
+    public static ItemStack key;
     public static ItemStack beef;
     public static ItemStack mutton;
     public static ItemStack cookie;
@@ -33,15 +35,21 @@ public class Bankgameloottable {
     public static ItemStack air;
     public static ItemStack bone;
     public static ItemStack diamond;
+    public static ItemStack emerald;
     public static ItemStack gold;
     public static ItemStack arrow;
     public static ItemStack knockbackstick;
+
     public static ItemStack speedpotion;
     public static ItemStack jumppotion;
     public static ItemStack regenpotion;
     public static ItemStack strengthpotion;
     public static ItemStack invisibilitypotion;
-
+    public static ItemStack speedpotion_splash;
+    public static ItemStack jumppotion_splash;
+    public static ItemStack regenpotion_splash;
+    public static ItemStack strengthpotion_splash;
+    public static ItemStack invisibilitypotion_splash;
     public static ItemStack book1;
     public static ItemStack book2;
     public static ItemStack book3;
@@ -74,6 +82,10 @@ public class Bankgameloottable {
     public static List<ItemStack> loottable;
 
     public static void init(){
+        key = new ItemStack(Material.OMINOUS_TRIAL_KEY);
+        ItemMeta keymeta = key.getItemMeta();
+        keymeta.customName(Component.text("枪械库钥匙"));
+
         beef = new ItemStack(Material.COOKED_BEEF);
         mutton = new ItemStack(Material.COOKED_MUTTON);
         chicken = new ItemStack(Material.COOKED_CHICKEN);
@@ -86,6 +98,7 @@ public class Bankgameloottable {
         bone = new ItemStack(Material.BONE);
 
         diamond = new ItemStack(Material.DIAMOND);
+        emerald = new ItemStack(Material.EMERALD);
 
         gold = new ItemStack(Material.GOLD_INGOT);
         ItemMeta goldmeta = gold.getItemMeta();
@@ -142,6 +155,41 @@ public class Bankgameloottable {
         PotionMeta meta5= (PotionMeta) invisibilitypotionmeta;
         meta5.addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30*20, 1),true);
         invisibilitypotion.setItemMeta(invisibilitypotionmeta);
+
+        speedpotion_splash = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta speedpotionmeta_splash = speedpotion_splash.getItemMeta();
+        speedpotionmeta_splash.customName(miniMessage.deserialize("<!i>速度药水"));
+        PotionMeta meta6= (PotionMeta) speedpotionmeta_splash;
+        meta6.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 30*20, 0),true);
+        speedpotion.setItemMeta(speedpotionmeta_splash);
+
+        jumppotion = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta jumppotionmeta_splash = jumppotion.getItemMeta();
+        jumppotionmeta_splash.customName(miniMessage.deserialize("<!i>跳跃药水"));
+        PotionMeta meta7= (PotionMeta) jumppotionmeta_splash;
+        meta7.addCustomEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 60*20, 2),true);
+        jumppotion.setItemMeta(jumppotionmeta_splash);
+
+        regenpotion = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta regenpotionmeta_splash = regenpotion.getItemMeta();
+        regenpotionmeta_splash.customName(miniMessage.deserialize("<!i>再生药水"));
+        PotionMeta meta8= (PotionMeta) regenpotionmeta_splash;
+        meta8.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 30*20, 0),true);
+        regenpotion.setItemMeta(regenpotionmeta_splash);
+
+        strengthpotion = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta strengthpotionmeta_splash = strengthpotion.getItemMeta();
+        strengthpotionmeta_splash.customName(miniMessage.deserialize("<!i>力量药水"));
+        PotionMeta meta9= (PotionMeta) strengthpotionmeta_splash;
+        meta9.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 30*20, 0),true);
+        strengthpotion.setItemMeta(strengthpotionmeta_splash);
+
+        invisibilitypotion = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta invisibilitypotionmeta_splash = invisibilitypotion.getItemMeta();
+        invisibilitypotionmeta_splash.customName(miniMessage.deserialize("<!i>隐身药水"));
+        PotionMeta meta10= (PotionMeta) invisibilitypotionmeta_splash;
+        meta10.addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30*20, 1),true);
+        invisibilitypotion.setItemMeta(invisibilitypotionmeta_splash);
 
 
         book1 = new ItemStack(Material.BOOK);
@@ -366,6 +414,7 @@ public class Bankgameloottable {
                 arrow,
                 bone,
                 diamond,
+                emerald,
                 gold,
                 knockbackstick,
                 speedpotion,
@@ -373,6 +422,11 @@ public class Bankgameloottable {
                 regenpotion,
                 strengthpotion,
                 invisibilitypotion,
+                speedpotion_splash,
+                jumppotion_splash,
+                regenpotion_splash,
+                strengthpotion_splash,
+                invisibilitypotion_splash,
                 book1,
                 book2,
                 book3,
@@ -408,6 +462,7 @@ public class Bankgameloottable {
 
 
     public static void addrandomitem(@Nullable Block clickedBlock) {
+        keycount--;
         if(clickedBlock==null){
             return;
         }
@@ -420,6 +475,10 @@ public class Bankgameloottable {
         Random random = new Random();
         int turn = random.nextInt(27);
         for(int i=0;i<turn;i++){
+            if(keycount==0){
+                inv.setItem(i,key);
+                break;
+            }
             inv.setItem(i,getrandomitem());
         }
 

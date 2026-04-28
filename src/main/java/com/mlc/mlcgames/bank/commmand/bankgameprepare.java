@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +21,8 @@ import static com.mlc.mlcgames.Mlcgames.bankgame;
 public class bankgameprepare implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+
+
         if(bankgame.isStart||bankgame.gameprepared){
             sender.sendMessage(Component.text("游戏已准备或已开始，不能准备", NamedTextColor.RED));
             return false;

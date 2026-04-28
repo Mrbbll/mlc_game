@@ -68,6 +68,7 @@ public class Bankgamelistener implements Listener {
             Wolf wolf = (Wolf) entity;
             wolf.setTamed(true);
             wolf.setOwner(event.getPlayer());
+            Teammanager.addentityToTeam(Teammanager.getPlayerTeam(event.getPlayer()),wolf);
 
             wolf.setAdult();
 
@@ -181,6 +182,8 @@ public class Bankgamelistener implements Listener {
                     event.setCancelled(true);
                     if(event.getDamageSource().getCausingEntity() instanceof Player causer){
                         instance.getServer().broadcast(miniMessage.deserialize( "<head:"+ causer.getName() + "> " + " <b>KILL<red> ❌ -><reset> " + " <head:"+ player.getName() + ">"));
+                    }else {
+                        instance.getServer().broadcast(miniMessage.deserialize("<b><red> ❌  <head:"+ player.getName() + "> "));
                     }
                     new Setplayerlaydown(player);
 //                    player.setGameMode(GameMode.SPECTATOR);
@@ -195,10 +198,10 @@ public class Bankgamelistener implements Listener {
                         bankgame.policescore+=1;
                     }
 
+                    //如果没或者玩家，直接结束游戏
                     boolean isteamenpty = true;
                     Team team = Teammanager.getPlayerTeam(player);
                     for(String string :team.getEntries()){
-                        //如果没或者玩家，直接结束游戏
                         Player player1 = Bukkit.getPlayer(string);
                         if(player1!=null && !player1.hasPotionEffect(PotionEffectType.LUCK)){
                             isteamenpty = false;
@@ -206,9 +209,9 @@ public class Bankgamelistener implements Listener {
                     }
                     if(isteamenpty){
                         if(team.equals(bankgame_policeteam)){
-                            bankgame.thiefscore += 1000;
+                            bankgame.thiefscore += 2000;
                         }else if(team.equals(bankgame_thiefteam)){
-                            bankgame.policescore += 1000;
+                            bankgame.policescore += 2000;
                         }
                         Endgame.endgame();
                     }

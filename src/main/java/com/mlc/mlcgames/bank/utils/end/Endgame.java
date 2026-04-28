@@ -54,7 +54,7 @@ public class Endgame {
             gameendcountdown.cancel();
             gameendcountdown = null;
         }
-        instance.getServer().broadcast(miniMessage.deserialize("\n\n<b><red>时间结束⌚"));
+        if(bankgame.remainTime<=0) {instance.getServer().broadcast(miniMessage.deserialize("\n\n<b><red>时间结束⌚"));}
         bankgame.playerJobs.clear();
         for(Player player : bankgame.players){
             player.setRespawnLocation(bankgame.bankgameLocation,true);
@@ -69,8 +69,8 @@ public class Endgame {
         Teammanager.cleanTeam(Teammanager.bankgame_thiefteam);
 
         //保证时间正常结束时小偷没嬴警察一定嬴
-        if(bankgame.gamemode== Gamemode.thiefvspolice){
-            bankgame.policescore+=1000;
+        if(bankgame.gamemode== Gamemode.thiefvspolice&&bankgame.remainTime<=0){
+            bankgame.policescore+=9000;
         }
         String color = "white";
         if(bankgame.policescore > bankgame.thiefscore){

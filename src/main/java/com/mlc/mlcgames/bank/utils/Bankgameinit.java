@@ -37,6 +37,20 @@ public class Bankgameinit {
         bankgame.islightbreak1 = false;
         bankgame.islightbreak2 = false;
 
+        bankgame.requirescore = fileConfiguration.getInt("bankgame.requirescore",2000);
+        fileConfiguration.set("bankgame.requirescore",bankgame.requirescore);
+        bankgame.breaklocktime = fileConfiguration.getInt("bankgame.breaklocktime",10);
+        fileConfiguration.set("bankgame.breaklocktime",bankgame.breaklocktime);
+        bankgame.lightbreaktime1 = fileConfiguration.getInt("bankgame.lightbreaktime1",10);
+        fileConfiguration.set("bankgame.lightbreaktime1",bankgame.lightbreaktime1);
+        bankgame.lightbreaktime2 = fileConfiguration.getInt("bankgame.lightbreaktime2",10);
+        fileConfiguration.set("bankgame.lightbreaktime2",bankgame.lightbreaktime2);
+        bankgame.lightfixtime1 = fileConfiguration.getInt("bankgame.lightfixtime1",20);
+        fileConfiguration.set("bankgame.lightfixtime1",bankgame.lightfixtime1);
+        bankgame.lightfixtime2 = fileConfiguration.getInt("bankgame.lightfixtime2",20);
+        fileConfiguration.set("bankgame.lightfixtime2",bankgame.lightfixtime2);
+
+
         bankgame.bankgameLocation = fileConfiguration.getLocation("bankgame.bankgameLocation");
         if(bankgame.bankgameLocation == null){
             bankgame.bankgameLocation = new Location(instance.getServer().getWorld("world"),0,1,0);

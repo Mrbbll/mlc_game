@@ -1,6 +1,7 @@
 package com.mlc.mlcgames.bank.utils;
 
 import com.mlc.mlcgames.Teammanager;
+import com.mlc.mlcgames.bank.items.Bankgameloottable;
 import com.mlc.mlcgames.bank.utils.end.Endgame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -13,10 +14,12 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Shulker;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -73,11 +76,12 @@ public class Bankgame {
     public BukkitTask lightfixevent;
     public BukkitTask effectgiveevent;
     public BukkitTask bringgoldoutevent;
-    public int breaklocktime = 20;
+    public int breaklocktime = 10;
     public int lightbreaktime1 = 10;
     public int lightbreaktime2 = 10;
-    public int lightfixtime1 = 10;
-    public int lightfixtime2 = 10;
+    public int lightfixtime1 = 20;
+    public int lightfixtime2 = 20;
+    public int requirescore = 2000;
 
     public boolean islockbreak = false;
     public boolean islightbreak1 = false;
@@ -107,7 +111,7 @@ public class Bankgame {
                     if (ent instanceof Player) {
                         Player player = (Player) ent;
                         //如果是贼，在20秒后金库打开
-                        if (Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)) {
+                        if (Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam) &&!player.hasPotionEffect(PotionEffectType.LUCK)) {
 
                             nearhavethief = true;
                             breaklocktime-= 1;
@@ -125,7 +129,7 @@ public class Bankgame {
                 }
                 //附近没贼，重置倒计时
                 if (!nearhavethief) {
-                    breaklocktime = 40;
+                    breaklocktime = 10;
                 }
             }
         }.runTaskTimer(instance, 0, 20);
@@ -176,7 +180,7 @@ public class Bankgame {
                     for(Entity ent : entity){
                         if(ent instanceof Player){
                             Player player = (Player) ent;
-                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
+                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)&&!player.hasPotionEffect(PotionEffectType.LUCK)){
                                 nearhavethief1 = true;
                                 lightbreaktime1-= 1;
                                 player.sendActionBar(Component.text("破坏剩余时间：" + lightbreaktime1).color(TextColor.color(0xF4FF26)));
@@ -204,7 +208,7 @@ public class Bankgame {
                     for(Entity ent : entity){
                         if(ent instanceof Player){
                             Player player = (Player) ent;
-                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
+                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam) && !player.hasPotionEffect(PotionEffectType.LUCK)){
                                 nearhavethief2 = true;
                                 lightbreaktime2-= 1;
                                 player.sendActionBar(Component.text("破坏剩余时间：" + lightbreaktime2).color(TextColor.color(0xF4FF26)));
@@ -275,7 +279,7 @@ public class Bankgame {
                     for(Entity ent : entity){
                         if(ent instanceof Player){
                             Player player = (Player) ent;
-                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
+                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam) && !player.hasPotionEffect(PotionEffectType.LUCK)){
                                 nearhavepolice1 = true;
                                 lightfixtime1-= 1;
 
@@ -304,7 +308,7 @@ public class Bankgame {
                     for(Entity ent : entity){
                         if(ent instanceof Player){
                             Player player = (Player) ent;
-                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
+                            if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam) && !player.hasPotionEffect(PotionEffectType.LUCK)){
                                 nearhavepolice2 = true;
                                 lightfixtime2-= 1;
                                 player.sendActionBar(Component.text("修复剩余时间：" + lightfixtime2).color(TextColor.color(0xF4FF26)));
@@ -347,10 +351,9 @@ public class Bankgame {
 
             });
         }else{
-            Teammanager.bankgame_policeteam.getEntries().forEach(player -> {
-                Player player1 = Bukkit.getPlayer(player);
-                if (player1 != null) {
-                    player1.sendMessage(miniMessage.deserialize("<bold><green>>>> 某个电机被修复了"));
+            bankgame.players.forEach(player -> {
+                if (player != null) {
+                    player.sendMessage(miniMessage.deserialize("<bold><green>>>> 某个电机被修复了"));
                 }
             });
         };
@@ -358,6 +361,13 @@ public class Bankgame {
     }
 
     public void Effectgive() {
+        for(Player player : Teammanager.getteamplayer(Teammanager.bankgame_policeteam)){
+            player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,999*20,1,true,true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,999*20,1,true,true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH,999*20,0,true,true));
+            player.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("<b><red>💲!!!"));
+        }
+
         effectgiveevent = new BukkitRunnable() {
             @Override
             public void run() {
@@ -388,13 +398,36 @@ public class Bankgame {
                 for(Entity ent : entity){
                     if(ent instanceof Player){
                         Player player = (Player) ent;
-                        if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)&&player.getInventory().contains(golditem)){
+                        Team team = Teammanager.getPlayerTeam(player);
+                        if(team.equals(Teammanager.bankgame_thiefteam)&&player.getInventory().contains(golditem)){
                             //结束游戏
                             bankgame.thiefscore += 9000;
                             Endgame.endgame();
                             this.cancel();
+                        }else if(team.equals(Teammanager.bankgame_thiefteam)){
+                            for ( ItemStack item : player.getInventory().getContents()){
+                                if(item == null){
+                                    continue;
+                                }
+                                if (item.getType().equals(Material.DIAMOND)) {
+                                    int count = item.getAmount();
+                                    bankgame.thiefscore += count*50;
+                                    player.getInventory().remove(item);
+                                    instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <head:"+player.getName()+">带回了"+count+"个钻石"));
+                                } else if (item.getType().equals(Material.EMERALD)) {
+                                    int count = item.getAmount();
+                                    bankgame.thiefscore += count*100;
+                                    player.getInventory().remove(item);
+                                    instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <head:"+player.getName()+">带回了"+count+"个绿宝石"));
+
+                                }
+                            }
                         }
                     }
+                    if(bankgame.thiefscore>=2000){
+                        Endgame.endgame();
+                    }
+
                 }
             }
         }.runTaskTimer(instance, 0, 10);

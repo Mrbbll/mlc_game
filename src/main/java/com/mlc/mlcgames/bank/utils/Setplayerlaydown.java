@@ -66,13 +66,12 @@ public class Setplayerlaydown {
                 Collection<Entity> ent = location.getNearbyEntities(1,1,1);
                 for(Entity entity :ent ){
                     if(entity instanceof Player player1){
-                        if(!player1.equals(player)&& Teammanager.getPlayerTeam(player1).equals(Teammanager.getPlayerTeam(player))){
+                        if(!player1.equals(player) && Teammanager.getPlayerTeam(player1).equals(Teammanager.getPlayerTeam(player)) && !player1.hasPotionEffect(PotionEffectType.LUCK)){
                             hasfriend = true;
                             player1.sendActionBar(miniMessage.deserialize("<#0dff0d><b>剩余救援时间 "+savetime));
                             savetime -= 1;
 
                             if(savetime<=0){
-
                                 saveplayer(player);
                                 player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK,1,1);
                             }

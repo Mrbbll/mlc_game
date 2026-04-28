@@ -13,7 +13,6 @@ public class Openmenu {
             if(bankgame.isStart){
                 return;
             }
-
             //根据玩家所处游戏阶段和队伍打开对应的菜单
             switch (gamemode){
                 case thiefvsthief:

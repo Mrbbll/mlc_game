@@ -2,6 +2,7 @@ package com.mlc.mlcgames.bank.utils.start;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
+import com.mlc.mlcgames.bank.items.Bankgameloottable;
 import com.mlc.mlcgames.bank.utils.Bankgame;
 import com.mlc.mlcgames.bank.utils.Bankgamebossbar;
 import com.mlc.mlcgames.bank.utils.Fillutils;
@@ -24,6 +25,7 @@ import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 public class Startgame {
 
         public static void startgame(){
+            Bankgameloottable.keycount = 10;
             bankgame.isStart = true;
 
             switch (bankgame.gamemode){
@@ -38,6 +40,8 @@ public class Startgame {
             Bankgamebossbar.bossbarfulltime = bankgame.remainTime;
             //分别传送
             for(Player player : bankgame.players){
+                player.setFoodLevel(20);
+                player.setHealth(20);
                 player.getInventory().clear();
                 player.updateInventory();
                 if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_thiefteam)){
@@ -45,7 +49,7 @@ public class Startgame {
                     if(bankgame.gamemode.equals(Gamemode.thiefvsthief)){
                         player.setRespawnLocation(bankgame.thiefteamLocation1);
                         player.teleport(bankgame.thiefteamLocation1);
-                        break;
+                        continue;
                     }
 
                     player.setRespawnLocation(bankgame.thiefteamLocation,true);
@@ -55,7 +59,7 @@ public class Startgame {
                         player.setRespawnLocation(bankgame.thiefteamLocation2,true);
                         player.teleport(bankgame.thiefteamLocation2);
                         player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 1));
-                        break;
+                        continue;
                     }
                     player.setRespawnLocation(bankgame.policeteamLocation,true);
                     player.teleport(bankgame.policeteamLocation);

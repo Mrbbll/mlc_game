@@ -186,27 +186,33 @@ public class Bankgameitemmanager {
 
         stonesword = new ItemStack(Material.STONE_SWORD);
         itemMeta = stonesword.getItemMeta();
+        itemMeta.setUnbreakable(true);
         stonesword.setItemMeta(itemMeta);
 
         iron_sword = new ItemStack(Material.IRON_SWORD);
         itemMeta = iron_sword.getItemMeta();
+        itemMeta.setUnbreakable(true);
         iron_sword.setItemMeta(itemMeta);
 
         crossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = crossbow.getItemMeta();
+        itemMeta.setUnbreakable(true);
         crossbow.setItemMeta(itemMeta);
 
         quickcrossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = quickcrossbow.getItemMeta();
+        itemMeta.setUnbreakable(true);
         itemMeta.addEnchant(Enchantment.QUICK_CHARGE,2,true);
         quickcrossbow.setItemMeta(itemMeta);
 
         woodenaxe = new ItemStack(Material.WOODEN_AXE);
         itemMeta = woodenaxe.getItemMeta();
+        itemMeta.setUnbreakable(true);
         woodenaxe.setItemMeta(itemMeta);
 
         stoneaxe = new ItemStack(Material.STONE_AXE);
         itemMeta = stoneaxe.getItemMeta();
+        itemMeta.setUnbreakable(true);
         stoneaxe.setItemMeta(itemMeta);
 
 
@@ -237,66 +243,82 @@ public class Bankgameitemmanager {
 
         bow = new ItemStack(Material.BOW);
         itemMeta = bow.getItemMeta();
+        itemMeta.setUnbreakable(true);
         bow.setItemMeta(itemMeta);
 
         normal_bow = new ItemStack(Material.BOW);
         itemMeta = normal_bow.getItemMeta();
+        itemMeta.setUnbreakable(true);
         normal_bow.setItemMeta(itemMeta);
 
         normal_crossbow = new ItemStack(Material.CROSSBOW);
         itemMeta = normal_crossbow.getItemMeta();
+        itemMeta.setUnbreakable(true);
         normal_crossbow.setItemMeta(itemMeta);
 
         woodensword = new ItemStack(Material.WOODEN_SWORD);
         itemMeta = woodensword.getItemMeta();
+        itemMeta.setUnbreakable(true);
         woodensword.setItemMeta(itemMeta);
 
         iron_chestplate = new ItemStack(Material.IRON_CHESTPLATE);
         itemMeta = iron_chestplate.getItemMeta();
+        itemMeta.setUnbreakable(true);
         iron_chestplate.setItemMeta(itemMeta);
 
         iron_leggings = new ItemStack(Material.IRON_LEGGINGS);
         itemMeta = iron_leggings.getItemMeta();
+        itemMeta.setUnbreakable(true);
         iron_leggings.setItemMeta(itemMeta);
 
         iron_boots = new ItemStack(Material.IRON_BOOTS);
         itemMeta = iron_boots.getItemMeta();
+        itemMeta.setUnbreakable(true);
         iron_boots.setItemMeta(itemMeta);
 
         iron_helmet = new ItemStack(Material.IRON_HELMET);
         itemMeta = iron_helmet.getItemMeta();
+        itemMeta.setUnbreakable(true);
         iron_helmet.setItemMeta(itemMeta);
 
         lether_chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
         itemMeta = lether_chestplate.getItemMeta();
+        itemMeta.setUnbreakable(true);
         lether_chestplate.setItemMeta(itemMeta);
 
         lether_leggings = new ItemStack(Material.LEATHER_LEGGINGS);
         itemMeta = lether_leggings.getItemMeta();
+        itemMeta.setUnbreakable(true);
         lether_leggings.setItemMeta(itemMeta);
 
         lether_boots = new ItemStack(Material.LEATHER_BOOTS);
         itemMeta = lether_boots.getItemMeta();
+        itemMeta.setUnbreakable(true);
         lether_boots.setItemMeta(itemMeta);
 
         lether_helmet = new ItemStack(Material.LEATHER_HELMET);
         itemMeta = lether_helmet.getItemMeta();
+        itemMeta.setUnbreakable(true);
         lether_helmet.setItemMeta(itemMeta);
 
         diamond_chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE);
         itemMeta = diamond_chestplate.getItemMeta();
+        itemMeta.setUnbreakable(true);
         diamond_chestplate.setItemMeta(itemMeta);
 
         diamond_leggings = new ItemStack(Material.DIAMOND_LEGGINGS);
         itemMeta = diamond_leggings.getItemMeta();
+        itemMeta.setUnbreakable(true);
         diamond_leggings.setItemMeta(itemMeta);
 
         diamond_boots = new ItemStack(Material.DIAMOND_BOOTS);
         itemMeta = diamond_boots.getItemMeta();
+        itemMeta.setUnbreakable(true);
         diamond_boots.setItemMeta(itemMeta);
 
         diamond_helmet = new ItemStack(Material.DIAMOND_HELMET);
         itemMeta = diamond_helmet.getItemMeta();
+        itemMeta.setUnbreakable(true);
         diamond_helmet.setItemMeta(itemMeta);
 
         heal_potion = new ItemStack(Material.SPLASH_POTION);
@@ -355,10 +377,16 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
+                player.getInventory().addItem(golden_apple);
+                player.getInventory().addItem(golden_apple);
+                player.getInventory().addItem(golden_apple);
                 player.getInventory().setHelmet(diamond_helmet);
                 player.getInventory().setChestplate(diamond_chestplate);
                 player.getInventory().setLeggings(diamond_leggings);
                 player.getInventory().setBoots(diamond_boots);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
@@ -367,6 +395,7 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(stonesword);
                 player.getInventory().addItem(quickcrossbow);
                 player.getInventory().addItem(golden_apple);
+
                 player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(spectral_arrow);
@@ -375,6 +404,10 @@ public class Bankgameitemmanager {
                 player.getInventory().setChestplate(diamond_chestplate);
                 player.getInventory().setLeggings(diamond_leggings);
                 player.getInventory().setBoots(diamond_boots);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 break;
@@ -392,6 +425,10 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(weakness_potion);
                 player.getInventory().addItem(damage_potion);
                 player.getInventory().addItem(damage_potion);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
 
@@ -415,6 +452,10 @@ public class Bankgameitemmanager {
                 player.getInventory().setBoots(diamond_boots);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
                 break;
             case Jobs.bow:
                 player.getInventory().addItem(bow);
@@ -434,7 +475,10 @@ public class Bankgameitemmanager {
                 player.getInventory().setChestplate(diamond_chestplate);
                 player.getInventory().setLeggings(diamond_leggings);
                 player.getInventory().setBoots(diamond_boots);
-                player.getInventory().addItem(bone);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
+                player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 player.getInventory().addItem(beef);
                 break;
@@ -457,8 +501,8 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(crossbow);
                 player.getInventory().addItem(slow_arrow);
                 player.getInventory().addItem(spectral_arrow);
-                player.getInventory().addItem(diamond_helmet);
-                player.getInventory().addItem(diamond_boots);
+                player.getInventory().setHelmet(diamond_helmet);
+                player.getInventory().setBoots(diamond_boots);
                 player.getInventory().addItem(beef);
                 break;
             case Jobs.woodenaxe:
@@ -485,10 +529,9 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(woodensword);
                 player.getInventory().addItem(arrow);
                 player.getInventory().addItem(arrow);
-                player.getInventory().addItem(arrow);
                 player.getInventory().setHelmet(iron_helmet);
                 player.getInventory().setBoots(lether_boots);
-
+                player.getInventory().addItem(beef);
                 break;
         }
     }

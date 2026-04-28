@@ -50,7 +50,7 @@ public class Teamselect {
             if(bankgame.players.size() >= 2 && !Teammanager.bankgame_thiefteam.getEntries().isEmpty() && !Teammanager.bankgame_policeteam.getEntries().isEmpty()){
                 bankgame.gameprepared = true;
                 instance.getServer().broadcast(miniMessage.deserialize("<green><bold>玩家数量足够，游戏准备就绪"));
-                instance.getServer().broadcast(Component.text("<!>再次右键菜单打开职业选择菜单").color(NamedTextColor.GREEN).style(Style.style(TextDecoration.BOLD)));
+                instance.getServer().broadcast(miniMessage.deserialize("<b><red><!>再次右键菜单打开职业选择菜单"));
 
             }else {
                 instance.getServer().broadcast(miniMessage.deserialize("<red><bold><!>玩家数量不足，无法开始游戏"));

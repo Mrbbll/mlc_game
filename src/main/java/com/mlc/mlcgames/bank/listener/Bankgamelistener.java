@@ -23,6 +23,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.bankgame;
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
 import static com.mlc.mlcgames.Teammanager.bankgame_policeteam;
 import static com.mlc.mlcgames.Teammanager.bankgame_thiefteam;
 import static com.mlc.mlcgames.bank.utils.Bankgame.gameendcountdown;
@@ -159,6 +160,10 @@ public class Bankgamelistener implements Listener {
     public void ondead(PlayerDeathEvent event){
         if(bankgame.isStart){
             Player player = event.getPlayer();
+            if(event.getDamageSource().getCausingEntity() instanceof Player causer){
+                event.deathMessage(miniMessage.deserialize( "<head:"+ causer.getName() + "> " + " <b>KILL<red> ❌ -><reset> " + " <head:"+ player.getName() + ">"));
+            }
+
             switch (bankgame.gamemode){
                 case thiefvspolice -> {
                     player.setGameMode(GameMode.SPECTATOR);
@@ -178,7 +183,7 @@ public class Bankgamelistener implements Listener {
                     for(String string :team.getEntries()){
                         //如果没或者玩家，直接结束游戏
                         Player player1 = Bukkit.getPlayer(string);
-                        if(player1!=null){
+                        if(player1!=null && player1.getGameMode()!=GameMode.SPECTATOR){
                             isteamenpty = false;
                         }
                     }

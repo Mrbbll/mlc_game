@@ -27,7 +27,7 @@ public class Bankgamebossbar {
     public static int bossbarfulltime = 10;
     public static Component bossbarcomponent = Component.text("");
     public static void initBankgamebossbar() {
-        bankgamebossbar = BossBar.bossBar(bossbarcomponent, 0, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
+        bankgamebossbar = BossBar.bossBar(bossbarcomponent, 0, BossBar.Color.WHITE, BossBar.Overlay.PROGRESS);
     }
     //🏹 🪓 🗡 🛡 ☀
     public static void setBossbarstring(){

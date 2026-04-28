@@ -54,7 +54,7 @@ public class Endgame {
             gameendcountdown.cancel();
             gameendcountdown = null;
         }
-        instance.getServer().broadcast(net.kyori.adventure.text.Component.text("\n\n\n时间结束", NamedTextColor.RED));
+        instance.getServer().broadcast(miniMessage.deserialize("\n\n<b><red>时间结束⌚"));
         bankgame.playerJobs.clear();
         for(Player player : bankgame.players){
             player.setRespawnLocation(bankgame.bankgameLocation,true);
@@ -72,21 +72,25 @@ public class Endgame {
         if(bankgame.gamemode== Gamemode.thiefvspolice){
             bankgame.policescore+=1000;
         }
-
+        String color = "white";
         if(bankgame.policescore > bankgame.thiefscore){
             bankgame.winnerteam = "蓝队";
+            color = "#33beff";
         }else if(bankgame.policescore < bankgame.thiefscore){
             bankgame.winnerteam = "红队";
+            color = "#ff000d";
         }else{
             bankgame.winnerteam = " -平- ";
         }
-        instance.getServer().broadcast(miniMessage.deserialize("<bold><green>获胜队伍是" + bankgame.winnerteam) );
+        instance.getServer().broadcast(miniMessage.deserialize("<bold><" + color + ">获胜队伍是" + bankgame.winnerteam) );
         bankgame.policescore = 0;
         bankgame.thiefscore = 0;
         //移除bossbar
         for(Player player : bankgame.players){
             bankgamebossbar.removeViewer(player);
         }
+        //清空bankgameplayer
+        bankgame.players.clear();
 
     }
 }

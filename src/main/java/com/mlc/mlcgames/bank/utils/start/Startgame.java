@@ -7,10 +7,8 @@ import com.mlc.mlcgames.bank.utils.Bankgamebossbar;
 import com.mlc.mlcgames.bank.utils.Fillutils;
 import com.mlc.mlcgames.bank.utils.Gamemode;
 import com.mlc.mlcgames.bank.utils.end.Endgame;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import net.kyori.adventure.title.TitlePart;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
@@ -88,15 +86,6 @@ public class Startgame {
                         }else if(Teammanager.getPlayerTeam(player).equals(Teammanager.bankgame_policeteam)){
                             Bankgameitemmanager.givepoliceitem(player);
                         }
-                        //监听事件
-                        //金库打开事件
-                        bankgame.Openlocklistener();
-
-                        //灯光破坏事件
-                        bankgame.Lightningbreaklistener();
-
-                        //灯光修复事件
-                        bankgame.Lightningfixlistener();
 
 
                     }
@@ -120,10 +109,21 @@ public class Startgame {
                     entity.remove();
                 }
             });
-            //如果是tvp，生成潜匿贝
+            //如果是tvp，生成潜匿贝,监听事件
             //生成潜匿贝
             if(bankgame.gamemode.equals(Gamemode.thiefvspolice)) {
 
+                //监听事件
+                //金库打开事件
+                bankgame.Openlocklistener();
+
+                //灯光破坏事件
+                bankgame.Lightningbreaklistener();
+
+                //灯光修复事件
+                bankgame.Lightningfixlistener();
+
+                //生成潜匿贝
                 bankgame.pow1locentity = (Shulker) bankgame.powerLocation1.getWorld().spawnEntity(bankgame.powerLocation1, EntityType.SHULKER);
 
                 bankgame.pow2locentity = (Shulker) bankgame.powerLocation2.getWorld().spawnEntity(bankgame.powerLocation2, EntityType.SHULKER);
@@ -150,6 +150,8 @@ public class Startgame {
                 //给潜匿贝发光
                 bankgame.outlocentity1.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
                 bankgame.outlocentity2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
+                bankgame.pow1locentity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
+                bankgame.pow2locentity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
             }
             //恢复照明
 
@@ -159,8 +161,13 @@ public class Startgame {
                 @Override
                 public void run() {
                     if(bankgame.remainTime==30){
-                        instance.getServer().broadcast(miniMessage.deserialize("<b><red>>>> 还剩最后30秒"));
-                    }
+                        instance.getServer().broadcast(miniMessage.deserialize("<b><#ff2a26>>>> 还剩最后30秒"));
+                        for(Player player: bankgame.players){
+                            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,2);
+                            player.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("<b><#ff2a26>⌚!!!"));
+                        }
+
+                    };
 
                     if(bankgame.remainTime > 0){
                         bankgame.remainTime--;

@@ -26,6 +26,10 @@ import java.util.Random;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class Bankgameloottable {
+    public static ItemStack beef;
+    public static ItemStack mutton;
+    public static ItemStack cookie;
+    public static ItemStack chicken;
     public static ItemStack air;
     public static ItemStack bone;
     public static ItemStack diamond;
@@ -70,6 +74,13 @@ public class Bankgameloottable {
     public static List<ItemStack> loottable;
 
     public static void init(){
+        beef = new ItemStack(Material.COOKED_BEEF);
+        mutton = new ItemStack(Material.COOKED_MUTTON);
+        chicken = new ItemStack(Material.COOKED_CHICKEN);
+        cookie = new ItemStack(Material.COOKIE);
+
+
+
         air = new ItemStack(Material.AIR);
 
         bone = new ItemStack(Material.BONE);

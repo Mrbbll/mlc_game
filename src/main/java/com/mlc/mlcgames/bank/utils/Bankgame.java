@@ -184,6 +184,7 @@ public class Bankgame {
                                     //破坏成功
                                     islightbreak1 = true;
                                     breaklightevent();
+                                    bankgame.pow1locentity.removePotionEffect(PotionEffectType.GLOWING);
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
                                     player.playSound(player,Sound.ENTITY_PLAYER_LEVELUP,1,1);
                                     lightbreaktime1 = 20;
@@ -211,6 +212,7 @@ public class Bankgame {
                                     //破坏成功
                                     islightbreak2 = true;
                                     breaklightevent();
+                                    bankgame.pow2locentity.removePotionEffect(PotionEffectType.GLOWING);
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
                                     player.playSound(player,Sound.ENTITY_PLAYER_LEVELUP,1,1);
                                     lightbreaktime2 = 20;
@@ -282,6 +284,7 @@ public class Bankgame {
                                     //修复成功
                                     islightbreak1 = false;
                                     fixlightevent();
+                                    bankgame.pow1locentity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
                                     player.sendMessage(Component.text("修复成功").color(TextColor.color(0xFF00)));
                                     player.playSound(player,Sound.ENTITY_ALLAY_AMBIENT_WITH_ITEM,2,1);
                                     lightfixtime1 = 20;
@@ -295,8 +298,7 @@ public class Bankgame {
                     if(!nearhavepolice1){
                         lightfixtime1 = 20;
                     }
-                };
-
+                }
                 if(islightbreak2){
                     Collection<Entity> entity = location2.getNearbyEntities(1, 0.5, 1);
                     for(Entity ent : entity){
@@ -311,6 +313,7 @@ public class Bankgame {
                                     //修复成功
                                     islightbreak2 = false;
                                     fixlightevent();
+                                    bankgame.pow2locentity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
                                     player.sendMessage(Component.text("修复成功").color(TextColor.color(0xFF00)));
                                     player.playSound(player,Sound.ENTITY_ALLAY_AMBIENT_WITH_ITEM,2,1);
                                     lightfixtime2 = 20;

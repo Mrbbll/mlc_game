@@ -74,10 +74,10 @@ public class Bankgame {
     public BukkitTask effectgiveevent;
     public BukkitTask bringgoldoutevent;
     public int breaklocktime = 20;
-    public int lightbreaktime1 = 20;
-    public int lightbreaktime2 = 20;
-    public int lightfixtime1 = 20;
-    public int lightfixtime2 = 20;
+    public int lightbreaktime1 = 10;
+    public int lightbreaktime2 = 10;
+    public int lightfixtime1 = 10;
+    public int lightfixtime2 = 10;
 
     public boolean islockbreak = false;
     public boolean islightbreak1 = false;

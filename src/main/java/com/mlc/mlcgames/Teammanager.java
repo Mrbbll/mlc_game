@@ -46,8 +46,8 @@ public class Teammanager {
         bankgame_goldlocteam = createTeam("bankgame_goldlocteam", NamedTextColor.GOLD);
         bankgame_outlocteam = createTeam("bankgame_outlocteam", NamedTextColor.GREEN);
 
-        bankgame_thiefteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OWN_TEAM);
-        bankgame_policeteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OWN_TEAM);
+        bankgame_thiefteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OTHER_TEAMS);
+        bankgame_policeteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OTHER_TEAMS);
 
 
         team_1 = createTeam("AQUA", NamedTextColor.AQUA);

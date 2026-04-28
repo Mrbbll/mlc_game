@@ -7,6 +7,7 @@ import com.mlc.mlcgames.bank.utils.end.Endgame;
 import com.mlc.mlcgames.bank.listener.clickprocess.Jobselect;
 import com.mlc.mlcgames.bank.listener.clickprocess.Teamselect;
 import com.mlc.mlcgames.bank.menus.bankmenus;
+import com.mlc.mlcgames.bank.utils.Setplayerlaydown;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -18,15 +19,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Objects;
 
-import static com.mlc.mlcgames.Mlcgames.bankgame;
-import static com.mlc.mlcgames.Mlcgames.miniMessage;
+import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Teammanager.bankgame_policeteam;
 import static com.mlc.mlcgames.Teammanager.bankgame_thiefteam;
-import static com.mlc.mlcgames.bank.utils.Bankgame.gameendcountdown;
 import static com.mlc.mlcgames.bank.listener.clickprocess.Openmenu.Openbankmenu;
 
 
@@ -75,6 +75,7 @@ public class Bankgamelistener implements Listener {
             event.getItem().setAmount(event.getItem().getAmount()-1);
         }
     }
+
 
 
     @EventHandler
@@ -133,13 +134,24 @@ public class Bankgamelistener implements Listener {
             Teammanager.removePlayerFromTeam(player);
             player.getInventory().clear();
             player.updateInventory();
+
             //最后一个玩家则停止游戏
-            if(bankgame.players.isEmpty()){
-                Endgame.endgame();
-                if(gameendcountdown!=null){
-                    gameendcountdown.cancel();
-                    gameendcountdown = null;
+            boolean isteamenpty = true;
+            Team team = Teammanager.getPlayerTeam(player);
+            for(String string :team.getEntries()){
+                //如果没或者玩家，直接结束游戏
+                Player player1 = Bukkit.getPlayer(string);
+                if(player1!=null && player1.getGameMode()!=GameMode.SPECTATOR){
+                    isteamenpty = false;
                 }
+            }
+            if(isteamenpty){
+                if(team.equals(bankgame_policeteam)){
+                    bankgame.thiefscore += 1000;
+                }else if(team.equals(bankgame_thiefteam)){
+                    bankgame.policescore += 1000;
+                }
+                Endgame.endgame();
             }
         }
 
@@ -160,13 +172,18 @@ public class Bankgamelistener implements Listener {
     public void ondead(PlayerDeathEvent event){
         if(bankgame.isStart){
             Player player = event.getPlayer();
-            if(event.getDamageSource().getCausingEntity() instanceof Player causer){
-                event.deathMessage(miniMessage.deserialize( "<head:"+ causer.getName() + "> " + " <b>KILL<red> ❌ -><reset> " + " <head:"+ player.getName() + ">"));
-            }
+//            if(event.getDamageSource().getCausingEntity() instanceof Player causer){
+//                event.deathMessage(miniMessage.deserialize( "<head:"+ causer.getName() + "> " + " <b>KILL<red> ❌ -><reset> " + " <head:"+ player.getName() + ">"));
+//            }
 
             switch (bankgame.gamemode){
                 case thiefvspolice -> {
-                    player.setGameMode(GameMode.SPECTATOR);
+                    event.setCancelled(true);
+                    if(event.getDamageSource().getCausingEntity() instanceof Player causer){
+                        instance.getServer().broadcast(miniMessage.deserialize( "<head:"+ causer.getName() + "> " + " <b>KILL<red> ❌ -><reset> " + " <head:"+ player.getName() + ">"));
+                    }
+                    new Setplayerlaydown(player);
+//                    player.setGameMode(GameMode.SPECTATOR);
                     if(player.getInventory().contains(Bankgameitemmanager.golditem)){
                         player.getInventory().remove(Bankgameitemmanager.golditem);
                         player.dropItem(Bankgameitemmanager.golditem);
@@ -183,7 +200,7 @@ public class Bankgamelistener implements Listener {
                     for(String string :team.getEntries()){
                         //如果没或者玩家，直接结束游戏
                         Player player1 = Bukkit.getPlayer(string);
-                        if(player1!=null && player1.getGameMode()!=GameMode.SPECTATOR){
+                        if(player1!=null && !player1.hasPotionEffect(PotionEffectType.LUCK)){
                             isteamenpty = false;
                         }
                     }
@@ -194,9 +211,12 @@ public class Bankgamelistener implements Listener {
                             bankgame.policescore += 1000;
                         }
                         Endgame.endgame();
-                        }
                     }
+                }
                 case thiefvsthief -> {
+                    if(event.getDamageSource().getCausingEntity() instanceof Player causer){
+                        event.deathMessage(miniMessage.deserialize( "<head:"+ causer.getName() + "> " + " <b>KILL<red> ❌ -><reset> " + " <head:"+ player.getName() + ">"));
+                    }
                     if(Teammanager.isPlayerInTeam(player, bankgame_policeteam)){
                         bankgame.thiefscore+=10;
 

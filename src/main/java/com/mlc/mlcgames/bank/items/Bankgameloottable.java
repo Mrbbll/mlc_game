@@ -119,7 +119,7 @@ public class Bankgameloottable {
         ItemMeta jumppotionmeta = jumppotion.getItemMeta();
         jumppotionmeta.customName(miniMessage.deserialize("<!i>跳跃药水"));
         PotionMeta meta2= (PotionMeta) jumppotionmeta;
-        meta2.addCustomEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 60*20, 0),true);
+        meta2.addCustomEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 60*20, 2),true);
         jumppotion.setItemMeta(jumppotionmeta);
 
         regenpotion = new ItemStack(Material.POTION);
@@ -360,6 +360,9 @@ public class Bankgameloottable {
                 cookie,
                 chicken,
                 mutton,
+                arrow,
+                arrow,
+                arrow,
                 arrow,
                 bone,
                 diamond,

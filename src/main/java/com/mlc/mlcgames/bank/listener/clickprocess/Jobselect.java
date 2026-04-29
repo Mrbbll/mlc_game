@@ -70,6 +70,7 @@ public class Jobselect {
         Startgame.startgame();
         instance.getServer().broadcast(miniMessage.deserialize("<b><red><!>检测到所有人均选好职业，游戏开始"));
         for(Player player : bankgame.players){
+
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 2f, 0.6f);
         }
     }

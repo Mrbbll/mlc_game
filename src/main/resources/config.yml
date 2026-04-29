@@ -7,7 +7,6 @@ bankgame:
   breaklocktime: 10
   lightbreaktime: 10
   lightfixtime: 20
-
   tvtgametime: 400
   tvpgametime: 400
   bankgameLocation: ''

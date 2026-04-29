@@ -54,6 +54,7 @@ public class Gameprepare {
                 player.updateInventory();
                 player.give(Bankgameitemmanager.bankgamemenu);
                 player.sendMessage(miniMessage.deserialize("\n\n<bold><#fffb00>右键菜单打开选队界面"));
+                //加入游戏玩家列表
                 if(!bankgame.players.contains(player)){
                     bankgame.players.add(player);
                 }

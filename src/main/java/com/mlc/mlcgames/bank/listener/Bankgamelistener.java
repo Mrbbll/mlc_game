@@ -52,6 +52,18 @@ public class Bankgamelistener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onlaydowninteract(PlayerInteractEvent event){
+        if(!bankgame.isStart){
+            return;
+        }
+        Player player = event.getPlayer();
+        if(player.hasPotionEffect(PotionEffectType.LUCK)){
+            event.setCancelled(true);
+        }
+
+    }
+
     //召唤狗事件
     @EventHandler
     public void onusespawnegg(PlayerInteractEvent event){
@@ -185,8 +197,10 @@ public class Bankgamelistener implements Listener {
                     }else {
                         instance.getServer().broadcast(miniMessage.deserialize("<b><red> ❌  <head:"+ player.getName() + "> "));
                     }
-                    new Setplayerlaydown(player);
-//                    player.setGameMode(GameMode.SPECTATOR);
+
+                    if(!player.hasPotionEffect(PotionEffectType.LUCK)){
+                        new Setplayerlaydown(player);
+                    }
                     if(player.getInventory().contains(Bankgameitemmanager.golditem)){
                         player.getInventory().remove(Bankgameitemmanager.golditem);
                         player.dropItem(Bankgameitemmanager.golditem);

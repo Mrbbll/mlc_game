@@ -93,7 +93,6 @@ public class Bankgameloottable {
         cookie = new ItemStack(Material.COOKIE);
 
 
-
         air = new ItemStack(Material.AIR);
 
         bone = new ItemStack(Material.BONE);
@@ -415,6 +414,13 @@ public class Bankgameloottable {
                 arrow,
                 bone,
                 diamond,
+                diamond,
+                emerald,
+                emerald,
+                emerald,
+                emerald,
+                emerald,
+                emerald,
                 emerald,
                 gold,
                 knockbackstick,
@@ -455,7 +461,36 @@ public class Bankgameloottable {
                 book25,
                 book26,
                 book27,
-                book28);
+                book28,
+                book1,
+                book2,
+                book3,
+                book4,
+                book5,
+                book6,
+                book7,
+                book8,
+                book9,
+                book10,
+                book11,
+                book12,
+                book13,
+                book14,
+                book15,
+                book16,
+                book17,
+                book18,
+                book19,
+                book20,
+                book21,
+                book22,
+                book23,
+                book24,
+                book25,
+                book26,
+                book27,
+                book28
+        );
     }
 
 

@@ -8,6 +8,8 @@ import com.mlc.mlcgames.bank.utils.Bankgamebossbar;
 import com.mlc.mlcgames.bank.utils.Fillutils;
 import com.mlc.mlcgames.bank.utils.Gamemode;
 import com.mlc.mlcgames.bank.utils.end.Endgame;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -17,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
+import java.util.Random;
 
 import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.bank.Bankgamesidebar.updatesidebar;
@@ -131,6 +134,7 @@ public class Startgame {
                 //灯光修复事件
                 bankgame.Lightningfixlistener();
 
+
                 //生成潜匿贝
                 bankgame.pow1locentity = (Shulker) bankgame.powerLocation1.getWorld().spawnEntity(bankgame.powerLocation1, EntityType.SHULKER);
 
@@ -160,6 +164,9 @@ public class Startgame {
                 bankgame.outlocentity2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
                 bankgame.pow1locentity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
                 bankgame.pow2locentity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,99999*20,1,true));
+
+                //出口事件
+                bankgame.leavelocevent();
             }
             //恢复照明
 

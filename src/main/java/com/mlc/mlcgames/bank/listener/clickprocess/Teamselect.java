@@ -52,6 +52,9 @@ public class Teamselect {
     private static void checkgameprepared() {
             if(bankgame.players.size() >= 2 && !Teammanager.bankgame_thiefteam.getEntries().isEmpty() && !Teammanager.bankgame_policeteam.getEntries().isEmpty()){
                 bankgame.gameprepared = true;
+                for(Player player:bankgame.players){
+                    player.playSound(player,Sound.ENTITY_CHICKEN_HURT,1,1);
+                }
                 instance.getServer().broadcast(miniMessage.deserialize("<green><bold>玩家数量足够，游戏准备就绪"));
                 instance.getServer().broadcast(miniMessage.deserialize("<b><red><!>再次右键菜单打开职业选择菜单"));
             }else {

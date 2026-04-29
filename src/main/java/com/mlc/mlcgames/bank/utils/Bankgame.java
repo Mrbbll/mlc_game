@@ -88,7 +88,24 @@ public class Bankgame {
     public boolean islightbreak2 = false;
     public boolean ispowerbreak = false;
 
+    public void leavelocevent(){
+        //随机出口
+        Random random = new Random();
+        int locationindex = random.nextInt(2);
+        if(locationindex == 1){
+            leaveLocation = leaveLocation2;
+            outlocentity1.removePotionEffect(PotionEffectType.GLOWING);
+            instance.getServer().broadcast(Component.text(">>> 小偷将从<出口2>离开").color(TextColor.color(0xF4FF26)));
+        }else{
+            leaveLocation = leaveLocation1;
+            outlocentity2.removePotionEffect(PotionEffectType.GLOWING);
+            instance.getServer().broadcast(Component.text(">>> 你将从<出口1>离开").color(TextColor.color(0xF4FF26)));
+        }
 
+        //带金条离开事件
+        bankgame.Bringgoldoutevent();
+
+    }
 
     public void Openlocklistener(){
         //金库破坏事件
@@ -144,21 +161,7 @@ public class Bankgame {
         //效果给予
         bankgame.Effectgive();
 
-        //随机出口
-        Random random = new Random();
-        int locationindex = random.nextInt(2);
-        if(locationindex == 1){
-            leaveLocation = leaveLocation2;
-            outlocentity1.removePotionEffect(PotionEffectType.GLOWING);
-            player.sendMessage(Component.text(">>> 你将从出口2离开").color(TextColor.color(0xF4FF26)));
-        }else{
-            leaveLocation = leaveLocation1;
-            outlocentity2.removePotionEffect(PotionEffectType.GLOWING);
-            player.sendMessage(Component.text(">>> 你将从出口1离开").color(TextColor.color(0xF4FF26)));
-        }
-        player.playSound(player,Sound.ENTITY_CHICKEN_HURT,1,1);
-        //带金条离开事件
-        bankgame.Bringgoldoutevent();
+
 
 
     }
@@ -413,12 +416,12 @@ public class Bankgame {
                                     int count = item.getAmount();
                                     bankgame.thiefscore += count*50;
                                     player.getInventory().remove(item);
-                                    instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <head:"+player.getName()+">带回了"+count+"个钻石"));
+                                    instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <reset><head:"+player.getName()+"><gold><bold>带回了"+count+"个钻石"));
                                 } else if (item.getType().equals(Material.EMERALD)) {
                                     int count = item.getAmount();
                                     bankgame.thiefscore += count*100;
                                     player.getInventory().remove(item);
-                                    instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <head:"+player.getName()+">带回了"+count+"个绿宝石"));
+                                    instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <reset><head:"+player.getName()+"><gold><bold>带回了"+count+"个绿宝石"));
 
                                 }
                             }

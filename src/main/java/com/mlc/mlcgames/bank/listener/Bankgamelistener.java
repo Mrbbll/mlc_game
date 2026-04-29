@@ -205,10 +205,14 @@ public class Bankgamelistener implements Listener {
                         player.getInventory().remove(Bankgameitemmanager.golditem);
                         player.dropItem(Bankgameitemmanager.golditem);
                     }
-                    if(Teammanager.isPlayerInTeam(player, bankgame_policeteam)){
-                        bankgame.thiefscore+=1;
+                    if(player.getInventory().contains(Bankgameloottable.key)){
+                        player.getInventory().remove(Bankgameloottable.key);
+                        player.dropItem(Bankgameloottable.key);
+                    }
+//                    if(Teammanager.isPlayerInTeam(player, bankgame_policeteam)){
+//                        bankgame.thiefscore+=1;
 
-                    }else if(Teammanager.isPlayerInTeam(player, bankgame_thiefteam)){
+                    if(Teammanager.isPlayerInTeam(player, bankgame_thiefteam)){
                         bankgame.policescore+=1;
                     }
 

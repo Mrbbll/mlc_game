@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.bank.Bankgamesidebar.updatesidebar;
 
 public class Teamselect {
         public static void selectteam(ItemStack itemStack, Player player){
@@ -29,6 +30,7 @@ public class Teamselect {
                 player.sendMessage(miniMessage.deserialize(">>> 你选择了<red>红队</red>"));
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,1.3f);
                 Teammanager.addPlayerToTeam(Teammanager.bankgame_thiefteam, player);
+
             }else if(itemStack.getType() == Material.LIGHT_BLUE_CONCRETE){
                 player.sendMessage(miniMessage.deserialize(">>> 你选择了<blue>蓝队</blue>"));
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,1.3f);
@@ -43,6 +45,7 @@ public class Teamselect {
                 }
                 checkgameprepared();
             }
+            updatesidebar();
             player.closeInventory();
         }
 
@@ -53,7 +56,6 @@ public class Teamselect {
                 instance.getServer().broadcast(miniMessage.deserialize("<b><red><!>再次右键菜单打开职业选择菜单"));
             }else {
                 instance.getServer().broadcast(miniMessage.deserialize("<red><bold><!>玩家数量不足，无法开始游戏"));
-
             }
     }
 }

@@ -1,5 +1,6 @@
 package com.mlc.mlcgames.bank.utils.prepare;
 
+import com.mlc.mlcgames.bank.Bankgamesidebar;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.utils.Gamemode;
 import net.kyori.adventure.text.Component;
@@ -14,7 +15,7 @@ import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 
 public class Gameprepare {
     public static void prepare(Player player, Gamemode gamemode){
-
+        Bankgamesidebar.showsidebar(player);
 
         switch (gamemode){
             case thiefvsthief:

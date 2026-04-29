@@ -85,6 +85,7 @@ public class Bankgameloottable {
         key = new ItemStack(Material.OMINOUS_TRIAL_KEY);
         ItemMeta keymeta = key.getItemMeta();
         keymeta.customName(Component.text("枪械库钥匙"));
+        key.setItemMeta(keymeta);
 
         beef = new ItemStack(Material.COOKED_BEEF);
         mutton = new ItemStack(Material.COOKED_MUTTON);
@@ -161,35 +162,35 @@ public class Bankgameloottable {
         speedpotionmeta_splash.customName(miniMessage.deserialize("<!i>速度药水"));
         PotionMeta meta6= (PotionMeta) speedpotionmeta_splash;
         meta6.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 30*20, 0),true);
-        speedpotion.setItemMeta(speedpotionmeta_splash);
+        speedpotion_splash.setItemMeta(speedpotionmeta_splash);
 
-        jumppotion = new ItemStack(Material.SPLASH_POTION);
-        ItemMeta jumppotionmeta_splash = jumppotion.getItemMeta();
+        jumppotion_splash = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta jumppotionmeta_splash = jumppotion_splash.getItemMeta();
         jumppotionmeta_splash.customName(miniMessage.deserialize("<!i>跳跃药水"));
         PotionMeta meta7= (PotionMeta) jumppotionmeta_splash;
         meta7.addCustomEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 60*20, 2),true);
-        jumppotion.setItemMeta(jumppotionmeta_splash);
+        jumppotion_splash.setItemMeta(jumppotionmeta_splash);
 
-        regenpotion = new ItemStack(Material.SPLASH_POTION);
-        ItemMeta regenpotionmeta_splash = regenpotion.getItemMeta();
+        regenpotion_splash = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta regenpotionmeta_splash = regenpotion_splash.getItemMeta();
         regenpotionmeta_splash.customName(miniMessage.deserialize("<!i>再生药水"));
         PotionMeta meta8= (PotionMeta) regenpotionmeta_splash;
         meta8.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 30*20, 0),true);
-        regenpotion.setItemMeta(regenpotionmeta_splash);
+        regenpotion_splash.setItemMeta(regenpotionmeta_splash);
 
-        strengthpotion = new ItemStack(Material.SPLASH_POTION);
-        ItemMeta strengthpotionmeta_splash = strengthpotion.getItemMeta();
+        strengthpotion_splash = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta strengthpotionmeta_splash = strengthpotion_splash.getItemMeta();
         strengthpotionmeta_splash.customName(miniMessage.deserialize("<!i>力量药水"));
         PotionMeta meta9= (PotionMeta) strengthpotionmeta_splash;
         meta9.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 30*20, 0),true);
-        strengthpotion.setItemMeta(strengthpotionmeta_splash);
+        strengthpotion_splash.setItemMeta(strengthpotionmeta_splash);
 
-        invisibilitypotion = new ItemStack(Material.SPLASH_POTION);
-        ItemMeta invisibilitypotionmeta_splash = invisibilitypotion.getItemMeta();
+        invisibilitypotion_splash = new ItemStack(Material.SPLASH_POTION);
+        ItemMeta invisibilitypotionmeta_splash = invisibilitypotion_splash.getItemMeta();
         invisibilitypotionmeta_splash.customName(miniMessage.deserialize("<!i>隐身药水"));
         PotionMeta meta10= (PotionMeta) invisibilitypotionmeta_splash;
         meta10.addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30*20, 1),true);
-        invisibilitypotion.setItemMeta(invisibilitypotionmeta_splash);
+        invisibilitypotion_splash.setItemMeta(invisibilitypotionmeta_splash);
 
 
         book1 = new ItemStack(Material.BOOK);

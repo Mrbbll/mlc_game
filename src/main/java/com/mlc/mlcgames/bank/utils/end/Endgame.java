@@ -1,6 +1,8 @@
 package com.mlc.mlcgames.bank.utils.end;
 
+import com.mlc.mlcgames.Gamesidebar;
 import com.mlc.mlcgames.Teammanager;
+import com.mlc.mlcgames.bank.Bankgamesidebar;
 import com.mlc.mlcgames.bank.utils.Bankgame;
 import com.mlc.mlcgames.bank.utils.Gamemode;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,7 +21,10 @@ public class Endgame {
 
         //清除展示实体,实体，箭头,狗,潜匿贝
         bankgame.bankgameLocation.getWorld().getEntities().forEach(entity -> {
-            if(entity instanceof ItemDisplay){
+            if(entity instanceof ItemDisplay itemDisplay){
+                if(itemDisplay.getItemStack().getItemMeta()==null){
+                    itemDisplay.remove();
+                }
                 Block block = entity.getLocation().getBlock();
                 if(block.getType() == Material.BARREL){
                     entity.remove();
@@ -57,6 +62,8 @@ public class Endgame {
         if(bankgame.remainTime<=0) {instance.getServer().broadcast(miniMessage.deserialize("\n\n<b><red>时间结束⌚"));}
         bankgame.playerJobs.clear();
         for(Player player : bankgame.players){
+
+            Gamesidebar.showsidebar(player);
             player.setRespawnLocation(bankgame.bankgameLocation,true);
             player.teleport(bankgame.bankgameLocation);
             player.setGameMode(GameMode.ADVENTURE);

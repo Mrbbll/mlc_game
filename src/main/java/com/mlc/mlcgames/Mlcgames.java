@@ -51,6 +51,7 @@ public final class Mlcgames extends JavaPlugin {
         //管理器初始化
         scoreboardManager = Bukkit.getScoreboardManager();
         Teammanager.initTeammanager();
+        Gamesidebar.init();
         Task.runtask();//注册监听，命令
         getLogger().info("\n\nmlcgame插件加载成功\n\n");
     }

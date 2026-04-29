@@ -50,7 +50,7 @@ public class Setplayerlaydown {
                 if(issaved|| !bankgame.isStart){
                     this.cancel();
                 }
-                player.sendActionBar(miniMessage.deserialize("<b><red>你已被击倒"));
+                player.sendActionBar(miniMessage.deserialize("<b><red>你已被击倒,等待队友救援"));
                 itemDisplay.teleport(player.getLocation().add(0,1,0));
             }
         }.runTaskTimer(instance,0,2);
@@ -70,8 +70,9 @@ public class Setplayerlaydown {
                             hasfriend = true;
                             player1.sendActionBar(miniMessage.deserialize("<#0dff0d><b>剩余救援时间 "+savetime));
                             savetime -= 1;
-
+                            player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,2);
                             if(savetime<=0){
+                                instance.getServer().broadcast(miniMessage.deserialize( "<head:"+ player1.getName() + "> " + " <b>SAVE<GREEN>✔ -><reset> " + " <head:"+ player.getName() + ">"));
                                 saveplayer(player);
                                 player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK,1,1);
                             }
@@ -89,6 +90,7 @@ public class Setplayerlaydown {
 
     private void saveplayer(Player player) {
         issaved = true;
+
         player.removePotionEffect(PotionEffectType.REGENERATION);
         player.removePotionEffect(PotionEffectType.WEAKNESS);
         player.removePotionEffect(PotionEffectType.SLOWNESS);

@@ -4,6 +4,8 @@ main: com.mlc.mlcgames.Mlcgames
 api-version: '1.21'
 authors: [ Mr_bl ]
 commands:
+  reload:
+    description: 重载
   bankgameprepare:
     description: 准备
   bankgamereload:

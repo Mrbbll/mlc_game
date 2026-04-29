@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -37,6 +38,7 @@ public class Teammanager {
 
     public static void initTeammanager() {
         scoreboard = scoreboardManager.getMainScoreboard();
+        scoreboard.clearSlot(DisplaySlot.SIDEBAR);
         clearallTeam();
         bankgame_prepareteam = createTeam("bankgame_prepareteam", NamedTextColor.YELLOW);
         bankgame_policeteam = createTeam("bankgame_pliceteam", NamedTextColor.AQUA);

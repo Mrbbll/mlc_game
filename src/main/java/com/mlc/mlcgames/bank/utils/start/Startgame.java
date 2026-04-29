@@ -19,6 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Collection;
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.bank.Bankgamesidebar.updatesidebar;
 import static com.mlc.mlcgames.bank.utils.Bankgame.gameendcountdown;
 import static com.mlc.mlcgames.bank.utils.Bankgamebossbar.bankgamebossbar;
 
@@ -104,7 +105,10 @@ public class Startgame {
             }
             //清除展示实体,潜匿贝,狗,箭头
             bankgame.bankgameLocation.getWorld().getEntities().forEach(entity -> {
-                if(entity instanceof ItemDisplay){
+                if(entity instanceof ItemDisplay itemDisplay){
+                    if(itemDisplay.getItemStack().getItemMeta()==null){
+                        itemDisplay.remove();
+                    }
                     Block block = entity.getLocation().getBlock();
                     if(block.getType() == Material.BARREL){
                     entity.remove();
@@ -175,7 +179,8 @@ public class Startgame {
 
                     if(bankgame.remainTime > 0){
                         bankgame.remainTime--;
-                        //更新bossbar
+                        //更新bossbar,sidebar
+                        updatesidebar();
                         Bankgamebossbar.updateBossbar();
                     }else {
                         //倒计时结束，结束游戏

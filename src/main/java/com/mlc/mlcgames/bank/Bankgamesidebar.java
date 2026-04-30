@@ -60,6 +60,9 @@ public class Bankgamesidebar {
         Set<Player> redteam = Teammanager.getteamplayer(Teammanager.bankgame_thiefteam);
         StringBuilder redteamplayer = new StringBuilder();
         for(Player player : redteam){
+            if(!player.isOnline()){
+                continue;
+            }
             if(player.hasPotionEffect(PotionEffectType.LUCK)){
                 redteamplayer.append("<#29292e><head:").append(player.getName()).append(">");
                 continue;
@@ -73,6 +76,9 @@ public class Bankgamesidebar {
         Set<Player> blue = Teammanager.getteamplayer(Teammanager.bankgame_policeteam);
         StringBuilder blueteamplayer = new StringBuilder();
         for(Player player : blue){
+            if(!player.isOnline()){
+                continue;
+            }
             if(player.hasPotionEffect(PotionEffectType.LUCK)){
                 blueteamplayer.append("<#29292e><head:").append(player.getName()).append(">");
                 continue;

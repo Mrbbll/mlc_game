@@ -66,7 +66,7 @@ public class Setplayerlaydown {
                 Collection<Entity> ent = location.getNearbyEntities(1,1,1);
                 for(Entity entity :ent ){
                     if(entity instanceof Player player1){
-                        if(!player1.equals(player) && Teammanager.getPlayerTeam(player1).equals(Teammanager.getPlayerTeam(player)) && !player1.hasPotionEffect(PotionEffectType.LUCK)){
+                        if(!player1.equals(player) && Teammanager.getPlayerTeam(player1) != null && Teammanager.getPlayerTeam(player1).equals(Teammanager.getPlayerTeam(player)) && !player1.hasPotionEffect(PotionEffectType.LUCK)){
                             hasfriend = true;
                             player1.sendActionBar(miniMessage.deserialize("<#0dff0d><b>剩余救援时间 "+savetime));
                             savetime -= 1;

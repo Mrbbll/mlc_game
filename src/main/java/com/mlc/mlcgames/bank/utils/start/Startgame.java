@@ -167,6 +167,12 @@ public class Startgame {
 
                 //出口事件
                 bankgame.leavelocevent();
+
+                //贼效果
+                bankgame.ThiefEffectgive();
+
+
+
             }
             //恢复照明
 

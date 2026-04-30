@@ -8,13 +8,16 @@ import com.mlc.mlcgames.bank.listener.clickprocess.Jobselect;
 import com.mlc.mlcgames.bank.listener.clickprocess.Teamselect;
 import com.mlc.mlcgames.bank.menus.bankmenus;
 import com.mlc.mlcgames.bank.utils.Setplayerlaydown;
+import io.papermc.paper.event.player.PlayerItemFrameChangeEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -22,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.*;
@@ -31,6 +35,41 @@ import static com.mlc.mlcgames.bank.listener.clickprocess.Openmenu.Openbankmenu;
 
 
 public class Bankgamelistener implements Listener {
+    private final List<Material> disallowblocks = List.of(
+            Material.CHEST,
+            Material.ENDER_CHEST,
+            Material.RED_BED,
+            Material.HOPPER,
+            Material.CAKE,
+            Material.SMOKER,
+            Material.FLOWER_POT,
+            Material.BLAST_FURNACE,
+            Material.FURNACE,
+            Material.CHISELED_BOOKSHELF,
+            Material.PINK_BED,
+            Material.LIGHT_BLUE_BED,
+            Material.WHITE_BED,
+            Material.BLACK_BED,
+            Material.POTTED_MANGROVE_PROPAGULE,
+            Material.POTTED_LILY_OF_THE_VALLEY,
+            Material.POTTED_BAMBOO,
+            Material.POTTED_TORCHFLOWER,
+            Material.POTTED_CORNFLOWER,
+            Material.POTTED_FERN,
+            Material.POTTED_AZURE_BLUET,
+            Material.POTTED_PINK_TULIP,
+            Material.POTTED_RED_TULIP,
+            Material.POTTED_ORANGE_TULIP,
+            Material.POTTED_DANDELION,
+            Material.POTTED_BLUE_ORCHID,
+            Material.POTTED_OAK_SAPLING,
+            Material.POTTED_CACTUS,
+            Material.WAXED_COPPER_GOLEM_STATUE
+    );
+
+
+
+
     @EventHandler
     public void onclick(PlayerInteractEvent event){
         if(!event.getAction().isRightClick()){
@@ -51,7 +90,7 @@ public class Bankgamelistener implements Listener {
             }
         }
     }
-
+    //倒下禁止交互
     @EventHandler
     public void onlaydowninteract(PlayerInteractEvent event){
         if(!bankgame.isStart){
@@ -62,6 +101,36 @@ public class Bankgamelistener implements Listener {
             event.setCancelled(true);
         }
 
+    }
+    //防止打开其他东西
+    @EventHandler
+    public void onopenotherinv(PlayerInteractEvent event){
+        if(!bankgame.isStart){
+            return;
+        }
+
+        if (event.getClickedBlock() != null && disallowblocks.contains(event.getClickedBlock().getType())) {
+            event.setCancelled(true);
+        }
+    }
+
+    //防止破坏画
+    @EventHandler
+    public void ondamage(HangingBreakByEntityEvent event){
+        if(!bankgame.isStart){
+            return;
+        }
+        if(event.getEntity() instanceof Painting){
+            event.setCancelled(true);
+        }
+    }
+    //防止使用物品展示框
+    @EventHandler
+    public void onuseitemframe(PlayerItemFrameChangeEvent event){
+        if(!bankgame.isStart){
+            return;
+        }
+        event.setCancelled(true);
     }
 
     //召唤狗事件
@@ -201,14 +270,26 @@ public class Bankgamelistener implements Listener {
                     if(!player.hasPotionEffect(PotionEffectType.LUCK)){
                         new Setplayerlaydown(player);
                     }
-                    if(player.getInventory().contains(Bankgameitemmanager.golditem)){
-                        player.getInventory().remove(Bankgameitemmanager.golditem);
-                        player.dropItem(Bankgameitemmanager.golditem);
+                    ItemStack[] items = player.getInventory().getContents();
+                    for(ItemStack itemStack : items){
+                        if(itemStack == null){
+                            continue;
+                        }
+                        if(itemStack.equals(Bankgameitemmanager.golditem)){
+                            player.getInventory().remove(itemStack);
+                            player.dropItem(itemStack);
+                        } else if (itemStack.equals(Bankgameloottable.key)) {
+                            player.getInventory().remove(itemStack);
+                            player.dropItem(itemStack);
+                        } else if (itemStack.getType().equals(Material.EMERALD)) {
+                            player.getInventory().remove(itemStack);
+                            player.dropItem(itemStack);
+                        } else if (itemStack.equals(Bankgameloottable.diamond)) {
+                            player.getInventory().remove(itemStack);
+                            player.dropItem(itemStack);
+                        }
                     }
-                    if(player.getInventory().contains(Bankgameloottable.key)){
-                        player.getInventory().remove(Bankgameloottable.key);
-                        player.dropItem(Bankgameloottable.key);
-                    }
+
 //                    if(Teammanager.isPlayerInTeam(player, bankgame_policeteam)){
 //                        bankgame.thiefscore+=1;
 

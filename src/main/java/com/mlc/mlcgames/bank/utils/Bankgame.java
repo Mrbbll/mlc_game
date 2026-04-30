@@ -24,6 +24,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.bank.Bankgamesidebar.updatesidebar;
 import static com.mlc.mlcgames.bank.items.Bankgameitemmanager.golditem;
 
 public class Bankgame {
@@ -159,9 +160,7 @@ public class Bankgame {
         player.getInventory().addItem(golditem);
 
         //效果给予
-        bankgame.Effectgive();
-
-
+        bankgame.PoliceEffectgive();
 
 
     }
@@ -363,7 +362,7 @@ public class Bankgame {
 
     }
 
-    public void Effectgive() {
+    public void PoliceEffectgive() {
         for(Player player : Teammanager.getteamplayer(Teammanager.bankgame_policeteam)){
             player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,999*20,1,true,true));
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,999*20,1,true,true));
@@ -371,6 +370,9 @@ public class Bankgame {
             player.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("<b><red>💲!!!"));
         }
 
+
+    }
+    public void ThiefEffectgive() {
         effectgiveevent = new BukkitRunnable() {
             @Override
             public void run() {
@@ -379,14 +381,17 @@ public class Bankgame {
                 };
                 for(String player : Teammanager.bankgame_thiefteam.getEntries()){
                     Player player1 = Bukkit.getPlayer(player);
-                    if(player1 != null){
+                    if(player1 == null){
+                        continue;
+                    }
+                    if(player1.getInventory().contains(golditem)||player1.getInventory().contains(Material.EMERALD)){
                         player1.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20, 0));
-
                     }
                 }
             }
         }.runTaskTimer(instance, 0, 10);
     }
+
 
     public void Bringgoldoutevent() {
         bringgoldoutevent = new BukkitRunnable() {
@@ -415,11 +420,13 @@ public class Bankgame {
                                 if (item.getType().equals(Material.DIAMOND)) {
                                     int count = item.getAmount();
                                     bankgame.thiefscore += count*50;
+                                    updatesidebar();
                                     player.getInventory().remove(item);
                                     instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <reset><head:"+player.getName()+"><gold><bold>带回了"+count+"个钻石"));
                                 } else if (item.getType().equals(Material.EMERALD)) {
                                     int count = item.getAmount();
                                     bankgame.thiefscore += count*100;
+                                    updatesidebar();
                                     player.getInventory().remove(item);
                                     instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <reset><head:"+player.getName()+"><gold><bold>带回了"+count+"个绿宝石"));
 

@@ -64,7 +64,8 @@ public class Bankgamelistener implements Listener {
             Material.POTTED_BLUE_ORCHID,
             Material.POTTED_OAK_SAPLING,
             Material.POTTED_CACTUS,
-            Material.WAXED_COPPER_GOLEM_STATUE
+            Material.WAXED_COPPER_GOLEM_STATUE,
+            Material.POTTED_OPEN_EYEBLOSSOM
     );
 
 

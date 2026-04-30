@@ -45,7 +45,7 @@ public class Bankgamesidebar {
             setLine(scoreboard, 2,miniMessage.deserialize("<b><red>红队得分 "+ bankgame.thiefscore + "</red> <white>|</white> <blue>蓝队得分 "+bankgame.policescore));
         }
         else{
-            setLine(scoreboard, 2,miniMessage.deserialize("<#ff672b>小偷得分 <b><#ff9500>" + bankgame.policescore + "<white>/</white><#ff9500>"+bankgame.requirescore));
+            setLine(scoreboard, 2,miniMessage.deserialize("<#ff672b>小偷得分 <b><#ff9500>" + bankgame.thiefscore + "<white>/</white><#ff9500>"+bankgame.requirescore));
         }
         setLine(scoreboard, 3,miniMessage.deserialize("<#ff672b>剩余时间：<#ff9500>"+ bankgame.remainTime+"s"));
         setLine(scoreboard, 4,miniMessage.deserialize("红队：" + getredteamplayer()));

@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Team;
 
 import static com.mlc.mlcgames.Mlcgames.*;
 
@@ -31,6 +32,9 @@ public class Jobselect {
                 player.sendMessage(">>> 你选择了 \uD83C\uDFF9" + Jobs.bow);
                 bankgame.playerJobs.put(player, Jobs.bow);
         }
+        for(Player player1 : Teammanager.getteamplayer(Teammanager.bankgame_policeteam)){
+            player1.sendMessage(miniMessage.deserialize(getteamjob(Teammanager.bankgame_policeteam)));
+        }
         checkgamestart();
         player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 10f, 0.1f);
         player.closeInventory();
@@ -53,6 +57,9 @@ public class Jobselect {
                 player.sendMessage(">>> 你选择了 \uD83C\uDFF9" + Jobs.bow);
                 bankgame.playerJobs.put(player, Jobs.bow);
         }
+        for(Player player1 : Teammanager.getteamplayer(Teammanager.bankgame_thiefteam)){
+            player1.sendMessage(miniMessage.deserialize(getteamjob(Teammanager.bankgame_thiefteam)));
+        }
         checkgamestart();
         player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 10f, 0.1f);
         player.closeInventory();
@@ -73,5 +80,13 @@ public class Jobselect {
 
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 2f, 0.6f);
         }
+    }
+
+    private static String getteamjob(Team team){
+        StringBuilder sb = new StringBuilder();
+        for(Player player : Teammanager.getteamplayer(team)){
+            sb.append("[<head:").append(player.getName()).append(">").append(bankgame.playerJobs.getOrDefault(player, Jobs.None).getEmoji()).append("]");
+        }
+        return sb.toString();
     }
 }

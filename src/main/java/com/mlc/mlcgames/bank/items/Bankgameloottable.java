@@ -9,6 +9,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -39,6 +40,7 @@ public class Bankgameloottable {
     public static ItemStack gold;
     public static ItemStack arrow;
     public static ItemStack knockbackstick;
+    public static ItemStack luolihat;
 
     public static ItemStack speedpotion;
     public static ItemStack jumppotion;
@@ -113,12 +115,29 @@ public class Bankgameloottable {
         meta.customName(miniMessage.deserialize("<!i>击退剑"));
         meta.addEnchant(Enchantment.KNOCKBACK,5,true);
 
-        Damageable damageable = (Damageable) meta;
+        luolihat = new ItemStack(Material.NETHERITE_HELMET);
+        ItemMeta luolihatmeta = luolihat.getItemMeta();
+        luolihatmeta.customName(miniMessage.deserialize("<!i><#ff6eb9><b>萝莉帽"));
+        List<Component> lore = List.of(
+                miniMessage.deserialize("<!i><#ffbfc2>想变萝莉？满足你~"),
+                miniMessage.deserialize("<!i><#5c2939>只有一点耐久")
+        );
+
+        Damageable damageable = (Damageable) luolihatmeta;
         damageable.setUnbreakable(false);
-        damageable.setMaxDamage(2);
+        damageable.setMaxDamage(1);
         damageable.setDamage(0);
-        AttributeModifier attributeModifier = new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgame:knockback")),-0.5,AttributeModifier.Operation.ADD_NUMBER);
-        meta.addAttributeModifier(Attribute.ATTACK_DAMAGE, attributeModifier);
+        luolihatmeta.lore(lore);
+        AttributeModifier attributeModifier = new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgame:bobyshape")),-0.4,AttributeModifier.Operation.ADD_SCALAR, EquipmentSlotGroup.HEAD);
+        luolihatmeta.addAttributeModifier(Attribute.SCALE, attributeModifier);
+        luolihat.setItemMeta(luolihatmeta);
+
+        Damageable damageable1 = (Damageable) meta;
+        damageable1.setUnbreakable(false);
+        damageable1.setMaxDamage(2);
+        damageable1.setDamage(0);
+        AttributeModifier attributeModifier1 = new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgame:knockback")),-0.5,AttributeModifier.Operation.ADD_NUMBER);
+        meta.addAttributeModifier(Attribute.ATTACK_DAMAGE, attributeModifier1);
         knockbackstick.setItemMeta(meta);
 
         speedpotion = new ItemStack(Material.POTION);
@@ -256,7 +275,7 @@ public class Bankgameloottable {
         book13 = new ItemStack(Material.BOOK);
         ItemMeta book13meta = book13.getItemMeta();
         book13meta.customName(miniMessage.deserialize("<!i>谜之杂志"));
-        List<Component> lore = List.of(miniMessage.deserialize("<!i>刊载了大量来源不明的阴谋论的杂志。随便翻翻无妨，但切勿盲目轻信。"));
+        lore = List.of(miniMessage.deserialize("<!i>刊载了大量来源不明的阴谋论的杂志。随便翻翻无妨，但切勿盲目轻信。"));
         book13meta.lore(lore);
         book13.setItemMeta(book13meta);
 
@@ -393,6 +412,7 @@ public class Bankgameloottable {
                 air,
                 air,
                 beef,
+                luolihat,
                 cookie,
                 chicken,
                 mutton,

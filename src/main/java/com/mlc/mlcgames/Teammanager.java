@@ -130,7 +130,12 @@ public class Teammanager {
     //获取队伍玩家
     public static Set<Player> getteamplayer(Team team){
         Set<Player> players = new HashSet<>();
-        for (String entry : team.getEntries()) players.add(Bukkit.getPlayer(entry));
+        for (String entry : team.getEntries()) {
+            Player player = Bukkit.getPlayer(entry);
+            if (player != null) {
+                players.add(player);
+            }
+        }
         return players;
     }
 

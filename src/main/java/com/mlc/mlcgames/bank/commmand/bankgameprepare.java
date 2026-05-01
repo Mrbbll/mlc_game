@@ -1,6 +1,8 @@
 package com.mlc.mlcgames.bank.commmand;
 
 import com.mlc.mlcgames.bank.Bankgamesidebar;
+import com.mlc.mlcgames.bank.listener.Bankgamelistener;
+import com.mlc.mlcgames.bank.menus.bankmenus;
 import com.mlc.mlcgames.bank.utils.Gamemode;
 import com.mlc.mlcgames.bank.utils.prepare.Gameprepare;
 import net.kyori.adventure.text.Component;
@@ -49,6 +51,7 @@ public class bankgameprepare implements TabExecutor {
                         break;
                 }
             }
+            bankmenus.init();
             Bankgamesidebar.showsidebar(player);
             player.setGameMode(GameMode.ADVENTURE);
             Gameprepare.prepare(player,bankgame.gamemode);

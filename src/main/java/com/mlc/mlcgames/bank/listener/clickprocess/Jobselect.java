@@ -34,6 +34,7 @@ public class Jobselect {
         }
         for(Player player1 : Teammanager.getteamplayer(Teammanager.bankgame_policeteam)){
             player1.sendMessage(miniMessage.deserialize(getteamjob(Teammanager.bankgame_policeteam)));
+            player1.sendMessage(miniMessage.deserialize(getteamjob(Teammanager.bankgame_thiefteam)));
         }
         checkgamestart();
         player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 10f, 0.1f);
@@ -59,6 +60,7 @@ public class Jobselect {
         }
         for(Player player1 : Teammanager.getteamplayer(Teammanager.bankgame_thiefteam)){
             player1.sendMessage(miniMessage.deserialize(getteamjob(Teammanager.bankgame_thiefteam)));
+            player1.sendMessage(miniMessage.deserialize(getteamjob(Teammanager.bankgame_policeteam)));
         }
         checkgamestart();
         player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_NETHERITE, 10f, 0.1f);
@@ -77,7 +79,7 @@ public class Jobselect {
         Startgame.startgame();
         instance.getServer().broadcast(miniMessage.deserialize("<b><red><!>检测到所有人均选好职业，游戏开始"));
         for(Player player : bankgame.players){
-
+            player.closeInventory();
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 2f, 0.6f);
         }
     }

@@ -25,12 +25,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.Teammanager.bankgame_policeteam;
 import static com.mlc.mlcgames.Teammanager.bankgame_thiefteam;
+import static com.mlc.mlcgames.bank.Bankgamesidebar.updatesidebar;
 import static com.mlc.mlcgames.bank.listener.clickprocess.Openmenu.Openbankmenu;
 
 
@@ -213,10 +215,6 @@ public class Bankgamelistener implements Listener {
                 player.getInventory().remove(Bankgameitemmanager.golditem);
                 player.dropItem(Bankgameitemmanager.golditem);
             }
-            bankgame.players.remove(player);
-            Teammanager.removePlayerFromTeam(player);
-            player.getInventory().clear();
-            player.updateInventory();
 
             //最后一个玩家则停止游戏
             boolean isteamenpty = true;
@@ -235,7 +233,14 @@ public class Bankgamelistener implements Listener {
                     bankgame.policescore += 1000;
                 }
                 Endgame.endgame();
+                return;
             }
+
+            bankgame.players.remove(player);
+            Teammanager.removePlayerFromTeam(player);
+            player.getInventory().clear();
+            player.updateInventory();
+
         }
 
     }
@@ -250,6 +255,7 @@ public class Bankgamelistener implements Listener {
         }
 
     }
+
 
     @EventHandler
     public void ondead(PlayerDeathEvent event){
@@ -271,7 +277,25 @@ public class Bankgamelistener implements Listener {
                     if(!player.hasPotionEffect(PotionEffectType.LUCK)){
                         new Setplayerlaydown(player);
                     }
+
+                    //副手检测
+                    ItemStack offhand = player.getInventory().getItemInOffHand();
+                    if(offhand.equals(Bankgameitemmanager.golditem)){
+                        player.getInventory().setItemInOffHand(null);
+                        player.dropItem(offhand);
+                    } else if (offhand.equals(Bankgameloottable.key)) {
+                        player.getInventory().setItemInOffHand(null);
+                        player.dropItem(offhand);
+                    } else if (offhand.getType().equals(Material.EMERALD)) {
+                        player.getInventory().setItemInOffHand(null);
+                        player.dropItem(offhand);
+                    } else if (offhand.equals(Bankgameloottable.diamond)) {
+                        player.getInventory().setItemInOffHand(null);
+                        player.dropItem(offhand);
+                    }
+
                     ItemStack[] items = player.getInventory().getContents();
+                    //物品栏检测
                     for(ItemStack itemStack : items){
                         if(itemStack == null){
                             continue;
@@ -285,7 +309,7 @@ public class Bankgamelistener implements Listener {
                         } else if (itemStack.getType().equals(Material.EMERALD)) {
                             player.getInventory().remove(itemStack);
                             player.dropItem(itemStack);
-                        } else if (itemStack.equals(Bankgameloottable.diamond)) {
+                        } else if (itemStack.getType().equals(Material.DIAMOND)) {
                             player.getInventory().remove(itemStack);
                             player.dropItem(itemStack);
                         }
@@ -314,6 +338,7 @@ public class Bankgamelistener implements Listener {
                             bankgame.policescore += 2000;
                         }
                         Endgame.endgame();
+                        player.teleportAsync(bankgame.bankgameLocation);
                     }
                 }
                 case thiefvsthief -> {

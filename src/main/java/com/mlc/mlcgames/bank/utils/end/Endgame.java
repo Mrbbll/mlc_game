@@ -5,11 +5,13 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.bank.Bankgamesidebar;
 import com.mlc.mlcgames.bank.utils.Bankgame;
 import com.mlc.mlcgames.bank.utils.Gamemode;
+import io.papermc.paper.entity.TeleportFlag;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scoreboard.Team;
 
 import static com.mlc.mlcgames.Mlcgames.*;
@@ -62,14 +64,16 @@ public class Endgame {
         if(bankgame.remainTime<=0) {instance.getServer().broadcast(miniMessage.deserialize("\n\n<b><red>时间结束⌚"));}
         bankgame.playerJobs.clear();
         for(Player player : bankgame.players){
-
+            player.teleport(bankgame.bankgameLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
             Gamesidebar.showsidebar(player);
             player.setRespawnLocation(bankgame.bankgameLocation,true);
-            player.teleport(bankgame.bankgameLocation);
+
             player.setGameMode(GameMode.ADVENTURE);
             player.getInventory().clear();
             player.updateInventory();
             player.clearActivePotionEffects();
+            //移除bossbar
+            bankgamebossbar.removeViewer(player);
         }
         Teammanager.cleanTeam(Teammanager.bankgame_spectateteam);
         Teammanager.cleanTeam(Teammanager.bankgame_policeteam);
@@ -92,10 +96,6 @@ public class Endgame {
         instance.getServer().broadcast(miniMessage.deserialize("<bold><" + color + ">获胜队伍是" + bankgame.winnerteam) );
         bankgame.policescore = 0;
         bankgame.thiefscore = 0;
-        //移除bossbar
-        for(Player player : bankgame.players){
-            bankgamebossbar.removeViewer(player);
-        }
         //清空bankgameplayer
         bankgame.players.clear();
 

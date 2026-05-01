@@ -14,6 +14,7 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Shulker;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -193,7 +194,7 @@ public class Bankgame {
                                     bankgame.pow1locentity.removePotionEffect(PotionEffectType.GLOWING);
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
                                     player.playSound(player,Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                    lightbreaktime1 = 20;
+                                    lightbreaktime1 = 10;
                                     return;
                                 }
                                 player.playSound(player,Sound.ENTITY_EXPERIENCE_ORB_PICKUP,2,2);
@@ -202,7 +203,7 @@ public class Bankgame {
                         }
                     }
                     if(!nearhavethief1){
-                        lightbreaktime1 = 20;
+                        lightbreaktime1 = 10;
                     }
                 }
                 if(!islightbreak2){
@@ -221,7 +222,7 @@ public class Bankgame {
                                     bankgame.pow2locentity.removePotionEffect(PotionEffectType.GLOWING);
                                     player.sendMessage(Component.text("破坏成功").color(TextColor.color(0xFF00)));
                                     player.playSound(player,Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                    lightbreaktime2 = 20;
+                                    lightbreaktime2 = 10;
                                     return;
                                 }
                                 player.playSound(player,Sound.ENTITY_EXPERIENCE_ORB_PICKUP,2,2);
@@ -230,7 +231,7 @@ public class Bankgame {
                         }
                     }
                     if(!nearhavethief2){
-                        lightbreaktime2 = 20;
+                        lightbreaktime2 = 10;
                     }
                 }
 
@@ -359,7 +360,6 @@ public class Bankgame {
                 }
             });
         };
-
     }
 
     public void PoliceEffectgive() {
@@ -369,9 +369,8 @@ public class Bankgame {
             player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH,999*20,0,true,true));
             player.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("<b><red>💲!!!"));
         }
-
-
     }
+
     public void ThiefEffectgive() {
         effectgiveevent = new BukkitRunnable() {
             @Override
@@ -384,7 +383,9 @@ public class Bankgame {
                     if(player1 == null){
                         continue;
                     }
-                    if(player1.getInventory().contains(golditem)||player1.getInventory().contains(Material.EMERALD)){
+                    player1.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,999*20,1,true,true));
+                    if(player1.getInventory().contains(Material.EMERALD)
+                    ||player1.getInventory().getItemInOffHand().getType().equals(Material.EMERALD)){
                         player1.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20, 0));
                     }
                 }
@@ -413,6 +414,22 @@ public class Bankgame {
                             Endgame.endgame();
                             this.cancel();
                         }else if(team.equals(Teammanager.bankgame_thiefteam)){
+                            //副手检测
+                            ItemStack offhand = player.getInventory().getItemInOffHand();
+                            if (offhand.getType().equals(Material.DIAMOND)) {
+                                int count = offhand.getAmount();
+                                bankgame.thiefscore += count * 50;
+                                updatesidebar();
+                                player.getInventory().setItemInOffHand(null);
+                                instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <reset><head:" + player.getName() + "><gold><bold>带回了" + count + "个钻石"));
+                            } else if (offhand.getType().equals(Material.EMERALD)) {
+                                int count = offhand.getAmount();
+                                bankgame.thiefscore += count * 100;
+                                updatesidebar();
+                                player.getInventory().setItemInOffHand(null);
+                                instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <reset><head:" + player.getName() + "><gold><bold>带回了" + count + "个绿宝石"));
+                            }
+                            //物品栏检测
                             for ( ItemStack item : player.getInventory().getContents()){
                                 if(item == null){
                                     continue;
@@ -429,7 +446,6 @@ public class Bankgame {
                                     updatesidebar();
                                     player.getInventory().remove(item);
                                     instance.getServer().broadcast(miniMessage.deserialize("<bold><gold>>>> <reset><head:"+player.getName()+"><gold><bold>带回了"+count+"个绿宝石"));
-
                                 }
                             }
                         }
@@ -437,7 +453,6 @@ public class Bankgame {
                     if(bankgame.thiefscore>=2000){
                         Endgame.endgame();
                     }
-
                 }
             }
         }.runTaskTimer(instance, 0, 10);

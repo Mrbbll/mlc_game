@@ -395,7 +395,7 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(stonesword);
                 player.getInventory().addItem(quickcrossbow);
                 player.getInventory().addItem(golden_apple);
-
+                player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(spectral_arrow);
                 player.getInventory().addItem(spectral_arrow);
@@ -413,6 +413,7 @@ public class Bankgameitemmanager {
                 break;
             case Jobs.woodenaxe:
                 player.getInventory().addItem(stoneaxe);
+                player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().setHelmet(diamond_helmet);
@@ -439,8 +440,6 @@ public class Bankgameitemmanager {
                 player.getInventory().addItem(wolfspawnegg);
                 player.getInventory().addItem(wolfspawnegg);
                 player.getInventory().addItem(wolfspawnegg);
-                player.getInventory().addItem(wolfspawnegg);
-                player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(wolf_armor);
@@ -460,6 +459,7 @@ public class Bankgameitemmanager {
             case Jobs.bow:
                 player.getInventory().addItem(bow);
                 player.getInventory().addItem(stonesword);
+                player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(golden_apple);
                 player.getInventory().addItem(arrow);
                 player.getInventory().addItem(arrow);
@@ -518,7 +518,6 @@ public class Bankgameitemmanager {
             case Jobs.wolfspawnegg:
                 player.getInventory().addItem(wolfspawnegg);
                 player.getInventory().addItem(wolfspawnegg);
-                player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(wolf_armor);
                 player.getInventory().addItem(bone);
                 player.getInventory().setHelmet(lether_helmet);

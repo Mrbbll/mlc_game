@@ -208,8 +208,10 @@ public class Bankgamelistener implements Listener {
 
     @EventHandler
     public  void onquit(PlayerQuitEvent event){
+        Player player = event.getPlayer();
+        Teammanager.removePlayerFromTeam(player);
+        bankgame.players.remove(player);
         if (bankgame.isStart) {
-            Player player = event.getPlayer();
             //保证有金条
             if(player.getInventory().contains(Bankgameitemmanager.golditem)){
                 player.getInventory().remove(Bankgameitemmanager.golditem);
@@ -222,7 +224,7 @@ public class Bankgamelistener implements Listener {
             for(String string :team.getEntries()){
                 //如果没或者玩家，直接结束游戏
                 Player player1 = Bukkit.getPlayer(string);
-                if(player1!=null && player1.getGameMode()!=GameMode.SPECTATOR){
+                    if(player1!=null && player1.getGameMode()!=GameMode.SPECTATOR){
                     isteamenpty = false;
                 }
             }

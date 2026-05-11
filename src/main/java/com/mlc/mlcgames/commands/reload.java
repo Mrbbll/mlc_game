@@ -7,9 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-
-import static com.mlc.mlcgames.Mlcgames.fileConfiguration;
-import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.*;
 
 //没写好
 public class reload implements CommandExecutor {
@@ -17,6 +15,9 @@ public class reload implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         instance.reloadConfig();
         fileConfiguration = instance.getConfig();
+        configManager.reloadAllConfigs();
+        zombiedayConfiguration = configManager.getConfig("zombieday");
+
         for(Player player : instance.getServer().getOnlinePlayers()){
             Gamesidebar.showsidebar(player);
         }

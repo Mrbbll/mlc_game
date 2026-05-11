@@ -207,7 +207,7 @@ public class Bankgamelistener implements Listener {
     }
 
     @EventHandler
-    public  void onquit(PlayerQuitEvent event){
+    public void onquit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         Teammanager.removePlayerFromTeam(player);
         bankgame.players.remove(player);
@@ -357,8 +357,6 @@ public class Bankgamelistener implements Listener {
             }
         }
     }
-//    @EventHandler
-//    public void onopendialog(Dialog)
 
     @EventHandler
     public void onplayeropenchest(PlayerInteractEvent event){

@@ -1,6 +1,7 @@
 package com.mlc.mlcgames;
 
 import com.mlc.mlcgames.bank.utils.Bankgame;
+import com.mlc.mlcgames.utils.file.ConfigManager;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
@@ -20,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public final class Mlcgames extends JavaPlugin {
 
     public static JavaPlugin instance;
     public static FileConfiguration fileConfiguration;
+    public static FileConfiguration zombiedayConfiguration;
+    public static ConfigManager configManager;
+
 
     public static MiniMessage miniMessage;
     public static ScoreboardManager scoreboardManager;
@@ -41,11 +46,16 @@ public final class Mlcgames extends JavaPlugin {
 
         //minimessage初始化
         miniMessage = MiniMessage.miniMessage();
+        //配置文件初始化
+        configManager = new ConfigManager(this);
+
+
 
         //初始化数值
         instance = this;
         fileConfiguration = this.getConfig();
 
+        zombiedayConfiguration = configManager.loadConfig("zombieday");
 
 
         //管理器初始化

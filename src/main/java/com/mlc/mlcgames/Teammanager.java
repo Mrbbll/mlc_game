@@ -25,6 +25,7 @@ public class Teammanager {
     public static Team bankgame_goldlocteam;
     public static Team bankgame_outlocteam;
 
+    public static Team zombieday_team;
 
     public static Team team_1;
     public static Team team_2;
@@ -50,6 +51,8 @@ public class Teammanager {
 
         bankgame_thiefteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OTHER_TEAMS);
         bankgame_policeteam.setOption(Team.Option.NAME_TAG_VISIBILITY,Team.OptionStatus.FOR_OTHER_TEAMS);
+
+        zombieday_team = createTeam("zombieday_team", NamedTextColor.GREEN);
 
 
         team_1 = createTeam("AQUA", NamedTextColor.AQUA);

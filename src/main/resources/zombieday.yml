@@ -1,0 +1,18 @@
+time:
+  # 效果持续时间
+  effectduration: 10
+location:
+  # 服务器大厅位置
+  lobby: ''
+  # 准备位置
+  prepareloc: ''
+  # 重生位置
+  respawnloc: ''
+  # 僵尸位置
+  zombie_1: ''
+  zombie_2: ''
+  zombie_3: ''
+  # 修护栏位置
+  fixloc_1: ''
+  fixloc_2: ''
+  fixloc_3: ''

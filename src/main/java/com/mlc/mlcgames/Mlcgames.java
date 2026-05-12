@@ -16,22 +16,25 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public final class Mlcgames extends JavaPlugin {
 
     public static JavaPlugin instance;
+    public static Server server;
     public static FileConfiguration fileConfiguration;
     public static FileConfiguration zombiedayConfiguration;
     public static ConfigManager configManager;
-
 
     public static MiniMessage miniMessage;
     public static ScoreboardManager scoreboardManager;
@@ -43,26 +46,30 @@ public final class Mlcgames extends JavaPlugin {
     @Override
     public void onEnable() {
 
-
         //minimessage初始化
         miniMessage = MiniMessage.miniMessage();
         //配置文件初始化
         configManager = new ConfigManager(this);
-
+        saveResource("zombieday.yml", false);
 
 
         //初始化数值
         instance = this;
+        server = Bukkit.getServer();
         fileConfiguration = this.getConfig();
 
-        zombiedayConfiguration = configManager.loadConfig("zombieday");
+        zombiedayConfiguration = configManager.loadConfig("zombieday.yml");
 
 
         //管理器初始化
         scoreboardManager = Bukkit.getScoreboardManager();
         Teammanager.initTeammanager();
         Gamesidebar.init();
-        Task.runtask();//注册监听，命令
+        try {
+            Task.runtask();//注册监听，命令
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         getLogger().info("\n\nmlcgame插件加载成功\n\n");
     }
 

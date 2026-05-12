@@ -1,8 +1,10 @@
 package com.mlc.mlcgames.zombieday.gamephase;
 
+import com.mlc.mlcgames.zombieday.Item;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import org.bukkit.Location;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,6 +15,9 @@ import static com.mlc.mlcgames.zombieday.Zombiedaygame.zombielocs;
 
 public class Init {
     public static void init() throws IOException {
+        //初始化物品
+        Item.init();
+
         Zombiedaygame.respawnloc = zombiedayConfiguration.getLocation("respawnloc");
         if(Zombiedaygame.respawnloc == null){
             Zombiedaygame.respawnloc = new Location(instance.getServer().getWorld("world"),0,0,0 );
@@ -38,6 +43,6 @@ public class Init {
             location = zombiedayConfiguration.getLocation("location.fixloc_"+n);
         }
 
-        zombiedayConfiguration.save(instance.getDataFolder().getCanonicalPath());
+        zombiedayConfiguration.save(new File(instance.getDataFolder(), "zombieday.yml"));
     }
 }

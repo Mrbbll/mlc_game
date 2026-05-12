@@ -12,3 +12,5 @@ commands:
     description: 重载
   bankgameend:
     description: 结束
+  zombieday:
+    description: 僵尸末日

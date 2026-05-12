@@ -1,76 +1,147 @@
 package com.mlc.mlcgames.zombieday.listener;
 
 import com.mlc.mlcgames.Teammanager;
+import com.mlc.mlcgames.utils.item.Gun;
+import com.mlc.mlcgames.utils.item.GunShot;
 import com.mlc.mlcgames.zombieday.Item;
-import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.server;
 
 public class Gunuse implements Listener {
+
+    //枪使用事件
     @EventHandler
     public void onGunuse(PlayerInteractEvent event){
-        if(!Zombiedaygame.isstart){
+        Player player = event.getPlayer();
+        if(!Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)){
+            server.broadcast(Component.text("no in team"));
             return;
         }
+        ItemStack item = event.getItem();
+        if (item == null || !item.getType().equals(Material.ECHO_SHARD)) {
+            server.broadcast(Component.text("no gun"));
+            return;
+        }
+
+        Action action = event.getAction();
+
+        if(action.equals(Action.RIGHT_CLICK_AIR)||action.equals(Action.RIGHT_CLICK_BLOCK)){
+            server.broadcast(Component.text("right click"));
+            if(GunShot.isincooldown(item)){
+                server.broadcast(Component.text("in cooldown"));
+                event.setCancelled(true);
+                return;
+            }
+
+            int bulletcount = Gun.getbulletcount(item);
+            if(bulletcount<=0){
+                player.sendActionBar(Component.text("子弹不足"));
+                return;
+            }
+            Gun.setbulletcount(item,bulletcount-1);
+            Gunshotevent(player,item);
+
+            event.setCancelled(true);
+            return;
+        }
+        if(action.equals(Action.LEFT_CLICK_AIR)||action.equals(Action.LEFT_CLICK_BLOCK)){
+            server.broadcast(Component.text("left click"));
+            Gunrefillevent(item,player);
+            event.setCancelled(true);
+        }
+    }
+
+    //枪射击判断种类并处理
+    private void Gunshotevent(Player player, @NotNull ItemStack item) {
+        switch (item.getItemMeta().getPersistentDataContainer().getOrDefault(Item.itemtype,PersistentDataType.STRING,"null")){
+            case "handgun":
+                GunShot.lineGunshot(player,10);
+                GunShot.setcooldown(item,10);
+                break;
+            case "rifle":
+                GunShot.lineGunshot(player,6);
+                break;
+            case "submachine_gun":
+                GunShot.lineGunshot(player,7);
+                break;
+            case "shotgun":
+                GunShot.areaGunshot(player,5,10,15);
+                break;
+            case "null":
+                break;
+        }
+
+    }
+
+    //枪切换事件
+    @EventHandler
+    public void onGunSwitch(PlayerItemHeldEvent event){
         Player player = event.getPlayer();
         if(!Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)){
             return;
         }
-        if (event.getItem() != null && !event.getItem().getType().equals(Material.ECHO_SHARD)) {
+
+        server.broadcast(Component.text("gun switch"));
+        int slot = event.getNewSlot();
+        ItemStack itemStack = player.getInventory().getItem(slot);
+        if(itemStack == null){
+            player.setLevel(0);
             return;
         }
-        Action action = event.getAction();
-        if(action.equals(Action.RIGHT_CLICK_AIR)||action.equals(Action.RIGHT_CLICK_BLOCK)){
-            Gunshotevent(player,event.getItem());
+        if (!itemStack.getType().equals(Material.ECHO_SHARD)) {
+            player.setLevel(0);
+            return;
         }
-        if(action.equals(Action.LEFT_CLICK_AIR)||action.equals(Action.LEFT_CLICK_BLOCK)){
-            Gunrefillevent();
-        }
-    }
+        int bulletcount = Gun.getbulletcount(itemStack);
+        player.setLevel(bulletcount);
 
-    private void Gunrefillevent() {
 
     }
 
-    private void Gunshotevent(Player player, ItemStack gun) {
-        Location eye  = player.getEyeLocation();
-        Vector direction = eye.getDirection();
-        var result = player.getWorld().rayTraceEntities(
-                eye,
-                direction,
-                20,
-                0.0, // 实体边界扩展，0 表示精确碰撞箱
-                entity -> !entity.equals(player) && entity instanceof LivingEntity // 只关心活体
-        );
+    //枪填弹事件
+    private void Gunrefillevent(ItemStack gun,Player player) {
+        if(player.hasPotionEffect(PotionEffectType.SLOWNESS)){
+            player.sendActionBar(Component.text("正在填弹"));
+            return;
+        }
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,100,0,true,false));
+        int bulletcount = Gun.getbulletcount(gun);
+        int maxbulletcount = Gun.getmaxbulletcount(gun);
 
-        if (result != null && result.getHitEntity() != null) {
-            hurtevet(result.getHitEntity(),gun);
+        if(bulletcount>=maxbulletcount){
+            return;
         }
 
-    }
-
-    private void hurtevet(@Nullable Entity hitEntity,ItemStack gun) {
-        if (gun.equals(Item.handgun)) {
-            Damageable damageable = (Damageable) hitEntity;
-            if (damageable != null) {
-                damageable.damage(10);
-
+        int invbulletcount = Gun.getinvbulletcount(player);
+        if(invbulletcount<=0){
+            return;
+        }
+        int needbulletcount = maxbulletcount-bulletcount;
+        int consumebulletcount = Math.min(invbulletcount, needbulletcount);
+        int newbulletcount = bulletcount+consumebulletcount;
+        Gun.removeinvbullet(player,consumebulletcount);
+        BukkitTask task = new BukkitRunnable(){
+            @Override
+            public void run() {
+                player.removePotionEffect(PotionEffectType.SLOWNESS);
+                Gun.setbulletcount(gun,newbulletcount);
             }
-        } else {
-            throw new IllegalStateException("Unexpected value: " + gun.getType());
-        }
+        }.runTaskLater(instance,100);
     }
+
 }

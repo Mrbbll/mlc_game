@@ -21,7 +21,7 @@ public class Obstacle {
                     this.cancel();
                 }
                 boolean hasplayer = false;
-                for(Entity entity: location.getNearbyEntities(1.5,1,1.5)){
+                for(Entity entity: location.getNearbyEntities(1.5,2,1.5)){
                     if(entity instanceof Player){
                         hasplayer = true;
                         break;
@@ -40,7 +40,7 @@ public class Obstacle {
                 if(!Zombiedaygame.isstart){
                     this.cancel();
                 }
-                for(Entity entity: location.getNearbyEntities(1.5,1,1.5)){
+                for(Entity entity: location.getNearbyEntities(1.5,2,1.5)){
                     if(!(entity instanceof Player)){
                         if(durability>0){
                             durability--;

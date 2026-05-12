@@ -19,7 +19,7 @@ public class Init {
             zombiedayConfiguration.set("respawnloc", Zombiedaygame.respawnloc);
         }
 
-
+        //僵尸点位和修复点位
         zombielocs = new HashSet<>();
         int n = 1;
         Location location = zombiedayConfiguration.getLocation("location.zombieloc_"+n);

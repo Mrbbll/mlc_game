@@ -20,6 +20,7 @@ public class Start {
             player.sendMessage("开始游戏");
             player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,99999*20,5,true,false));
             Item.giveitem(player);
+            player.setExp(0);
         }
         Zombiedaygame.isstart = true;
 

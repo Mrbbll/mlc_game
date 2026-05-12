@@ -19,8 +19,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-import static com.mlc.mlcgames.Mlcgames.instance;
-import static com.mlc.mlcgames.Mlcgames.server;
+
+import static com.mlc.mlcgames.Mlcgames.*;
 
 public class Gunuse implements Listener {
 
@@ -42,6 +42,10 @@ public class Gunuse implements Listener {
 
         if(action.equals(Action.RIGHT_CLICK_AIR)||action.equals(Action.RIGHT_CLICK_BLOCK)){
             server.broadcast(Component.text("right click"));
+            if(Gun.isinRefillcooldown(item)){
+                player.sendActionBar(miniMessage.deserialize("<b><red>正在装弹中..."));
+                return;
+            }
             if(GunShot.isincooldown(item)){
                 server.broadcast(Component.text("in cooldown"));
                 event.setCancelled(true);
@@ -50,10 +54,11 @@ public class Gunuse implements Listener {
 
             int bulletcount = Gun.getbulletcount(item);
             if(bulletcount<=0){
-                player.sendActionBar(Component.text("子弹不足"));
+                player.sendActionBar(miniMessage.deserialize("<b><red>子弹不足"));
                 return;
             }
             Gun.setbulletcount(item,bulletcount-1);
+            player.setLevel(bulletcount-1);
             Gunshotevent(player,item);
 
             event.setCancelled(true);
@@ -61,6 +66,10 @@ public class Gunuse implements Listener {
         }
         if(action.equals(Action.LEFT_CLICK_AIR)||action.equals(Action.LEFT_CLICK_BLOCK)){
             server.broadcast(Component.text("left click"));
+            if(Gun.isinRefillcooldown(item)){
+                player.sendActionBar(miniMessage.deserialize("<b><red>正在装弹中..."));
+                return;
+            }
             Gunrefillevent(item,player);
             event.setCancelled(true);
         }
@@ -115,10 +124,7 @@ public class Gunuse implements Listener {
 
     //枪填弹事件
     private void Gunrefillevent(ItemStack gun,Player player) {
-        if(player.hasPotionEffect(PotionEffectType.SLOWNESS)){
-            player.sendActionBar(Component.text("正在填弹"));
-            return;
-        }
+        player.sendActionBar(miniMessage.deserialize("<b><red>开始装弹"));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,100,0,true,false));
         int bulletcount = Gun.getbulletcount(gun);
         int maxbulletcount = Gun.getmaxbulletcount(gun);
@@ -129,17 +135,22 @@ public class Gunuse implements Listener {
 
         int invbulletcount = Gun.getinvbulletcount(player);
         if(invbulletcount<=0){
+            player.sendActionBar(miniMessage.deserialize("<b><red>背包弹药耗尽"));
             return;
         }
         int needbulletcount = maxbulletcount-bulletcount;
         int consumebulletcount = Math.min(invbulletcount, needbulletcount);
         int newbulletcount = bulletcount+consumebulletcount;
         Gun.removeinvbullet(player,consumebulletcount);
+        Gun.setRefillcooldown(gun,true);
+
         BukkitTask task = new BukkitRunnable(){
             @Override
             public void run() {
                 player.removePotionEffect(PotionEffectType.SLOWNESS);
+                player.sendActionBar(miniMessage.deserialize("<b><green>装弹完毕"));
                 Gun.setbulletcount(gun,newbulletcount);
+                Gun.setRefillcooldown(gun,false);
             }
         }.runTaskLater(instance,100);
     }

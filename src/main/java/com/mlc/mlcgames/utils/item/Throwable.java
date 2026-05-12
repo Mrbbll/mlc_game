@@ -1,9 +1,6 @@
 package com.mlc.mlcgames.utils.item;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Item;
@@ -62,8 +59,14 @@ public class Throwable {
             grenade.remove(); // 移除手榴弹实体
 
             // 播放爆炸特效
-            loc.getWorld().spawnParticle(Particle.EXPLOSION, loc, 1);
-            loc.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f);
+            World world = loc.getWorld();
+
+            world.spawnParticle(Particle.EXPLOSION_EMITTER, loc, 1, 0, 0, 0, 0);
+
+            world.spawnParticle(Particle.EXPLOSION, loc, 5, 2.5, 2.5, 2.5, 0.1);
+
+            world.spawnParticle(Particle.FLAME, loc, 30, 1.5, 1.5, 1.5, 0.05);
+            world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 0.1f);
 
             double explosionRadius = 8.0;  // 爆炸半径
             double maxDamage = 60.0;       // 中心最大伤害

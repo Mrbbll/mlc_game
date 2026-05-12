@@ -2,12 +2,31 @@ package com.mlc.mlcgames.utils.item;
 
 import com.mlc.mlcgames.zombieday.Item;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import static com.mlc.mlcgames.Mlcgames.instance;
+
 public class Gun {
+    public static NamespacedKey refillcooldown = new NamespacedKey(instance,"refillcooldown");
+
+    public static void setRefillcooldown(ItemStack item,boolean bool){
+        ItemMeta itemMeta = item.getItemMeta();
+        PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+        pdc.set(refillcooldown,PersistentDataType.BOOLEAN,bool);
+        item.setItemMeta(itemMeta);
+    }
+
+    public static boolean isinRefillcooldown(ItemStack item){
+        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
+        return pdc.getOrDefault(refillcooldown,PersistentDataType.BOOLEAN,false);
+    }
+
+
     public static int getbulletcount(ItemStack gun){
         return gun.getItemMeta().getPersistentDataContainer().getOrDefault(Item.bulletcountkey, PersistentDataType.INTEGER, 0);
     }
@@ -24,6 +43,7 @@ public class Gun {
     public static void settypedata(ItemStack gun, String type){
         ItemMeta itemMeta = gun.getItemMeta();
         itemMeta.getPersistentDataContainer().set(Item.itemtype, PersistentDataType.STRING, type);
+        gun.setItemMeta(itemMeta);
         gun.setItemMeta(itemMeta);
     }
 

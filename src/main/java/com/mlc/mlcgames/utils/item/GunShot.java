@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -38,12 +39,15 @@ public class GunShot {
 
     //冷却
     public static void setcooldown(ItemStack item, int cooldown){
-        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
+        ItemMeta itemMeta = item.getItemMeta();
+        PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
         pdc.set(cooldownkey, PersistentDataType.BOOLEAN,true);
+        item.setItemMeta(itemMeta);
         BukkitTask task = new BukkitRunnable(){
             @Override
             public void run() {
                 pdc.set(cooldownkey, PersistentDataType.BOOLEAN,false);
+                item.setItemMeta(itemMeta);
             }
         }.runTaskLater(instance,cooldown);
     }
@@ -61,10 +65,9 @@ public class GunShot {
         );
         Gunparticle.lineGunshotparticle(eye,result);
         player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3,0.5f);
-        if (result != null && result.getHitEntity() != null) {
-            server.broadcast(Component.text("hit"));
-            hurtevet(result.getHitEntity(),damage);
-
+        if (result != null && result.getHitEntity() instanceof LivingEntity hitentity) {
+//            server.broadcast(Component.text("hit"));
+            hurtevet(hitentity,damage,player);
         }
     }
 
@@ -160,11 +163,12 @@ public class GunShot {
 
 
     //枪射击伤害事件
-    public static void hurtevet(@Nullable Entity hitEntity , int dammage) {
-        Damageable damageable = (Damageable) hitEntity;
-        if (damageable != null) {
-            server.broadcast(Component.text("hurt"));
-            damageable.damage(dammage);
-        }
+    public static void hurtevet(LivingEntity hitEntity , int dammage,Player player) {
+        DamageSource source = DamageSource.builder(DamageType.ARROW) // 伤害类型
+                .withDirectEntity(player)                                 // 直接来源
+                .withDamageLocation(hitEntity.getLocation())                 // 伤害位置
+                .build();
+//        server.broadcast(Component.text("hurt"));
+        hitEntity.damage(dammage,source);
     }
 }

@@ -16,9 +16,11 @@ public class Gun {
 
     public static void setRefillcooldown(ItemStack item,boolean bool){
         ItemMeta itemMeta = item.getItemMeta();
-        PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
-        pdc.set(refillcooldown,PersistentDataType.BOOLEAN,bool);
-        item.setItemMeta(itemMeta);
+        if(itemMeta!=null){
+            PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+            pdc.set(refillcooldown,PersistentDataType.BOOLEAN,bool);
+            item.setItemMeta(itemMeta);
+        }
     }
 
     public static boolean isinRefillcooldown(ItemStack item){
@@ -32,8 +34,10 @@ public class Gun {
     }
     public static void setbulletcount(ItemStack gun, int bulletcount){
         ItemMeta itemMeta = gun.getItemMeta();
-        itemMeta.getPersistentDataContainer().set(Item.bulletcountkey, PersistentDataType.INTEGER, bulletcount);
-        gun.setItemMeta(itemMeta);
+        if(itemMeta!=null){
+            itemMeta.getPersistentDataContainer().set(Item.bulletcountkey, PersistentDataType.INTEGER, bulletcount);
+            gun.setItemMeta(itemMeta);
+        }
     }
     public static void setmaxbulletcount(ItemStack gun, int maxbulletcount){
         ItemMeta itemMeta = gun.getItemMeta();

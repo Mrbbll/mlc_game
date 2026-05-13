@@ -18,14 +18,16 @@ public class Start {
         for(Player player : Zombiedaygame.players){
             player.teleport(respawnloc);
             player.sendMessage("开始游戏");
-            player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,99999*20,5,true,false));
+
             Item.giveitem(player);
             player.setExp(0);
         }
         Zombiedaygame.isstart = true;
-
-        for(Location location : Zombiedaygame.fixlocs){
-            new Obstacle(location);
-        }
+        Zombiedaygame.turn = 1;
+        Obstacle.ObstaclefixeventListener();
+        Obstacle.ObstaclebreakeventListener(respawnloc);
+//        for(Location location : Zombiedaygame.fixlocs){
+//            new Obstacle(location);
+//        }
     }
 }

@@ -1,5 +1,7 @@
 package com.mlc.mlcgames.zombieday.commands;
 
+import com.mlc.mlcgames.zombieday.gamephase.End;
+import com.mlc.mlcgames.zombieday.gamephase.Start;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -21,6 +23,7 @@ public class Zombieday implements TabExecutor {
         }
         switch (args[0]){
             case "end":
+                End.end();
                 sender.sendMessage("结束游戏");
                 break;
             case "reload":
@@ -30,6 +33,7 @@ public class Zombieday implements TabExecutor {
                 sender.sendMessage("加入游戏");
                 break;
             case "start":
+                Start.start();
                 sender.sendMessage("开始游戏");
                 break;
             case "give":

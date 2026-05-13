@@ -4,12 +4,14 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.utils.item.Gun;
 import com.mlc.mlcgames.utils.item.GunShot;
 import com.mlc.mlcgames.zombieday.Item;
+import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
@@ -29,25 +31,24 @@ public class Gunuse implements Listener {
     public void onGunuse(PlayerInteractEvent event){
         Player player = event.getPlayer();
         if(!Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)){
-            server.broadcast(Component.text("no in team"));
+//            server.broadcast(Component.text("no in team"));
             return;
         }
         ItemStack item = event.getItem();
         if (item == null || !item.getType().equals(Material.ECHO_SHARD)) {
-            server.broadcast(Component.text("no gun"));
+//            server.broadcast(Component.text("no gun"));
             return;
         }
 
         Action action = event.getAction();
 
         if(action.equals(Action.RIGHT_CLICK_AIR)||action.equals(Action.RIGHT_CLICK_BLOCK)){
-            server.broadcast(Component.text("right click"));
+//            server.broadcast(Component.text("right click"));
             if(Gun.isinRefillcooldown(item)){
                 player.sendActionBar(miniMessage.deserialize("<b><red>正在装弹中..."));
                 return;
             }
             if(GunShot.isincooldown(item)){
-                server.broadcast(Component.text("in cooldown"));
                 event.setCancelled(true);
                 return;
             }
@@ -65,7 +66,13 @@ public class Gunuse implements Listener {
             return;
         }
         if(action.equals(Action.LEFT_CLICK_AIR)||action.equals(Action.LEFT_CLICK_BLOCK)){
-            server.broadcast(Component.text("left click"));
+//            server.broadcast(Component.text("left click"));
+            int bulletcount = Gun.getbulletcount(item);
+            int maxbulletcount = Gun.getmaxbulletcount(item);
+            if(bulletcount==maxbulletcount){
+                return;
+            }
+
             if(Gun.isinRefillcooldown(item)){
                 player.sendActionBar(miniMessage.deserialize("<b><red>正在装弹中..."));
                 return;
@@ -83,13 +90,16 @@ public class Gunuse implements Listener {
                 GunShot.setcooldown(item,10);
                 break;
             case "rifle":
-                GunShot.lineGunshot(player,6);
+                GunShot.lineGunshot(player,7);
+                GunShot.setcooldown(item,6);
                 break;
             case "submachine_gun":
                 GunShot.lineGunshot(player,7);
+                GunShot.setcooldown(item,3);
                 break;
             case "shotgun":
                 GunShot.areaGunshot(player,5,10,15);
+                GunShot.setcooldown(item,20);
                 break;
             case "null":
                 break;
@@ -105,7 +115,17 @@ public class Gunuse implements Listener {
             return;
         }
 
-        server.broadcast(Component.text("gun switch"));
+//        server.broadcast(Component.text("gun switch"));
+//        防止切换装弹中枪
+//        int oldslot = event.getPreviousSlot();
+//        ItemStack olditem = player.getInventory().getItem(oldslot);
+//
+//        if (olditem != null && Gun.isinRefillcooldown(olditem)) {
+//            player.sendActionBar(miniMessage.deserialize("<b><red>正在装弹中..."));
+//            event.setCancelled(true);
+//            return;
+//        }
+
         int slot = event.getNewSlot();
         ItemStack itemStack = player.getInventory().getItem(slot);
         if(itemStack == null){
@@ -118,10 +138,24 @@ public class Gunuse implements Listener {
         }
         int bulletcount = Gun.getbulletcount(itemStack);
         player.setLevel(bulletcount);
-
-
     }
 
+    @EventHandler
+    private  void  Gunthrowevent(PlayerDropItemEvent event) {
+        if (!Zombiedaygame.isstart) {
+            return;
+        }
+        if (!Teammanager.isPlayerInTeam(event.getPlayer(), Teammanager.zombieday_team)) {
+            return;
+        }
+        ItemStack item = event.getItemDrop().getItemStack();
+        if(!item.getType().equals(Material.ECHO_SHARD)){
+            return;
+        }
+        if(Gun.isinRefillcooldown(item)){
+            Gun.setRefillcooldown(item,false);
+        }
+    }
     //枪填弹事件
     private void Gunrefillevent(ItemStack gun,Player player) {
         player.sendActionBar(miniMessage.deserialize("<b><red>开始装弹"));
@@ -148,6 +182,9 @@ public class Gunuse implements Listener {
             @Override
             public void run() {
                 player.removePotionEffect(PotionEffectType.SLOWNESS);
+                if(player.getInventory().getItemInMainHand().equals(gun)){
+                    player.setLevel(newbulletcount);
+                }
                 player.sendActionBar(miniMessage.deserialize("<b><green>装弹完毕"));
                 Gun.setbulletcount(gun,newbulletcount);
                 Gun.setRefillcooldown(gun,false);

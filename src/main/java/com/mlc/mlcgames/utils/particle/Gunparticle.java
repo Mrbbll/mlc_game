@@ -37,4 +37,23 @@ public class Gunparticle {
             );
         }
     }
+
+    public static void areaGunshoth_hurted_particle(Location eye, RayTraceResult hurtentitys){
+        //这个是散射版的
+        World world = eye.getWorld();
+
+        if(hurtentitys!=null){
+            Location hitLoc = hurtentitys.getHitPosition().toLocation(world);
+            world.spawnParticle(
+                    Particle.BLOCK_CRUMBLE,
+                    hitLoc,
+                    30,                     // 粒子数量
+                    0.3, 0.3, 0.3,         // 偏移范围（XYZ）
+                    0,                      // 额外数据（速度，用于某些粒子）
+                    Material.RED_GLAZED_TERRACOTTA.createBlockData()   // 方块数据（红色）
+            );
+        }
+    }
+
+
 }

@@ -1,14 +1,30 @@
 package com.mlc.mlcgames.zombieday;
 
 import com.mlc.mlcgames.utils.item.Gun;
+import io.papermc.paper.block.BlockPredicate;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemAdventurePredicate;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.TypedKey;
+import io.papermc.paper.registry.set.RegistryKeySet;
+import io.papermc.paper.registry.set.RegistrySet;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.block.BlockType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -28,6 +44,8 @@ public class Item {
     public static ItemStack bullet;
     public static ItemStack arrow;
     public static ItemStack feather;
+    public static ItemStack iron_axe;
+    public static ItemStack iron_shovel;
     public static ItemStack iron_sword;
     public static ItemStack iron_chestplate;
     public static ItemStack iron_leggings;
@@ -105,8 +123,7 @@ public class Item {
 
         arrow = new ItemStack(Material.ARROW);
         ItemMeta itemMeta8 = arrow.getItemMeta();
-        itemMeta8.setMaxStackSize(16);
-        itemMeta8.customName(miniMessage.deserialize("<!i>箭箭"));
+
         arrow.setItemMeta(itemMeta8);
         arrow.setAmount(16);
 
@@ -114,8 +131,12 @@ public class Item {
         feather = new ItemStack(Material.FEATHER);
         iron_sword = new ItemStack(Material.IRON_SWORD);
         ItemMeta itemMeta9 = iron_sword.getItemMeta();
-        Damageable damageable = (Damageable) itemMeta9;
-        damageable.setMaxDamage(64);
+        itemMeta9.setUnbreakable(true);
+        itemMeta9.addAttributeModifier(Attribute.ATTACK_SPEED, AttributeModifier.deserialize(
+                Map.of("amount", -0.5,
+                        "operation", "0",
+                        "key","mlcgame:attackspeed"
+                        )));
         iron_sword.setItemMeta(itemMeta9);
 
         iron_chestplate = new ItemStack(Material.IRON_CHESTPLATE);
@@ -158,6 +179,29 @@ public class Item {
         itemMeta17.setUnbreakable(true);
         lether_helmet.setItemMeta(itemMeta17);
 
+
+
+        RegistryKeySet<@NotNull BlockType> blocks = RegistrySet.keySetFromValues(
+                RegistryKey.BLOCK,
+                Set.of(BlockType.OAK_FENCE, BlockType.OAK_LOG, BlockType.GRAVEL));
+        List<BlockPredicate> breakable = List.of(
+                BlockPredicate.predicate().blocks(blocks).build()
+        );
+        ItemAdventurePredicate predicate = ItemAdventurePredicate.itemAdventurePredicate(breakable);
+
+
+        iron_axe = new ItemStack(Material.IRON_AXE);
+        ItemMeta itemMeta19 = iron_axe.getItemMeta();
+        itemMeta19.setUnbreakable(true);
+        iron_axe.setItemMeta(itemMeta19);
+        iron_axe.setData(DataComponentTypes.CAN_BREAK, predicate);
+
+        iron_shovel = new ItemStack(Material.IRON_SHOVEL);
+        ItemMeta itemMeta20 = iron_shovel.getItemMeta();
+        itemMeta20.setUnbreakable(true);
+        iron_shovel.setItemMeta(itemMeta20);
+        iron_shovel.setData(DataComponentTypes.CAN_BREAK, predicate);
+
         itemlist = List.of(handgun,
                 rifle,
                 shotgun,
@@ -175,12 +219,19 @@ public class Item {
                 ,lether_chestplate
                 ,lether_leggings
                 ,lether_boots
-                ,lether_helmet);
+                ,lether_helmet
+                ,iron_axe
+                ,iron_shovel);
     }
 
     public static void giveitem(Player player) {
         player.getInventory().addItem(iron_sword);
         player.getInventory().setHelmet(lether_helmet);
-        player.getInventory().setItem(15,feather);
+        player.getInventory().addItem(iron_axe);
+        player.getInventory().addItem(iron_shovel);
+        player.getInventory().addItem(bow);
+        player.getInventory().addItem(arrow);
+        player.getInventory().addItem(arrow);
+        player.getInventory().addItem(arrow);
     }
 }

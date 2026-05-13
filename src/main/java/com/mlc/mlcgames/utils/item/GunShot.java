@@ -2,9 +2,7 @@ package com.mlc.mlcgames.utils.item;
 
 import com.mlc.mlcgames.utils.particle.Gunparticle;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Damageable;
@@ -74,7 +72,11 @@ public class GunShot {
 
     // 霰弹枪射击（散射式）
     public static  void areaGunshot(Player player, int damagePerPellet, int pelletCount, double spreadAngleDegrees) {
+
+        player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3,0.5f);
+        World world = player.getWorld();
         Location eye = player.getEyeLocation();
+        world.spawnParticle(Particle.LAVA,eye,3,0.2,0.2,0.2,0);
         Vector baseDirection = eye.getDirection().normalize();
         Random random = new Random();
 
@@ -95,6 +97,7 @@ public class GunShot {
             );
 
             if (result != null && result.getHitEntity() instanceof LivingEntity hitEntity) {
+                Gunparticle.areaGunshoth_hurted_particle(eye,result);
                 hitCounts.merge(hitEntity, 1, Integer::sum);
             }
         }
@@ -112,7 +115,7 @@ public class GunShot {
 
 
             target.damage(totalDamage, source);
-            server.broadcast(Component.text("霰弹命中 " + target.getName() + " ×" + timesHit));
+//            server.broadcast(Component.text("霰弹命中 " + target.getName() + " ×" + timesHit));
         }
     }
     //这是水平的

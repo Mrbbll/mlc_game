@@ -1,7 +1,9 @@
 package com.mlc.mlcgames.zombieday.managers;
 
 import com.mlc.mlcgames.Gamesidebar;
+import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.bank.utils.Gamemode;
+import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -19,7 +21,7 @@ public class scoreboard {
 
     public static void showsidebar(Player player){
         setLine(scoreboard, 1,miniMessage.deserialize("<b><#02a82e>ZOMBIE DAY"));
-        setLine(scoreboard, 2,miniMessage.deserialize(""));
+        setLine(scoreboard, 2,null);
         setLine(scoreboard, 3,null);
         setLine(scoreboard, 4,null);
         setLine(scoreboard, 5,null);
@@ -30,7 +32,36 @@ public class scoreboard {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
-    public static void uopdatesidebar(Player player){
+    public static void updatesidebar(Player player){
+        setLine(scoreboard, 1,miniMessage.deserialize("<b><#02a82e>ZOMBIE DAY"));
+        setLine(scoreboard, 2,null);
+        setLine(scoreboard, 3,miniMessage.deserialize("轮数："+ Zombiedaygame.turn));
+        setLine(scoreboard, 4,miniMessage.deserialize(getplayerheadicon()));
+        setLine(scoreboard, 5,null);
+        setLine(scoreboard, 6,null);
+        setLine(scoreboard, 7,null);
+        setLine(scoreboard, 8,null);
+        setLine(scoreboard, 9,null);
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    }
 
+    public static String getplayerheadicon(){
+        StringBuilder sb = new StringBuilder();
+        for(Player player: Teammanager.getteamplayer(Teammanager.zombieday_team)){
+            String name = player.getName();
+            switch (player.getGameMode()){
+                case ADVENTURE:
+                    sb.append("<reset><head:");
+                    sb.append(name);
+                    sb.append(">");
+                    break;
+                case SPECTATOR:
+                    sb.append("<reset><red><head:");
+                    sb.append(name);
+                    sb.append(">");
+                    break;
+            }
+        }
+        return sb.toString();
     }
 }

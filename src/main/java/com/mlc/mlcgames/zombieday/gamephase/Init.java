@@ -17,7 +17,8 @@ public class Init {
     public static void init() throws IOException {
         //初始化物品
         Item.init();
-
+        Zombiedaygame.turn = 0;
+        Zombiedaygame.isstart = false;
         Zombiedaygame.respawnloc = zombiedayConfiguration.getLocation("respawnloc");
         if(Zombiedaygame.respawnloc == null){
             Zombiedaygame.respawnloc = new Location(instance.getServer().getWorld("world"),0,0,0 );

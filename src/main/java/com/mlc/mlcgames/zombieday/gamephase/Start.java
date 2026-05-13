@@ -18,7 +18,7 @@ public class Start {
         for(Player player : Zombiedaygame.players){
             player.teleport(respawnloc);
             player.sendMessage("开始游戏");
-
+            player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,20*99999,2));
             Item.giveitem(player);
             player.setExp(0);
         }

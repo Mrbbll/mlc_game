@@ -4,6 +4,8 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import org.bukkit.Location;
 import org.bukkit.Material;
+
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -29,12 +31,31 @@ public class Obstacle {
                 for (Entity entity : location.getWorld().getEntitiesByClasses(Zombie.class)) {
 
                     Location loc = entity.getLocation();
+                    Location toploc = loc.clone().add(0,1,0);
+
                     Vector facing = loc.getDirection().normalize();
                     Block frontBlock = loc.clone().add(facing).getBlock();
+                    Block topBlock = toploc.add(facing).getBlock();
+
                     if (frontBlock.getType() == Material.OAK_FENCE) {
                         // 让方块消失（变成空气）
+
                         frontBlock.setType(Material.AIR);
+                        loc.getWorld().playSound(entity, Sound.BLOCK_CHERRY_WOOD_BREAK,3,1.5f);
+                        loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,frontBlock.getLocation(),
+                                10,0,0,0,
+                                Material.OAK_FENCE.createBlockData());
                         obstacles.remove(frontBlock);
+
+                    }
+                    if (topBlock.getType() == Material.OAK_FENCE) {
+                        // 让方块消失（变成空气）
+                        topBlock.setType(Material.AIR);
+                        loc.getWorld().playSound(entity, Sound.BLOCK_CHERRY_WOOD_BREAK,3,1.5f);
+                        loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,topBlock.getLocation(),
+                                10,0,0,0,
+                                Material.OAK_FENCE.createBlockData());
+                        obstacles.remove(topBlock);
                     }
                 }
             }
@@ -64,6 +85,12 @@ public class Obstacle {
                         return;
                     }
                     Location location = player.getLocation();
+                    Block footblock = location.getBlock();
+                    if(footblock.getType()!=Material.AIR){
+                        countdown=0;
+                        return;
+                    }
+
                     Block block = location.clone().add(0,-1,0).getBlock();
                     if(block.isSolid()&&!obstacles.contains(block)&&block.getType()!=Material.OAK_FENCE&&block.getType()!=Material.AIR){
                         countdown++;

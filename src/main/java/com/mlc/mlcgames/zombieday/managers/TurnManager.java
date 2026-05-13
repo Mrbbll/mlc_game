@@ -21,13 +21,16 @@ public class TurnManager {
                     this.cancel();
                 }
                 countdown--;
-                if(countdown%60==45){
+                if(countdown%120==90){
+                    //入夜
+                    world.setTime(15000);
+                } else if (countdown%120==0) {
+                    //日出
                     world.setTime(0);
-                } else if (countdown%60==0) {
-                    world.setTime(12000);
                 }
                 if(countdown%120==0){
                     Zombiedaygame.turn++;
+                    SpawnPoint.Spawnzombie(Zombiedaygame.turn);
                 }
             }
 

@@ -11,7 +11,7 @@ import java.util.Set;
 public class Zombiedaygame {
     public static boolean isstart;
     public static Set<Player> players;
-    public static int fixtime;
+
     public static Location respawnloc;
     public static Set<Location> zombielocs;
     public static Set<Location> fixlocs;
@@ -19,4 +19,5 @@ public class Zombiedaygame {
     public static List<Block> obstacles = new ArrayList<>();
 
 
+    public static Difficuty difficuty;
 }

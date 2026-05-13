@@ -13,7 +13,9 @@ public class SpawnPoint {
         return islock;
     }
 
-    public void Spawnzombie(){
+    public static  void Spawnzombie(int turn){
+
+
 
     }
 }

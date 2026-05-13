@@ -43,7 +43,7 @@ public class Obstacle {
                         frontBlock.setType(Material.AIR);
                         loc.getWorld().playSound(entity, Sound.BLOCK_CHERRY_WOOD_BREAK,3,1.5f);
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,frontBlock.getLocation(),
-                                10,0,0,0,
+                                10,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
                         obstacles.remove(frontBlock);
 
@@ -53,7 +53,7 @@ public class Obstacle {
                         topBlock.setType(Material.AIR);
                         loc.getWorld().playSound(entity, Sound.BLOCK_CHERRY_WOOD_BREAK,3,1.5f);
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,topBlock.getLocation(),
-                                10,0,0,0,
+                                10,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
                         obstacles.remove(topBlock);
                     }

@@ -1,7 +1,10 @@
 package com.mlc.mlcgames.zombieday.commands;
 
+import com.mlc.mlcgames.zombieday.Difficuty;
+import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.gamephase.End;
 import com.mlc.mlcgames.zombieday.gamephase.Start;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,6 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
+import static com.mlc.mlcgames.Mlcgames.server;
 import static com.mlc.mlcgames.zombieday.Item.itemlist;
 
 public class Zombieday implements TabExecutor {
@@ -29,8 +34,14 @@ public class Zombieday implements TabExecutor {
             case "reload":
                 sender.sendMessage("重新加载配置");
                 break;
-            case "join":
-                sender.sendMessage("加入游戏");
+            case "difficuty":
+                sender.sendMessage("设置难度等级");
+                if(args.length < 2){
+                    sender.sendMessage("请输入难度等级");
+                    return false;
+                }
+                Zombiedaygame.difficuty = Difficuty.valueOf(args[1]);
+                server.broadcast(miniMessage.deserialize("难度等级已设置为<b> " + Zombiedaygame.difficuty.withcolor()));
                 break;
             case "start":
                 Start.start();

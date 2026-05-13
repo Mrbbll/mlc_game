@@ -3,6 +3,8 @@ package com.mlc.mlcgames.zombieday.gamephase;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.TitlePart;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -16,6 +18,9 @@ public class End {
             player.clearActivePotionEffects();
             player.getInventory().clear();
             player.setExp(0);
+        }
+        for(Block block : Zombiedaygame.obstacles){
+            block.setType(Material.AIR);
         }
     }
 }

@@ -55,6 +55,12 @@ public class Item {
     public static ItemStack lether_leggings;
     public static ItemStack lether_boots;
     public static ItemStack lether_helmet;
+    public static ItemStack neitherite_helmet;
+    public static ItemStack neitherite_chestplate;
+    public static ItemStack neitherite_leggings;
+    public static ItemStack neitherite_boots;
+
+    public static ItemStack emerald;
     public static List<ItemStack> itemlist;
 
 
@@ -202,6 +208,31 @@ public class Item {
         iron_shovel.setItemMeta(itemMeta20);
         iron_shovel.setData(DataComponentTypes.CAN_BREAK, predicate);
 
+        neitherite_helmet = new ItemStack(Material.NETHERITE_HELMET);
+        ItemMeta itemMeta22 = neitherite_helmet.getItemMeta();
+        itemMeta22.setUnbreakable(true);
+        neitherite_helmet.setItemMeta(itemMeta22);
+
+        neitherite_chestplate = new ItemStack(Material.NETHERITE_CHESTPLATE);
+        ItemMeta itemMeta23 = neitherite_chestplate.getItemMeta();
+        itemMeta23.setUnbreakable(true);
+        neitherite_chestplate.setItemMeta(itemMeta23);
+
+        neitherite_leggings = new ItemStack(Material.NETHERITE_LEGGINGS);
+        ItemMeta itemMeta24 = neitherite_leggings.getItemMeta();
+        itemMeta24.setUnbreakable(true);
+        neitherite_leggings.setItemMeta(itemMeta24);
+
+        neitherite_boots = new ItemStack(Material.NETHERITE_BOOTS);
+        ItemMeta itemMeta25 = neitherite_boots.getItemMeta();
+        itemMeta25.setUnbreakable(true);
+        neitherite_boots.setItemMeta(itemMeta25);
+
+        emerald = new ItemStack(Material.EMERALD);
+        ItemMeta itemMeta21 = emerald.getItemMeta();
+        itemMeta21.customName(miniMessage.deserialize("<!i>money"));
+        emerald.setItemMeta(itemMeta21);
+
         itemlist = List.of(handgun,
                 rifle,
                 shotgun,
@@ -221,7 +252,12 @@ public class Item {
                 ,lether_boots
                 ,lether_helmet
                 ,iron_axe
-                ,iron_shovel);
+                ,iron_shovel
+                ,neitherite_helmet
+                ,neitherite_chestplate
+                ,neitherite_leggings
+                ,neitherite_boots,
+                emerald);
     }
 
     public static void giveitem(Player player) {

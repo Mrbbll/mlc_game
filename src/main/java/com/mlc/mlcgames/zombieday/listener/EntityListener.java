@@ -2,24 +2,23 @@ package com.mlc.mlcgames.zombieday.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
-import com.mlc.mlcgames.zombieday.zombie.ZombieLootTable;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-
 
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.zombieday.zombie.Spwaner.zombie_type;
 
 public class EntityListener implements Listener {
     @EventHandler
@@ -68,23 +67,10 @@ public class EntityListener implements Listener {
         zombie.getEquipment().setItemInOffHand(player.getInventory().getItemInOffHand());
         zombie.customName(miniMessage.deserialize(player.getName()));
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,9999,1,true,false));
-        zombie.setLootTable(new ZombieLootTable());
         server.broadcast(miniMessage.deserialize(player.getName()+"死亡"));
         new saveListener(player, zombie);
 
 
-    }
-    @EventHandler
-    public static void onplayersneaking(PlayerToggleSneakEvent event){
-        if(!Zombiedaygame.isstart){
-            return;
-        }
-        if(!Teammanager.isPlayerInTeam(event.getPlayer(),Teammanager.zombieday_team)){
-            return;
-        };
-        if(event.isSneaking()){
-
-        }
     }
 
     @EventHandler
@@ -117,6 +103,30 @@ public class EntityListener implements Listener {
             entity.getWorld().spawnEntity(entity.getLocation(), EntityType.PLAYER);
             entity.getWorld().spawnEntity(entity.getLocation(), EntityType.VILLAGER);
             entity.remove();
+        }
+    }
+    @EventHandler
+    private static void entitydie(EntityDeathEvent event){
+        if(!Zombiedaygame.isstart){
+            return;
+        }
+        event.setDroppedExp(0);
+        if(event.getEntity() instanceof Zombie zombie){
+            event.getDrops().clear();
+            PersistentDataContainer pdc =  zombie.getPersistentDataContainer();
+            String type = pdc.getOrDefault(zombie_type, PersistentDataType.STRING,"null");
+            switch (type){
+                case "normal":
+                    break;
+                case "fast":
+                    break;
+                case "highjump":
+                    break;
+                case "police":
+                    break;
+                case "rich":
+                    break;
+            }
         }
     }
 }

@@ -22,5 +22,6 @@ public class End {
         for(Block block : Zombiedaygame.obstacles){
             block.setType(Material.AIR);
         }
+        Zombiedaygame.obstaclebreaktime.clear();
     }
 }

@@ -25,7 +25,7 @@ public class Init {
             zombiedayConfiguration.set("respawnloc", Zombiedaygame.respawnloc);
         }
 
-        //僵尸点位和修复点位
+        //僵尸点位
         zombielocs = new HashSet<>();
         int n = 1;
         Location location = zombiedayConfiguration.getLocation("location.zombieloc_"+n);
@@ -35,14 +35,14 @@ public class Init {
             location = zombiedayConfiguration.getLocation("location.zombieloc_"+n);
         }
 
-        Zombiedaygame.fixlocs = new HashSet<>();
-        n = 1;
-        location = zombiedayConfiguration.getLocation("location.fixloc_"+n);
-        while(location != null){
-            Zombiedaygame.fixlocs.add(location);
-            n++;
-            location = zombiedayConfiguration.getLocation("location.fixloc_"+n);
-        }
+//        Zombiedaygame.fixlocs = new HashSet<>();
+//        n = 1;
+//        location = zombiedayConfiguration.getLocation("location.fixloc_"+n);
+//        while(location != null){
+//            Zombiedaygame.fixlocs.add(location);
+//            n++;
+//            location = zombiedayConfiguration.getLocation("location.fixloc_"+n);
+//        }
 
         zombiedayConfiguration.save(new File(instance.getDataFolder(), "zombieday.yml"));
     }

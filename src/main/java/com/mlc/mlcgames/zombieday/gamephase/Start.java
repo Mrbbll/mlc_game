@@ -6,11 +6,13 @@ import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.listener.Obstacle;
 import com.mlc.mlcgames.zombieday.managers.TurnManager;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.mlc.mlcgames.zombieday.Zombiedaygame.respawnloc;
 
@@ -28,6 +30,7 @@ public class Start {
         Zombiedaygame.isstart = true;
         Zombiedaygame.turn = 0;
         Zombiedaygame.obstacles = new ArrayList<>();
+        Zombiedaygame.obstaclebreaktime = new HashMap<>();
         Obstacle.ObstaclefixeventListener();
         Obstacle.ObstaclebreakeventListener(respawnloc);
         TurnManager.turncycle();

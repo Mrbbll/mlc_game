@@ -6,4 +6,7 @@ public enum Zombietype {
     HIGHJUMP,
     POLICE,
     RICH;
+    public String getType(){
+        return name().toLowerCase();
+    }
 }

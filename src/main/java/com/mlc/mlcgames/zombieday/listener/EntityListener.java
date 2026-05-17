@@ -2,6 +2,7 @@ package com.mlc.mlcgames.zombieday.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -9,8 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Merchant;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -96,6 +100,7 @@ public class EntityListener implements Listener {
 
         if(player!=null && Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)) {
             player.setGameMode(GameMode.ADVENTURE);
+
             entity.remove();
             server.broadcast(miniMessage.deserialize(saver.getName()+"救起"+player.getName()));
         }
@@ -117,14 +122,21 @@ public class EntityListener implements Listener {
             String type = pdc.getOrDefault(zombie_type, PersistentDataType.STRING,"null");
             switch (type){
                 case "normal":
+                    Zombiedaygame.zombiecount--;
                     break;
                 case "fast":
+                    Zombiedaygame.zombiecount--;
                     break;
                 case "highjump":
+                    Zombiedaygame.zombiecount--;
                     break;
                 case "police":
+                    Zombiedaygame.zombiecount--;
                     break;
                 case "rich":
+                    Zombiedaygame.zombiecount--;
+                    break;
+                case "null":
                     break;
             }
         }

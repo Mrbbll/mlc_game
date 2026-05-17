@@ -87,19 +87,19 @@ public class Gunuse implements Listener {
         switch (item.getItemMeta().getPersistentDataContainer().getOrDefault(Item.itemtype,PersistentDataType.STRING,"null")){
             case "handgun":
                 GunShot.lineGunshot(player,10);
-                GunShot.setcooldown(item,10);
+                GunShot.setcooldown(item, 500);
                 break;
             case "rifle":
                 GunShot.lineGunshot(player,7);
-                GunShot.setcooldown(item,6);
+                GunShot.setcooldown(item,200);
                 break;
             case "submachine_gun":
                 GunShot.lineGunshot(player,7);
-                GunShot.setcooldown(item,3);
+                GunShot.setcooldown(item,150);
                 break;
             case "shotgun":
                 GunShot.areaGunshot(player,5,10,15);
-                GunShot.setcooldown(item,20);
+                GunShot.setcooldown(item,1000);
                 break;
             case "null":
                 break;
@@ -140,22 +140,22 @@ public class Gunuse implements Listener {
         player.setLevel(bulletcount);
     }
 
-    @EventHandler
-    private  void  Gunthrowevent(PlayerDropItemEvent event) {
-        if (!Zombiedaygame.isstart) {
-            return;
-        }
-        if (!Teammanager.isPlayerInTeam(event.getPlayer(), Teammanager.zombieday_team)) {
-            return;
-        }
-        ItemStack item = event.getItemDrop().getItemStack();
-        if(!item.getType().equals(Material.ECHO_SHARD)){
-            return;
-        }
-        if(Gun.isinRefillcooldown(item)){
-            Gun.setRefillcooldown(item,false);
-        }
-    }
+//    @EventHandler
+//    private  void  Gunthrowevent(PlayerDropItemEvent event) {
+//        if (!Zombiedaygame.isstart) {
+//            return;
+//        }
+//        if (!Teammanager.isPlayerInTeam(event.getPlayer(), Teammanager.zombieday_team)) {
+//            return;
+//        }
+//        ItemStack item = event.getItemDrop().getItemStack();
+//        if(!item.getType().equals(Material.ECHO_SHARD)){
+//            return;
+//        }
+//        if(Gun.isinRefillcooldown(item)){
+//            Gun.setRefillcooldown(item,false);
+//        }
+//    }
     //枪填弹事件
     private void Gunrefillevent(ItemStack gun,Player player) {
         player.sendActionBar(miniMessage.deserialize("<b><red>开始装弹"));
@@ -176,7 +176,8 @@ public class Gunuse implements Listener {
         int consumebulletcount = Math.min(invbulletcount, needbulletcount);
         int newbulletcount = bulletcount+consumebulletcount;
         Gun.removeinvbullet(player,consumebulletcount);
-        Gun.setRefillcooldown(gun,true);
+        Gun.setRefillcooldown(gun,5000);
+
 
         BukkitTask task = new BukkitRunnable(){
             @Override
@@ -187,7 +188,6 @@ public class Gunuse implements Listener {
                 }
                 player.sendActionBar(miniMessage.deserialize("<b><green>装弹完毕"));
                 Gun.setbulletcount(gun,newbulletcount);
-                Gun.setRefillcooldown(gun,false);
             }
         }.runTaskLater(instance,100);
     }

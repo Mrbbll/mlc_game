@@ -35,6 +35,14 @@ public class Gunparticle {
                     0,                      // 额外数据（速度，用于某些粒子）
                     Material.RED_GLAZED_TERRACOTTA.createBlockData()   // 方块数据（红色）
             );
+
+
+            double distance = eye.distance(hitLoc);
+            Vector dir = eye.getDirection().clone().normalize();
+            for (double d = 0; d <= distance; d += 1.0) {
+                Location point = eye.clone().add(dir.clone().multiply(d));
+                world.spawnParticle(Particle.ELECTRIC_SPARK, point, 1, 0, 0, 0, 0);
+            }
         }
     }
 
@@ -52,6 +60,14 @@ public class Gunparticle {
                     0,                      // 额外数据（速度，用于某些粒子）
                     Material.RED_GLAZED_TERRACOTTA.createBlockData()   // 方块数据（红色）
             );
+
+            double distance = eye.distance(hitLoc);
+            Vector dir = eye.getDirection().clone().normalize();
+            for (double d = 0; d <= distance; d += 1.0) {
+                Location point = eye.clone().add(dir.clone().multiply(d));
+                world.spawnParticle(Particle.ELECTRIC_SPARK, point, 1, 0, 0, 0, 0);
+            }
+
         }
     }
 

@@ -24,6 +24,7 @@ import java.util.Random;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.server;
+import static com.mlc.mlcgames.zombieday.Zombiedaygame.gameworld;
 
 public class GunShot {
     static NamespacedKey cooldownkey = new NamespacedKey(instance,"cooldown");
@@ -31,30 +32,24 @@ public class GunShot {
     //获取是否在冷却
     public static boolean isincooldown(ItemStack item){
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        return pdc.getOrDefault(cooldownkey,PersistentDataType.BOOLEAN,false);
+        return pdc.getOrDefault(cooldownkey,PersistentDataType.LONG,0L) > System.currentTimeMillis();
     }
 
 
     //冷却
-    public static void setcooldown(ItemStack item, int cooldown){
+    public static void setcooldown(ItemStack item, long cooldown){
         ItemMeta itemMeta = item.getItemMeta();
         PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
-        pdc.set(cooldownkey, PersistentDataType.BOOLEAN,true);
+        pdc.set(cooldownkey, PersistentDataType.LONG,cooldown + System.currentTimeMillis());
         item.setItemMeta(itemMeta);
-        BukkitTask task = new BukkitRunnable(){
-            @Override
-            public void run() {
-                pdc.set(cooldownkey, PersistentDataType.BOOLEAN,false);
-                item.setItemMeta(itemMeta);
-            }
-        }.runTaskLater(instance,cooldown);
     }
 
     //枪射击事件单发直线型
     public static void lineGunshot(Player player, int damage) {
         Location eye  = player.getEyeLocation();
         Vector direction = eye.getDirection();
-        var result = player.getWorld().rayTraceEntities(
+        World world = player.getWorld();
+        var result = world.rayTraceEntities(
                 eye,
                 direction,
                 30,
@@ -62,7 +57,7 @@ public class GunShot {
                 entity -> !entity.equals(player) && entity instanceof LivingEntity // 只关心活体
         );
         Gunparticle.lineGunshotparticle(eye,result);
-        player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3,0.5f);
+        world.playSound(eye, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3,0.5f);
         if (result != null && result.getHitEntity() instanceof LivingEntity hitentity) {
 //            server.broadcast(Component.text("hit"));
             hurtevet(hitentity,damage,player);
@@ -73,10 +68,11 @@ public class GunShot {
     // 霰弹枪射击（散射式）
     public static  void areaGunshot(Player player, int damagePerPellet, int pelletCount, double spreadAngleDegrees) {
 
-        player.playSound(player, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3,0.5f);
+
         World world = player.getWorld();
         Location eye = player.getEyeLocation();
         world.spawnParticle(Particle.LAVA,eye,3,0.2,0.2,0.2,0);
+        world.playSound(eye, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3,0.5f);
         Vector baseDirection = eye.getDirection().normalize();
         Random random = new Random();
 
@@ -169,7 +165,7 @@ public class GunShot {
     public static void hurtevet(LivingEntity hitEntity , int dammage,Player player) {
         DamageSource source = DamageSource.builder(DamageType.ARROW) // 伤害类型
                 .withDirectEntity(player)                                 // 直接来源
-                .withDamageLocation(hitEntity.getLocation())                 // 伤害位置
+                .withDamageLocation(player.getLocation())                 // 伤害位置
                 .build();
 //        server.broadcast(Component.text("hurt"));
         hitEntity.damage(dammage,source);

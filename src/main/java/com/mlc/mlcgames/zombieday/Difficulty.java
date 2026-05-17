@@ -1,6 +1,6 @@
 package com.mlc.mlcgames.zombieday;
 
-public enum Difficuty {
+public enum Difficulty {
     NORMAL("<#7f8182>"),
     HARD("<#3bd4ff>"),
     INSANE("<#ff8317>"),
@@ -8,7 +8,7 @@ public enum Difficuty {
 
     private final String color;
 
-    Difficuty(String color) {
+    Difficulty(String color) {
         this.color = color;
     }
 

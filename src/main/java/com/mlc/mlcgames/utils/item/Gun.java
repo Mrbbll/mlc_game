@@ -1,10 +1,12 @@
 package com.mlc.mlcgames.utils.item;
 
 import com.mlc.mlcgames.zombieday.Item;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -13,19 +15,19 @@ import static com.mlc.mlcgames.Mlcgames.instance;
 
 public class Gun {
     public static NamespacedKey refillcooldown = new NamespacedKey(instance,"refillcooldown");
-
-    public static void setRefillcooldown(ItemStack item,boolean bool){
+    //毫秒为单位
+    public static void setRefillcooldown(ItemStack item,long cooldown){
         ItemMeta itemMeta = item.getItemMeta();
         if(itemMeta!=null){
             PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
-            pdc.set(refillcooldown,PersistentDataType.BOOLEAN,bool);
+            pdc.set(refillcooldown,PersistentDataType.LONG,cooldown + System.currentTimeMillis());
             item.setItemMeta(itemMeta);
         }
     }
 
     public static boolean isinRefillcooldown(ItemStack item){
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        return pdc.getOrDefault(refillcooldown,PersistentDataType.BOOLEAN,false);
+        return pdc.getOrDefault(refillcooldown,PersistentDataType.LONG,0L) > System.currentTimeMillis();
     }
 
 

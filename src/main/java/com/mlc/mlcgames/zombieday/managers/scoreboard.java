@@ -21,11 +21,11 @@ public class scoreboard {
 
     public static void showsidebar(Player player){
         setLine(scoreboard, 1,miniMessage.deserialize("<b><#02a82e>ZOMBIE DAY"));
-        setLine(scoreboard, 2,null);
-        setLine(scoreboard, 3,null);
-        setLine(scoreboard, 4,null);
-        setLine(scoreboard, 5,null);
-        setLine(scoreboard, 6,null);
+        setLine(scoreboard, 2,miniMessage.deserialize("<b>难度："+ Zombiedaygame.difficulty.withcolor()));
+        setLine(scoreboard, 3,miniMessage.deserialize("轮数："+ Zombiedaygame.turn));
+        setLine(scoreboard, 4,miniMessage.deserialize(getplayerheadicon()));
+        setLine(scoreboard, 5,miniMessage.deserialize("剩余僵尸数："+ Zombiedaygame.zombiecount));
+        setLine(scoreboard, 6,miniMessage.deserialize("time："+ Zombiedaygame.countdown));
         setLine(scoreboard, 7,null);
         setLine(scoreboard, 8,null);
         setLine(scoreboard, 9,null);
@@ -34,11 +34,11 @@ public class scoreboard {
 
     public static void updatesidebar(Player player){
         setLine(scoreboard, 1,miniMessage.deserialize("<b><#02a82e>ZOMBIE DAY"));
-        setLine(scoreboard, 2,null);
+        setLine(scoreboard, 2,miniMessage.deserialize("<b>难度："+ Zombiedaygame.difficulty.withcolor()));
         setLine(scoreboard, 3,miniMessage.deserialize("轮数："+ Zombiedaygame.turn));
         setLine(scoreboard, 4,miniMessage.deserialize(getplayerheadicon()));
-        setLine(scoreboard, 5,null);
-        setLine(scoreboard, 6,null);
+        setLine(scoreboard, 5,miniMessage.deserialize("剩余僵尸数："+ Zombiedaygame.zombiecount));
+        setLine(scoreboard, 6,miniMessage.deserialize("time："+ Zombiedaygame.countdown));
         setLine(scoreboard, 7,null);
         setLine(scoreboard, 8,null);
         setLine(scoreboard, 9,null);

@@ -133,9 +133,4 @@ public class Obstacle {
         }
     }
 
-    private void fixevent() {
-
-    }
-
-    ;
 }

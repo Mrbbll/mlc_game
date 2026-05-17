@@ -72,6 +72,7 @@ public class Item {
         ItemMeta itemMeta = handgun.getItemMeta();
         itemMeta.setMaxStackSize(1);
         itemMeta.customName(miniMessage.deserialize("<!i>手枪"));
+        itemMeta.setItemModel(NamespacedKey.fromString("mlcgames:gun/handgun"));
         handgun.setItemMeta(itemMeta);
 
         rifle = new ItemStack(Material.ECHO_SHARD);
@@ -81,6 +82,7 @@ public class Item {
         ItemMeta itemMeta1 = rifle.getItemMeta();
         itemMeta1.setMaxStackSize(1);
         itemMeta1.customName(miniMessage.deserialize("<!i>步枪"));
+        itemMeta1.setItemModel(NamespacedKey.fromString("mlcgames:gun/rifle"));
         rifle.setItemMeta(itemMeta1);
 
 
@@ -91,6 +93,7 @@ public class Item {
         ItemMeta itemMeta2 = shotgun.getItemMeta();
         itemMeta2.setMaxStackSize(1);
         itemMeta2.customName(miniMessage.deserialize("<!i>霰弹枪"));
+        itemMeta2.setItemModel(NamespacedKey.fromString("mlcgames:gun/shotgun"));
         shotgun.setItemMeta(itemMeta2);
 
 
@@ -101,6 +104,7 @@ public class Item {
         ItemMeta itemMeta3 = submachine_gun.getItemMeta();
         itemMeta3.setMaxStackSize(1);
         itemMeta3.customName(miniMessage.deserialize("<!i>冲锋枪"));
+        itemMeta3.setItemModel(NamespacedKey.fromString("mlcgames:gun/submachine_gun"));
         submachine_gun.setItemMeta(itemMeta3);
 
         bow = new ItemStack(Material.BOW);

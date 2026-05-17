@@ -5,7 +5,7 @@ import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.gamephase.End;
 import com.mlc.mlcgames.zombieday.gamephase.Init;
 import com.mlc.mlcgames.zombieday.gamephase.Start;
-import com.mlc.mlcgames.zombieday.inv.Potioninv;
+import com.mlc.mlcgames.zombieday.inv.PotionInv;
 import com.mlc.mlcgames.zombieday.zombie.Spwaner;
 import com.mlc.mlcgames.zombieday.zombie.Zombietype;
 import org.bukkit.command.Command;
@@ -89,7 +89,7 @@ public class Zombieday implements TabExecutor {
                 player1.getInventory().addItem(item);
                 break;
             case "menu":
-                Potioninv.open((Player) sender);
+                PotionInv.open((Player) sender);
             default:
                 sender.sendMessage("请输入正确的命令参数");
                 break;

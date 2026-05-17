@@ -16,7 +16,9 @@ public class SpawnManager {
 
     public static void Spawnzombie(int turn){
         Random random = new Random();
+        int playernum = players.size();
         int num;
+
         int num1;
         int num2;
         int numair;
@@ -26,9 +28,11 @@ public class SpawnManager {
 
         switch (difficulty){
             case NORMAL:
-                num = random.nextInt(turn*10);
+                num = random.nextInt(turn*5,turn*(5 + playernum));
+                Zombiedaygame.zombiecount+=num;
+
                 damage = 2+ turn*0.1;
-                health = 20+ turn*0.2;
+                health = 10+ turn*0.2;
                 speed = 0;
 
                 num1 = (int) (num* random.nextDouble(0.2,0.8));
@@ -38,10 +42,11 @@ public class SpawnManager {
 
                 break;
             case HARD:
-                num = random.nextInt(turn*15);
+                num = random.nextInt(turn*10,turn*(10 + playernum));
+                Zombiedaygame.zombiecount+=num;
 
                 damage = 3 + turn*0.2;
-                health = 20 + turn*0.4;
+                health = 15 + turn*0.4;
                 speed = 0.1;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
@@ -53,10 +58,11 @@ public class SpawnManager {
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
                 break;
             case INSANE:
-                num = random.nextInt(turn*20);
+                num = random.nextInt(turn*15,turn*(15 + playernum));
+                Zombiedaygame.zombiecount+=num;
 
                 damage = 3+ turn*0.5;
-                health = 30+ turn*0.6;
+                health = 20+ turn*0.6;
                 speed = 0.15;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
@@ -67,8 +73,10 @@ public class SpawnManager {
                 Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
                 break;
+
             case TORMENT:
-                num = random.nextInt(turn*30);
+                num = random.nextInt(turn*20,turn*(20 + playernum));
+                Zombiedaygame.zombiecount+=num;
 
                 damage = 3+ turn*0.5;
                 health = 30+ turn*0.6;

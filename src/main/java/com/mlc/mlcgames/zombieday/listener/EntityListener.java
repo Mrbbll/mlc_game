@@ -2,16 +2,24 @@ package com.mlc.mlcgames.zombieday.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
+import com.mlc.mlcgames.zombieday.gamephase.End;
+import com.mlc.mlcgames.zombieday.inv.BulletInv;
+import com.mlc.mlcgames.zombieday.inv.PotionInv;
+import com.mlc.mlcgames.zombieday.zombie.ZombieLoot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
@@ -20,6 +28,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mlc.mlcgames.Mlcgames.*;
 import static com.mlc.mlcgames.zombieday.zombie.Spwaner.zombie_type;
@@ -74,6 +85,16 @@ public class EntityListener implements Listener {
         server.broadcast(miniMessage.deserialize(player.getName()+"死亡"));
         new saveListener(player, zombie);
 
+        boolean isplayeralldie = true;
+        for(Player p:Zombiedaygame.players){
+            if(p.getGameMode().equals(GameMode.ADVENTURE)){
+                isplayeralldie = false;
+                break;
+            }
+        }
+        if(isplayeralldie){
+            End.end();
+        }
 
     }
 
@@ -100,7 +121,7 @@ public class EntityListener implements Listener {
 
         if(player!=null && Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)) {
             player.setGameMode(GameMode.ADVENTURE);
-
+            player.teleport(entity);
             entity.remove();
             server.broadcast(miniMessage.deserialize(saver.getName()+"救起"+player.getName()));
         }
@@ -120,25 +141,72 @@ public class EntityListener implements Listener {
             event.getDrops().clear();
             PersistentDataContainer pdc =  zombie.getPersistentDataContainer();
             String type = pdc.getOrDefault(zombie_type, PersistentDataType.STRING,"null");
+            List<ItemStack> customDrops;
             switch (type){
                 case "normal":
                     Zombiedaygame.zombiecount--;
+                    customDrops = ZombieLoot.generateLoot(type);
+                    event.getDrops().addAll(customDrops);
                     break;
                 case "fast":
                     Zombiedaygame.zombiecount--;
+                    customDrops = ZombieLoot.generateLoot(type);
+                    event.getDrops().addAll(customDrops);
                     break;
                 case "highjump":
                     Zombiedaygame.zombiecount--;
+                    customDrops = ZombieLoot.generateLoot(type);
+                    event.getDrops().addAll(customDrops);
                     break;
                 case "police":
                     Zombiedaygame.zombiecount--;
+                    customDrops = ZombieLoot.generateLoot(type);
+                    event.getDrops().addAll(customDrops);
                     break;
                 case "rich":
                     Zombiedaygame.zombiecount--;
+                    customDrops = ZombieLoot.generateLoot(type);
+                    event.getDrops().addAll(customDrops);
                     break;
                 case "null":
                     break;
             }
         }
     }
+    @EventHandler
+    public static void onplayerleave(PlayerQuitEvent event){
+        if(!Zombiedaygame.isstart){
+            return;
+        }
+        Player player = event.getPlayer();
+        if(!Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)){
+            return;
+        }else {
+            Teammanager.removePlayerFromTeam(player);
+            Zombiedaygame.players.remove(player);
+        }
+        if(Zombiedaygame.players.isEmpty()){
+            End.end();
+        }
+    }
+
+    @EventHandler
+    public static void openshop(InventoryOpenEvent event){
+        if (!Zombiedaygame.isstart){
+            return;
+        }
+        if(event.getInventory().getType().equals(InventoryType.BEACON)&&Teammanager.isPlayerInTeam((Player) event.getPlayer(),Teammanager.zombieday_team)){
+            event.setCancelled(true);
+            Block block = event.getPlayer().getTargetBlock(null,4).getRelative(BlockFace.DOWN);
+            if(block.getType().equals(Material.COPPER_BLOCK)){
+                BulletInv.open((Player) event.getPlayer());
+                return;
+            } else if (block.getType().equals(Material.IRON_BLOCK)) {
+                PotionInv.open((Player) event.getPlayer());
+                return;
+            }
+
+        }
+    }
+
 }

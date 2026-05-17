@@ -2,13 +2,13 @@ package com.mlc.mlcgames.zombieday.gamephase;
 
 import com.mlc.mlcgames.zombieday.Item;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
-import com.mlc.mlcgames.zombieday.inv.Potioninv;
+import com.mlc.mlcgames.zombieday.inv.BulletInv;
+import com.mlc.mlcgames.zombieday.inv.PotionInv;
 import org.bukkit.Location;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.zombiedayConfiguration;
@@ -20,13 +20,14 @@ public class Init {
         Item.init();
         Zombiedaygame.turn = 0;
         Zombiedaygame.isstart = false;
-        Zombiedaygame.respawnloc = zombiedayConfiguration.getLocation("respawnloc");
+        Zombiedaygame.respawnloc = zombiedayConfiguration.getLocation("location.respawnloc");
         if(Zombiedaygame.respawnloc == null){
             Zombiedaygame.respawnloc = new Location(instance.getServer().getWorld("world"),0,0,0 );
-            zombiedayConfiguration.set("respawnloc", Zombiedaygame.respawnloc);
+            zombiedayConfiguration.set("location.respawnloc", Zombiedaygame.respawnloc);
         }
         //初始化药水商店
-        Potioninv.init();
+        PotionInv.init();
+        BulletInv.init();
 
         //僵尸点位
         zombieskylocs = new ArrayList<>();

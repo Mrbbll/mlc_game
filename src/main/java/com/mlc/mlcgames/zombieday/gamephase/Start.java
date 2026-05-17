@@ -31,6 +31,7 @@ public class Start {
         for(Player player : Zombiedaygame.players){
             player.teleport(respawnloc);
             player.sendMessage("开始游戏");
+            player.getInventory().clear();
             player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,20*99999,0));
             Item.giveitem(player);
             player.setExp(0);
@@ -41,6 +42,7 @@ public class Start {
                 entity.remove();
             }
         }
+        Zombiedaygame.zombiecount=0;
         Zombiedaygame.isstart = true;
         Zombiedaygame.turn = 0;
         Zombiedaygame.obstacles = new ArrayList<>();

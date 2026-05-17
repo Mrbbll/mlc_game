@@ -48,6 +48,8 @@ public enum Zombietype {
     public int getWeight(int turn) {
         return baseWeight;
     }
+
+
     public static Zombietype getRandomType(int turn) {
         Zombietype[] types = values();
         int totalWeight = 0;

@@ -34,8 +34,6 @@ public class Spwaner {
     public static void spawnzombie(Location location, int count,double damage,double health,double addspeed,Zombietype type){
         World world = location.getWorld();
         for(int i = 0;i<count;i++){
-
-
             Zombie zombie = (Zombie) world.spawnEntity(location, EntityType.ZOMBIE);
             Objects.requireNonNull(zombie.getAttribute(Attribute.ATTACK_DAMAGE)).setBaseValue(damage);
             Objects.requireNonNull(zombie.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(health);
@@ -83,7 +81,6 @@ public class Spwaner {
                 zombie.getEquipment().setHelmet(Item.iron_helmet);
                 break;
         }
-
     }
 
 

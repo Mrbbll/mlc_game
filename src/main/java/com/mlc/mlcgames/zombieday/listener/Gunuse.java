@@ -176,7 +176,7 @@ public class Gunuse implements Listener {
         int consumebulletcount = Math.min(invbulletcount, needbulletcount);
         int newbulletcount = bulletcount+consumebulletcount;
         Gun.removeinvbullet(player,consumebulletcount);
-        Gun.setRefillcooldown(gun,5000);
+        Gun.setRefillcooldown(gun);
 
 
         BukkitTask task = new BukkitRunnable(){

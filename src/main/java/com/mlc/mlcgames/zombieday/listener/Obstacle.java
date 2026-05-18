@@ -41,22 +41,21 @@ public class Obstacle {
                     if (frontBlock.getType() == Material.OAK_FENCE) {
                         // 让方块消失（变成空气）
 
-                        frontBlock.setType(Material.AIR);
                         loc.getWorld().playSound(entity, Sound.BLOCK_CHERRY_WOOD_BREAK,3,1.5f);
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,frontBlock.getLocation(),
                                 20,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
-                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(frontBlock,0f)+0.2f;
+                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(frontBlock.getLocation(),0f)+0.15f;
                         if(breaktime>=1f){
                             obstacles.remove(frontBlock);
                             frontBlock.setType(Material.AIR);
-                            Zombiedaygame.obstaclebreaktime.remove(frontBlock);
+                            Zombiedaygame.obstaclebreaktime.remove(frontBlock.getLocation());
                         }
                         else {
                             for(Player player:players){
                                 player.sendBlockDamage(frontBlock.getLocation(), breaktime);
                             }
-                            Zombiedaygame.obstaclebreaktime.put(frontBlock,breaktime);
+                            Zombiedaygame.obstaclebreaktime.put(frontBlock.getLocation(),breaktime);
                         }
 
                     }
@@ -67,17 +66,17 @@ public class Obstacle {
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,topBlock.getLocation(),
                                 20,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
-                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(topBlock,0f)+0.2f;
+                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(topBlock.getLocation(),0f)+0.15f;
                         if(breaktime>=1f){
                             obstacles.remove(topBlock);
                             topBlock.setType(Material.AIR);
-                            Zombiedaygame.obstaclebreaktime.remove(topBlock);
+                            Zombiedaygame.obstaclebreaktime.remove(topBlock.getLocation());
                         }
                         else {
                             for(Player player:players){
                                 player.sendBlockDamage(topBlock.getLocation(), breaktime);
                             }
-                            Zombiedaygame.obstaclebreaktime.put(topBlock,breaktime);
+                            Zombiedaygame.obstaclebreaktime.put(topBlock.getLocation(),breaktime);
                         }
                     }
                 }
@@ -121,7 +120,7 @@ public class Obstacle {
                             Block block1 = location.getBlock();
                             block1.setType(Material.OAK_FENCE);
                             obstacles.add(block1);
-                            Zombiedaygame.obstaclebreaktime.put(block1,0f);
+                            Zombiedaygame.obstaclebreaktime.put(block1.getLocation(),0f);
                             itemStack.setAmount(itemStack.getAmount()-1);
                             player.playSound(location, Sound.BLOCK_STONE_PLACE,1,1);
                             countdown=0;

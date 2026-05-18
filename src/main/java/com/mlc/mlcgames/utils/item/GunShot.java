@@ -169,5 +169,6 @@ public class GunShot {
                 .build();
 //        server.broadcast(Component.text("hurt"));
         hitEntity.damage(dammage,source);
+        hitEntity.setNoDamageTicks(0);
     }
 }

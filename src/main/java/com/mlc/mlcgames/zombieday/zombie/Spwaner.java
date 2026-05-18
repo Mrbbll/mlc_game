@@ -35,11 +35,10 @@ public class Spwaner {
         World world = location.getWorld();
         for(int i = 0;i<count;i++){
             Zombie zombie = (Zombie) world.spawnEntity(location, EntityType.ZOMBIE);
-            server.broadcast(miniMessage.deserialize("spawn zombie"));
+//            server.broadcast(miniMessage.deserialize("spawn zombie"));
             Objects.requireNonNull(zombie.getAttribute(Attribute.ATTACK_DAMAGE)).setBaseValue(damage);
             Objects.requireNonNull(zombie.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(health);
             Objects.requireNonNull(zombie.getAttribute(Attribute.MOVEMENT_SPEED)).addModifier(new AttributeModifier(new NamespacedKey(instance,"zombie_speed"),addspeed,AttributeModifier.Operation.ADD_NUMBER));
-            zombie.setMaximumNoDamageTicks(2);
             setZombieType(zombie,type);
             zombies.add(zombie);
             zombiecount = zombies.size();

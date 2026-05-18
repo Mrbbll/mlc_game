@@ -15,12 +15,25 @@ import static com.mlc.mlcgames.Mlcgames.instance;
 
 public class Gun {
     public static NamespacedKey refillcooldown = new NamespacedKey(instance,"refillcooldown");
+    public static NamespacedKey refilltime = new NamespacedKey(instance,"refilltime");
+
     //毫秒为单位
-    public static void setRefillcooldown(ItemStack item,long cooldown){
+    public static void setRefillcooldown(ItemStack item){
         ItemMeta itemMeta = item.getItemMeta();
         if(itemMeta!=null){
+
             PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+            long cooldown = pdc.getOrDefault(refilltime,PersistentDataType.LONG,5000L);
+
             pdc.set(refillcooldown,PersistentDataType.LONG,cooldown + System.currentTimeMillis());
+            item.setItemMeta(itemMeta);
+        }
+    }
+
+    public static void setRefilltime(ItemStack item,long cooldown){
+        ItemMeta itemMeta = item.getItemMeta();
+        if(itemMeta!=null){
+            itemMeta.getPersistentDataContainer().set(refilltime,PersistentDataType.LONG,cooldown);
             item.setItemMeta(itemMeta);
         }
     }

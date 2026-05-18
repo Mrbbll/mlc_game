@@ -23,8 +23,8 @@ public class areamanager {
         }
         Block block = location.getBlock();
         Block block1 = block.getRelative(BlockFace.DOWN);
-        Block block2 = block1.getRelative(BlockFace.DOWN);
+
         block1.setType(Material.AIR);
-        block2.setType(Material.AIR);
+        block.setType(Material.AIR);
     }
 }

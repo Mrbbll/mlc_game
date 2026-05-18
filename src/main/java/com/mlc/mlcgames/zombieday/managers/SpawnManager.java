@@ -47,7 +47,7 @@ public class SpawnManager {
 
         switch (difficulty){
             case NORMAL:
-                num = random.nextInt(turn*5,turn * (6 + playernum));
+                num = random.nextInt(turn*5/2,turn * (3 + playernum));
 
                 damage = 2+ turn*0.1;
                 health = 10+ turn*0.2;
@@ -59,14 +59,32 @@ public class SpawnManager {
                 Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
                 if(turn>=4&&turn%2==0){
-                    Spwaner.spawnboss(1,zombieloc1,damage*2,health*5,speed*1.1);
+                    Spwaner.spawnboss(1,zombieloc1,damage*2,health*5,speed*1.3);
                 }
                 break;
             case HARD:
-                num = random.nextInt(turn*10,turn*(11 + playernum));
+                num = random.nextInt(turn*10/2,turn*(6 + playernum));
 
                 damage = 3 + turn*0.2;
-                health = 15 + turn*0.4;
+                health = 10 + turn*0.4;
+                speed = 0;
+
+                numair = (int) (num*random.nextDouble(0,0.05));
+                num -= numair;
+                num1 = (int) (num* random.nextDouble(0.2,0.8));
+                num2 = num-num1;
+                Spwaner.spawnrandomzombieinair(numair,damage,health,speed);
+                Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
+                Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
+                if(turn>=4&&turn%2==0){
+                    Spwaner.spawnboss(1,zombieloc1,damage*2,health*5,speed*1.3);
+                }
+                break;
+            case INSANE:
+                num = random.nextInt(turn*15/2,turn*(8 + playernum));
+
+                damage = 4+ turn*0.3;
+                health = 10+ turn*0.6;
                 speed = 0.1;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
@@ -76,29 +94,17 @@ public class SpawnManager {
                 Spwaner.spawnrandomzombieinair(numair,damage,health,speed);
                 Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
-                break;
-            case INSANE:
-                num = random.nextInt(turn*15,turn*(16 + playernum));
-
-                damage = 3+ turn*0.5;
-                health = 20+ turn*0.6;
-                speed = 0.15;
-
-                numair = (int) (num*random.nextDouble(0,0.05));
-                num -= numair;
-                num1 = (int) (num* random.nextDouble(0.2,0.8));
-                num2 = num-num1;
-                Spwaner.spawnrandomzombieinair(numair,damage,health,speed);
-                Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
-                Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
+                if(turn>=4&&turn%2==0){
+                    Spwaner.spawnboss(1,zombieloc1,damage*2,health*5,speed*1.3);
+                }
                 break;
 
             case TORMENT:
-                num = random.nextInt(turn*20,turn*(21 + playernum));
+                num = random.nextInt(turn*20/2,turn*(11 + playernum));
 
-                damage = 3+ turn*0.5;
-                health = 30+ turn*0.6;
-                speed = 0.2;
+                damage = 4 + turn*0.4;
+                health = 14+ turn*0.6;
+                speed = 0.1;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
                 num -= numair;
@@ -107,6 +113,9 @@ public class SpawnManager {
                 Spwaner.spawnrandomzombieinair(numair,damage,health,speed);
                 Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
+                if(turn>=4&&turn%2==0){
+                    Spwaner.spawnboss(1,zombieloc1,damage*2,health*5,speed*1.3);
+                }
                 break;
         }
 

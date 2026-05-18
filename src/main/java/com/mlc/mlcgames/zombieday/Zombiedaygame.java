@@ -23,7 +23,7 @@ public class Zombiedaygame {
     public static Set<Zombie> zombies = new HashSet<>();
     public static int turn;
     public static List<Block> obstacles = new ArrayList<>();
-    public static Map<Block,Float> obstaclebreaktime = new HashMap<>();
+    public static Map<Location,Float> obstaclebreaktime = new HashMap<>();
     public static int zombiecount;
     public static Difficulty difficulty = Difficulty.NORMAL;
     public static Location arealoc1;

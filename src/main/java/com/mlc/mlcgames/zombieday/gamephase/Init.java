@@ -2,9 +2,7 @@ package com.mlc.mlcgames.zombieday.gamephase;
 
 import com.mlc.mlcgames.zombieday.Item;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
-import com.mlc.mlcgames.zombieday.inv.BulletInv;
-import com.mlc.mlcgames.zombieday.inv.FoodInv;
-import com.mlc.mlcgames.zombieday.inv.PotionInv;
+import com.mlc.mlcgames.zombieday.inv.*;
 import org.bukkit.Location;
 
 import java.io.File;
@@ -30,6 +28,8 @@ public class Init {
         PotionInv.init();
         BulletInv.init();
         FoodInv.init();
+        ArmorInv.init();
+        EffectInv.init();
 
         prepareloc = zombiedayConfiguration.getLocation("location.prepareloc");
         if(prepareloc == null){

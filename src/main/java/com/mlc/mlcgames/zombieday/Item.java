@@ -82,6 +82,7 @@ public class Item {
         Gun.settypedata(handgun, "handgun");
         Gun.setbulletcount(handgun, 8);
         Gun.setmaxbulletcount(handgun, 8);
+        Gun.setRefilltime(handgun,5000L);
         ItemMeta itemMeta = handgun.getItemMeta();
         itemMeta.setMaxStackSize(1);
         itemMeta.customName(miniMessage.deserialize("<!i>手枪"));
@@ -92,6 +93,7 @@ public class Item {
         Gun.settypedata(rifle, "rifle");
         Gun.setbulletcount(rifle, 30);
         Gun.setmaxbulletcount(rifle, 30);
+        Gun.setRefilltime(rifle,4000L);
         ItemMeta itemMeta1 = rifle.getItemMeta();
         itemMeta1.setMaxStackSize(1);
         itemMeta1.customName(miniMessage.deserialize("<!i>步枪"));
@@ -103,6 +105,7 @@ public class Item {
         Gun.settypedata(shotgun, "shotgun");
         Gun.setbulletcount(shotgun, 4);
         Gun.setmaxbulletcount(shotgun, 4);
+        Gun.setRefilltime(shotgun,4000L);
         ItemMeta itemMeta2 = shotgun.getItemMeta();
         itemMeta2.setMaxStackSize(1);
         itemMeta2.customName(miniMessage.deserialize("<!i>霰弹枪"));
@@ -114,6 +117,7 @@ public class Item {
         Gun.settypedata(submachine_gun, "submachine_gun");
         Gun.setbulletcount(submachine_gun, 40);
         Gun.setmaxbulletcount(submachine_gun, 40);
+        Gun.setRefilltime(submachine_gun,5000L);
         ItemMeta itemMeta3 = submachine_gun.getItemMeta();
         itemMeta3.setMaxStackSize(1);
         itemMeta3.customName(miniMessage.deserialize("<!i>冲锋枪"));
@@ -140,7 +144,6 @@ public class Item {
 
         bullet = new ItemStack(Material.STONE_BUTTON);
         ItemMeta itemMeta7 = bullet.getItemMeta();
-        itemMeta7.setMaxStackSize(16);
         itemMeta7.customName(miniMessage.deserialize("<!i>通用子弹"));
         bullet.setItemMeta(itemMeta7);
 
@@ -166,7 +169,7 @@ public class Item {
         itemMeta9.setUnbreakable(true);
         AttributeModifier attributeModifier1 =
                 new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgames:swordattackspeed")),
-                        0.5,
+                        -3,
                         AttributeModifier.Operation.ADD_NUMBER,
                         EquipmentSlotGroup.MAINHAND);
         itemMeta9.addAttributeModifier(Attribute.ATTACK_SPEED,attributeModifier1);
@@ -232,12 +235,24 @@ public class Item {
 
         iron_axe = new ItemStack(Material.IRON_AXE);
         ItemMeta itemMeta19 = iron_axe.getItemMeta();
+        AttributeModifier attributeModifier3 =
+                new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgames:swordattackspeed")),
+                        -3.9,
+                        AttributeModifier.Operation.ADD_NUMBER,
+                        EquipmentSlotGroup.MAINHAND);
         itemMeta19.setUnbreakable(true);
+        itemMeta19.addAttributeModifier(Attribute.ATTACK_SPEED,attributeModifier3);
         iron_axe.setItemMeta(itemMeta19);
         iron_axe.setData(DataComponentTypes.CAN_BREAK, predicate);
 
         iron_shovel = new ItemStack(Material.IRON_SHOVEL);
         ItemMeta itemMeta20 = iron_shovel.getItemMeta();
+        AttributeModifier attributeModifier4 =
+                new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgames:swordattackspeed")),
+                        -3.9,
+                        AttributeModifier.Operation.ADD_NUMBER,
+                        EquipmentSlotGroup.MAINHAND);
+        itemMeta20.addAttributeModifier(Attribute.ATTACK_SPEED,attributeModifier4);
         itemMeta20.setUnbreakable(true);
         iron_shovel.setItemMeta(itemMeta20);
         iron_shovel.setData(DataComponentTypes.CAN_BREAK, predicate);
@@ -277,65 +292,65 @@ public class Item {
         speed_potion.setItemMeta(itemMeta26);
 
         strength_potion = new ItemStack(Material.POTION);
-        itemMeta26 = strength_potion.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>力量药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*120, 0, true, false), true);
-        strength_potion.setItemMeta(itemMeta26);
+        ItemMeta itemMeta27 = strength_potion.getItemMeta();
+        itemMeta27.customName(miniMessage.deserialize("<!i>力量药水"));
+        PotionMeta potionMeta1 = (PotionMeta) itemMeta27;
+        potionMeta1.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*120, 0, true, false), true);
+        strength_potion.setItemMeta(itemMeta27);
 
         regeneration_potion = new ItemStack(Material.POTION);
-        itemMeta26 = regeneration_potion.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>再生药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*120, 0, true, false), true);
-        regeneration_potion.setItemMeta(itemMeta26);
+        ItemMeta itemMeta28 = regeneration_potion.getItemMeta();
+        itemMeta28.customName(miniMessage.deserialize("<!i>再生药水"));
+        PotionMeta potionMeta2 = (PotionMeta) itemMeta28;
+        potionMeta2.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*120, 0, true, false), true);
+        regeneration_potion.setItemMeta(itemMeta28);
 
         instant_health_potion = new ItemStack(Material.POTION);
-        itemMeta26 = instant_health_potion.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>治疗药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20, 0, true, false), true);
-        instant_health_potion.setItemMeta(itemMeta26);
+        ItemMeta itemMeta29 = instant_health_potion.getItemMeta();
+        itemMeta29.customName(miniMessage.deserialize("<!i>治疗药水"));
+        PotionMeta potionMeta3 = (PotionMeta) itemMeta29;
+        potionMeta3.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20, 0, true, false), true);
+        instant_health_potion.setItemMeta(itemMeta29);
 
         golden_apple = new ItemStack(Material.GOLDEN_APPLE);
-        itemMeta26 = golden_apple.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>金苹果"));
-        golden_apple.setItemMeta(itemMeta26);
+        ItemMeta itemMeta36 = golden_apple.getItemMeta();
+        itemMeta36.customName(miniMessage.deserialize("<!i>金苹果"));
+        golden_apple.setItemMeta(itemMeta36);
 
         speed_potion_splash = new ItemStack(Material.SPLASH_POTION);
-        itemMeta26 = speed_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>速度药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 20*120, 0, true, false), true);
-        speed_potion_splash.setItemMeta(itemMeta26);
+        ItemMeta itemMeta31 = speed_potion_splash.getItemMeta();
+        itemMeta31.customName(miniMessage.deserialize("<!i>速度药水"));
+        PotionMeta potionMeta4 = (PotionMeta) itemMeta31;
+        potionMeta4.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 20*120, 0, true, false), true);
+        speed_potion_splash.setItemMeta(itemMeta31);
 
         strength_potion_splash = new ItemStack(Material.SPLASH_POTION);
-        itemMeta26 = strength_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>力量药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*120, 0, true, false), true);
-        strength_potion_splash.setItemMeta(itemMeta26);
+        ItemMeta itemMeta32 = strength_potion_splash.getItemMeta();
+        itemMeta32.customName(miniMessage.deserialize("<!i>力量药水"));
+        PotionMeta potionMeta5 = (PotionMeta) itemMeta32;
+        potionMeta5.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*120, 0, true, false), true);
+        strength_potion_splash.setItemMeta(itemMeta32);
 
         regeneration_potion_splash = new ItemStack(Material.SPLASH_POTION);
-        itemMeta26 = regeneration_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>再生药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*120, 0, true, false), true);
-        regeneration_potion_splash.setItemMeta(itemMeta26);
+        ItemMeta itemMeta33 = regeneration_potion_splash.getItemMeta();
+        itemMeta33.customName(miniMessage.deserialize("<!i>再生药水"));
+        PotionMeta potionMeta6 = (PotionMeta) itemMeta33;
+        potionMeta6.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*120, 0, true, false), true);
+        regeneration_potion_splash.setItemMeta(itemMeta33);
 
         instant_health_potion_splash = new ItemStack(Material.SPLASH_POTION);
-        itemMeta26 = instant_health_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>治疗药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20, 0, true, false), true);
-        instant_health_potion_splash.setItemMeta(itemMeta26);
+        ItemMeta itemMeta34 = instant_health_potion_splash.getItemMeta();
+        itemMeta34.customName(miniMessage.deserialize("<!i>治疗药水"));
+        PotionMeta potionMeta7 = (PotionMeta) itemMeta34;
+        potionMeta7.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20, 0, true, false), true);
+        instant_health_potion_splash.setItemMeta(itemMeta34);
 
         slow_potion_splash = new ItemStack(Material.SPLASH_POTION);
-        itemMeta26 = slow_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>减速药水"));
-        potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20*120, 0, true, false), true);
-        slow_potion_splash.setItemMeta(itemMeta26);
+        ItemMeta itemMeta35 = slow_potion_splash.getItemMeta();
+        itemMeta35.customName(miniMessage.deserialize("<!i>减速药水"));
+        PotionMeta potionMeta8 = (PotionMeta) itemMeta35;
+        potionMeta8.addCustomEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20*120, 0, true, false), true);
+        slow_potion_splash.setItemMeta(itemMeta35);
 
         itemlist = List.of(handgun,
                 rifle,

@@ -29,10 +29,10 @@ public class FoodInv {
         emeraldStack.setAmount(20);
         MerchantRecipe merchantRecipe5 = new MerchantRecipe(ItemStack.of(Material.GOLDEN_APPLE,1), 0,999,false);
         merchantRecipe5.addIngredient(emeraldStack);
-        MerchantRecipe merchantRecipe6 = new MerchantRecipe(ItemStack.of(Material.GOLDEN_CARROT,12), 0,999,false);
+        MerchantRecipe merchantRecipe6 = new MerchantRecipe(ItemStack.of(Material.GOLDEN_CARROT,6), 0,999,false);
         merchantRecipe6.addIngredient(emeraldStack);
 
-        List<MerchantRecipe> recipes = List.of(merchantRecipe1,merchantRecipe2,merchantRecipe3,merchantRecipe4,merchantRecipe5);
+        List<MerchantRecipe> recipes = List.of(merchantRecipe1,merchantRecipe2,merchantRecipe3,merchantRecipe4,merchantRecipe5,merchantRecipe6);
         merchant.setRecipes(recipes);
     }
 

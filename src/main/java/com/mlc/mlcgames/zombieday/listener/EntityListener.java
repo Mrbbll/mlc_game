@@ -3,29 +3,29 @@ package com.mlc.mlcgames.zombieday.listener;
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.gamephase.End;
-import com.mlc.mlcgames.zombieday.inv.ArmorInv;
-import com.mlc.mlcgames.zombieday.inv.BulletInv;
-import com.mlc.mlcgames.zombieday.inv.FoodInv;
-import com.mlc.mlcgames.zombieday.inv.PotionInv;
+import com.mlc.mlcgames.zombieday.inv.*;
+import com.mlc.mlcgames.zombieday.managers.Lottery;
 import com.mlc.mlcgames.zombieday.managers.areamanager;
 import com.mlc.mlcgames.zombieday.zombie.ZombieLoot;
-import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -34,11 +34,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.*;
-import static com.mlc.mlcgames.zombieday.Zombiedaygame.gameworld;
 import static com.mlc.mlcgames.zombieday.zombie.Spwaner.zombie_type;
 
 public class EntityListener implements Listener {
@@ -115,6 +114,7 @@ public class EntityListener implements Listener {
         if(event.getRightClicked() instanceof Zombie zombie){
             ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
             if(itemStack.getType().equals(Material.GOLDEN_APPLE)){
+                itemStack.setAmount(itemStack.getAmount()-1);
                 Player saver = event.getPlayer();
                 saveplayer(zombie,saver);
             }
@@ -220,6 +220,11 @@ public class EntityListener implements Listener {
         if(!Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)){
             return;
         }else {
+            Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20);
+            Objects.requireNonNull(player.getAttribute(Attribute.MOVEMENT_SPEED)).setBaseValue(0.1);
+            Objects.requireNonNull(player.getAttribute(Attribute.BLOCK_BREAK_SPEED)).setBaseValue(1);
+            Objects.requireNonNull(player.getAttribute(Attribute.ARMOR)).setBaseValue(0);
+            Objects.requireNonNull(player.getAttribute(Attribute.ATTACK_KNOCKBACK)).setBaseValue(0);
             Teammanager.removePlayerFromTeam(player);
             Zombiedaygame.players.remove(player);
         }
@@ -235,7 +240,11 @@ public class EntityListener implements Listener {
         }
         if(event.getInventory().getType().equals(InventoryType.BEACON)&&Teammanager.isPlayerInTeam((Player) event.getPlayer(),Teammanager.zombieday_team)){
             event.setCancelled(true);
-            Block block = event.getPlayer().getTargetBlock(null,4).getRelative(BlockFace.DOWN);
+            Block blocklook = event.getPlayer().getTargetBlock(null,4);
+            if(!blocklook.getType().equals(Material.BEACON)){
+                return;
+            }
+            Block block = blocklook.getRelative(BlockFace.DOWN);
             if(block.getType().equals(Material.COPPER_BLOCK)){
                 BulletInv.open((Player) event.getPlayer());
                 return;
@@ -248,6 +257,26 @@ public class EntityListener implements Listener {
             } else if (block.getType().equals(Material.WHITE_WOOL)) {
                 ArmorInv.open((Player) event.getPlayer());
                 return;
+            } else if (block.getType().equals(Material.EMERALD_BLOCK)) {
+                EffectInv.open((Player) event.getPlayer());
+                return;
+            } else if (block.getType().equals(Material.LODESTONE)) {
+                ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
+                if (item.getType().equals(Material.EMERALD)) {
+                    int num = item.getAmount();
+                    if(num==64){
+                        item.setAmount(0);
+                        ItemStack randomitem = Lottery.getRandomItem();
+                        event.getPlayer().getInventory().addItem(randomitem);
+                        server.broadcast(
+                                miniMessage.deserialize("玩家"+event.getPlayer().getName()+"在抽奖箱获得了")
+                                        .append(randomitem.effectiveName())
+                                        .append(miniMessage.deserialize(" * "+randomitem.getAmount())));
+                    }
+                    else {
+                        event.getPlayer().sendMessage(miniMessage.deserialize("你需要手持64个货币抽奖"));
+                    }
+                }
             } else if (block.getType().equals(Material.COBBLESTONE_WALL)) {
                 ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
                 if (item.getType().equals(Material.TRIAL_KEY)) {
@@ -267,8 +296,45 @@ public class EntityListener implements Listener {
                     }
                 }
             }
-
         }
     }
+    @EventHandler
+    public static void onplayerclickeffectshop(InventoryClickEvent event){
+        if(!Zombiedaygame.isstart){
+            return;
+        }
+        Inventory inv = event.getView().getTopInventory();
+        if(inv.equals(EffectInv.inv)){
+            event.setCancelled(true);
+            ItemStack itemStack = event.getCurrentItem();
+            if (itemStack != null) {
+                EffectInv.selecthander(itemStack,(Player) event.getWhoClicked());
+            }
+        }
+    }
+    @EventHandler
+    public static void onplayerusespawnegg(PlayerInteractEvent event){
+        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+            Player player = event.getPlayer();
+            Block block = event.getClickedBlock();
+            ItemStack itemStack = event.getItem();
+            if (block != null &&itemStack!=null) {
+                if(itemStack.getType().equals(Material.WOLF_SPAWN_EGG)){
+                    event.setCancelled(true);
 
+                    Wolf wolf =(Wolf) player.getWorld().spawnEntity(block.getLocation().clone().add(0,1,0),EntityType.WOLF);
+                    wolf.setAdult();
+                    wolf.setTamed(true);
+                    wolf.setOwner(player);
+                    itemStack.setAmount(itemStack.getAmount()-1);
+                } else if (itemStack.getType().equals(Material.IRON_GOLEM_SPAWN_EGG)) {
+                    event.setCancelled(true);
+                    itemStack.setAmount(itemStack.getAmount()-1);
+                    IronGolem ironGolem =(IronGolem) player.getWorld().spawnEntity(block.getLocation().clone().add(0,1,0),EntityType.IRON_GOLEM);
+                    ironGolem.setPlayerCreated(true);
+
+                }
+            }
+        }
+    }
 }

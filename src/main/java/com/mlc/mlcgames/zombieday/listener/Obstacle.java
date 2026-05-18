@@ -45,7 +45,7 @@ public class Obstacle {
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,frontBlock.getLocation(),
                                 20,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
-                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(frontBlock.getLocation(),0f)+0.15f;
+                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(frontBlock.getLocation(),0f)+0.12f;
                         if(breaktime>=1f){
                             obstacles.remove(frontBlock);
                             frontBlock.setType(Material.AIR);
@@ -66,7 +66,7 @@ public class Obstacle {
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,topBlock.getLocation(),
                                 20,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
-                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(topBlock.getLocation(),0f)+0.15f;
+                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(topBlock.getLocation(),0f)+0.12f;
                         if(breaktime>=1f){
                             obstacles.remove(topBlock);
                             topBlock.setType(Material.AIR);

@@ -50,6 +50,9 @@ public class Spwaner {
 //                    server.broadcast(miniMessage.deserialize("has way"));
                     return;
                 }
+                if(!isstart){
+                    zombie.remove();
+                }
                 for(Player player : zombie.getLocation().getNearbyPlayers(60, 60, 60)){
                     if(player != null&&player.getGameMode()!=GameMode.CREATIVE && player.getGameMode()!= GameMode.SPECTATOR){
                             zombie.getPathfinder().moveTo(player);

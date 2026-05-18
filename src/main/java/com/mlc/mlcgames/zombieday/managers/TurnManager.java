@@ -28,6 +28,7 @@ public class TurnManager {
             public void run() {
                 if(!Zombiedaygame.isstart){
                     this.cancel();
+                    return;
                 }
                 countdown--;
                 if(countdown==90){

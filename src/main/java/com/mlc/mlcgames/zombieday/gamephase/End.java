@@ -45,11 +45,14 @@ public class End {
             }
         }
 
+
         for(Entity entity : gameworld.getEntities()){
             if(entity instanceof Zombie||entity instanceof Wolf||entity instanceof Item || entity instanceof  IronGolem||entity instanceof Arrow){
                 entity.remove();
             }
         }
+
+
         Zombiedaygame.players.clear();
         for(Block block : Zombiedaygame.obstacles){
             block.setType(Material.AIR);

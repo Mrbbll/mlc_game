@@ -13,9 +13,7 @@ import com.mlc.mlcgames.zombieday.zombie.ZombieLoot;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -47,7 +45,7 @@ public class Start {
             scoreboard.showsidebar(player);
         }
         for(Entity entity : gameworld.getEntities()){
-            if(entity instanceof Zombie||entity instanceof org.bukkit.entity.Item){
+            if(entity instanceof Zombie||entity instanceof Wolf ||entity instanceof org.bukkit.entity.Item || entity instanceof IronGolem ||entity instanceof Arrow){
                 entity.remove();
             }
         }

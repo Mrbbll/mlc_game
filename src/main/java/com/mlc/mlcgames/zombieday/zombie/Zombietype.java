@@ -34,7 +34,9 @@ public enum Zombietype {
         public int getWeight(int turn) {
             return baseWeight + turn / 2; // 随轮次线性增加
         }
-    };
+    },
+    BOSS(0);
+
 
     protected final int baseWeight;
 

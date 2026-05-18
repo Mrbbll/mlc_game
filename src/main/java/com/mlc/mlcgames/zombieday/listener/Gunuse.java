@@ -86,19 +86,19 @@ public class Gunuse implements Listener {
     private void Gunshotevent(Player player, @NotNull ItemStack item) {
         switch (item.getItemMeta().getPersistentDataContainer().getOrDefault(Item.itemtype,PersistentDataType.STRING,"null")){
             case "handgun":
-                GunShot.lineGunshot(player,10);
+                GunShot.lineGunshot(player,14);
                 GunShot.setcooldown(item, 500);
                 break;
             case "rifle":
-                GunShot.lineGunshot(player,7);
+                GunShot.lineGunshot(player,10);
                 GunShot.setcooldown(item,200);
                 break;
             case "submachine_gun":
-                GunShot.lineGunshot(player,7);
+                GunShot.lineGunshot(player,10);
                 GunShot.setcooldown(item,150);
                 break;
             case "shotgun":
-                GunShot.areaGunshot(player,5,10,15);
+                GunShot.areaGunshot(player,7,10,15);
                 GunShot.setcooldown(item,1000);
                 break;
             case "null":

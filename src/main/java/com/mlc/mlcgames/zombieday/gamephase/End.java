@@ -1,13 +1,21 @@
 package com.mlc.mlcgames.zombieday.gamephase;
 
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
+import com.mlc.mlcgames.zombieday.managers.areamanager;
+import com.mlc.mlcgames.zombieday.managers.scoreboard;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
+
+import java.util.HashSet;
 
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
+import static com.mlc.mlcgames.Mlcgames.scoreboardManager;
+import static com.mlc.mlcgames.zombieday.Zombiedaygame.*;
 
 public class End {
     public static void end(){
@@ -15,16 +23,28 @@ public class End {
         Zombiedaygame.turn = 0;
         Zombiedaygame.zombiecount = 0;
         Zombiedaygame.countdown = 120;
+        Zombiedaygame.requirekeynum =1;
         for(Player player : Zombiedaygame.players) {
             player.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("游戏结束"));
             player.clearActivePotionEffects();
             player.getInventory().clear();
             player.setExp(0);
+            player.teleport(Zombiedaygame.prepareloc);
+            scoreboard.updatesidebar(player);
+        }
+        for(Entity entity : gameworld.getEntities()){
+            if(entity instanceof Zombie){
+                entity.remove();
+            }
         }
         Zombiedaygame.players.clear();
         for(Block block : Zombiedaygame.obstacles){
             block.setType(Material.AIR);
         }
+        areamanager.initarea(arealoc1);
+        areamanager.initarea(arealoc2);
+        areamanager.initarea(arealoc3);
+        areamanager.initarea(arealoc4);
         Zombiedaygame.obstaclebreaktime.clear();
     }
 }

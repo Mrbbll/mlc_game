@@ -9,6 +9,7 @@ import io.papermc.paper.registry.TypedKey;
 import io.papermc.paper.registry.set.RegistryKeySet;
 import io.papermc.paper.registry.set.RegistrySet;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -16,19 +17,17 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.BlockType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -45,6 +44,7 @@ public class Item {
     public static ItemStack bow;
     public static ItemStack crossbow;
     public static ItemStack grenade;
+    public static ItemStack key;
     public static ItemStack bullet;
     public static ItemStack arrow;
     public static ItemStack feather;
@@ -74,6 +74,7 @@ public class Item {
     public static ItemStack instant_health_potion_splash;
     public static ItemStack emerald;
     public static List<ItemStack> itemlist;
+    public static ItemStack slow_potion_splash;
 
 
     public static void init(){
@@ -149,16 +150,33 @@ public class Item {
         arrow.setItemMeta(itemMeta8);
         arrow.setAmount(16);
 
+        key = new ItemStack(Material.TRIAL_KEY);
+        ItemMeta itemMeta30 = key.getItemMeta();
+        itemMeta30.customName(miniMessage.deserialize("<!i>区域钥匙"));
+        List<Component> lore = new ArrayList<>();
+        lore.add(miniMessage.deserialize("<!i>用于解锁任一区域"));
+        itemMeta30.lore(lore);
+        key.setItemMeta(itemMeta30);
+
 
         feather = new ItemStack(Material.FEATHER);
-        iron_sword = new ItemStack(Material.IRON_SWORD);
+
+        iron_sword = ItemStack.of(Material.IRON_SWORD);
         ItemMeta itemMeta9 = iron_sword.getItemMeta();
         itemMeta9.setUnbreakable(true);
-        itemMeta9.addAttributeModifier(Attribute.ATTACK_SPEED, AttributeModifier.deserialize(
-                Map.of("amount", 0.5,
-                        "operation", "0",
-                        "key","mlcgame:attackspeed"
-                        )));
+        AttributeModifier attributeModifier1 =
+                new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgames:swordattackspeed")),
+                        0.5,
+                        AttributeModifier.Operation.ADD_NUMBER,
+                        EquipmentSlotGroup.MAINHAND);
+        itemMeta9.addAttributeModifier(Attribute.ATTACK_SPEED,attributeModifier1);
+        AttributeModifier attributeModifier2 =
+                new AttributeModifier(Objects.requireNonNull(NamespacedKey.fromString("mlcgames:swordattackdamage")),
+                        7,
+                        AttributeModifier.Operation.ADD_NUMBER,
+                        EquipmentSlotGroup.MAINHAND);
+
+        itemMeta9.addAttributeModifier(Attribute.ATTACK_DAMAGE,attributeModifier2);
         iron_sword.setItemMeta(itemMeta9);
 
         iron_chestplate = new ItemStack(Material.IRON_CHESTPLATE);
@@ -246,70 +264,78 @@ public class Item {
 
         emerald = new ItemStack(Material.EMERALD);
         ItemMeta itemMeta21 = emerald.getItemMeta();
-        itemMeta21.customName(miniMessage.deserialize("<!i>money"));
+        itemMeta21.customName(miniMessage.deserialize("<!i>货币"));
+        List<Component> lore1 = List.of(miniMessage.deserialize("<!i>或许可以在贩卖机使用"));
+        itemMeta21.lore(lore1);
         emerald.setItemMeta(itemMeta21);
 
         speed_potion = new ItemStack(Material.POTION);
         ItemMeta itemMeta26 = speed_potion.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>speedpotion"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>速度药水"));
         PotionMeta potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 20*120, 0, true, false), true);
         speed_potion.setItemMeta(itemMeta26);
 
         strength_potion = new ItemStack(Material.POTION);
         itemMeta26 = strength_potion.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>strengthpotion"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>力量药水"));
         potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*120, 0, true, false), true);
         strength_potion.setItemMeta(itemMeta26);
 
         regeneration_potion = new ItemStack(Material.POTION);
         itemMeta26 = regeneration_potion.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>regenpotion"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>再生药水"));
         potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*120, 0, true, false), true);
         regeneration_potion.setItemMeta(itemMeta26);
 
         instant_health_potion = new ItemStack(Material.POTION);
         itemMeta26 = instant_health_potion.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>instanthealthpotion"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>治疗药水"));
         potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20, 0, true, false), true);
         instant_health_potion.setItemMeta(itemMeta26);
 
         golden_apple = new ItemStack(Material.GOLDEN_APPLE);
         itemMeta26 = golden_apple.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>goldenapple"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>金苹果"));
         golden_apple.setItemMeta(itemMeta26);
 
         speed_potion_splash = new ItemStack(Material.SPLASH_POTION);
         itemMeta26 = speed_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>speedpotion_splash"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>速度药水"));
         potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 20*120, 0, true, false), true);
         speed_potion_splash.setItemMeta(itemMeta26);
 
         strength_potion_splash = new ItemStack(Material.SPLASH_POTION);
         itemMeta26 = strength_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>strengthpotion_splash"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>力量药水"));
         potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.STRENGTH, 20*120, 0, true, false), true);
         strength_potion_splash.setItemMeta(itemMeta26);
 
         regeneration_potion_splash = new ItemStack(Material.SPLASH_POTION);
         itemMeta26 = regeneration_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>regenpotion_splash"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>再生药水"));
         potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*120, 0, true, false), true);
         regeneration_potion_splash.setItemMeta(itemMeta26);
 
         instant_health_potion_splash = new ItemStack(Material.SPLASH_POTION);
         itemMeta26 = instant_health_potion_splash.getItemMeta();
-        itemMeta26.customName(miniMessage.deserialize("<!i>instanthealthpotion_splash"));
+        itemMeta26.customName(miniMessage.deserialize("<!i>治疗药水"));
         potionMeta = (PotionMeta) itemMeta26;
-        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20*99999, 0, true, false), true);
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 20, 0, true, false), true);
         instant_health_potion_splash.setItemMeta(itemMeta26);
 
+        slow_potion_splash = new ItemStack(Material.SPLASH_POTION);
+        itemMeta26 = slow_potion_splash.getItemMeta();
+        itemMeta26.customName(miniMessage.deserialize("<!i>减速药水"));
+        potionMeta = (PotionMeta) itemMeta26;
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20*120, 0, true, false), true);
+        slow_potion_splash.setItemMeta(itemMeta26);
 
         itemlist = List.of(handgun,
                 rifle,
@@ -356,5 +382,6 @@ public class Item {
         player.getInventory().addItem(arrow);
         player.getInventory().addItem(arrow);
         player.getInventory().addItem(arrow);
+        player.getInventory().addItem(ItemStack.of(Material.COOKED_BEEF,16));
     }
 }

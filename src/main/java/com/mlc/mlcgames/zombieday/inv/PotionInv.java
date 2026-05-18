@@ -35,6 +35,8 @@ public class PotionInv {
         merchantRecipe4.setIngredients(List.of(item4));
         merchantRecipe4.setIgnoreDiscounts(true);
 
+
+
         MerchantRecipe merchantRecipe5 = new MerchantRecipe(Item.golden_apple,0,10,false);
         ItemStack item5 = Item.emerald.clone();
         item5.setAmount(20);
@@ -65,11 +67,18 @@ public class PotionInv {
         merchantRecipe9.setIngredients(List.of(item9));
         merchantRecipe9.setIgnoreDiscounts(true);
 
+        MerchantRecipe merchantRecipe10 = new MerchantRecipe(Item.slow_potion_splash,0,10,false);
+        ItemStack item10 = Item.emerald.clone();
+        item10.setAmount(15);
+        merchantRecipe10.setIngredients(List.of(item10));
+        merchantRecipe10.setIgnoreDiscounts(true);
+
         merchant.setRecipes(List.of(merchantRecipe1,
                 merchantRecipe2,merchantRecipe3,
                 merchantRecipe4,merchantRecipe5,
                 merchantRecipe6,merchantRecipe7,
-                merchantRecipe8,merchantRecipe9));
+                merchantRecipe8,merchantRecipe9,
+                merchantRecipe10));
     }
     public static void open(Player player) {
         InventoryView inv = MenuType.MERCHANT.builder().merchant(merchant).title(Component.text("Potion")).checkReachable(false).build(player);

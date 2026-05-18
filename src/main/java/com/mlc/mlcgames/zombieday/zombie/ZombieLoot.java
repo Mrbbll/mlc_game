@@ -1,6 +1,7 @@
 package com.mlc.mlcgames.zombieday.zombie;
 
 import com.mlc.mlcgames.zombieday.Item;
+import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,34 +10,41 @@ import java.util.*;
 public class ZombieLoot {
     private static final Map<String, List<LootEntry>> lootTable = new HashMap<>();
 
-    static {
+    public static void init(){
+        ItemStack emerald = Item.emerald.clone();
+        emerald.setAmount(Zombiedaygame.players.size()*2);
 
         addLoot(Zombietype.NORMAL.getType(),
-            new LootEntry(Item.emerald, 0.8),
-            new LootEntry(Item.emerald, 0.8),
-            new LootEntry(new ItemStack(Material.FEATHER, 1), 0.3)
+            new LootEntry(emerald, 1),
+            new LootEntry(new ItemStack(Material.FEATHER, Zombiedaygame.players.size()*2), 0.3)
         );
 
         addLoot(Zombietype.FAST.getType(),
-            new LootEntry(Item.emerald, 1),
-            new LootEntry(new ItemStack(Material.FEATHER, 5), 0.3)
+            new LootEntry(emerald, 1),
+            new LootEntry(new ItemStack(Material.FEATHER, Zombiedaygame.players.size()*6), 0.3)
         );
         addLoot(Zombietype.HIGHJUMP.getType(),
-            new LootEntry(Item.emerald, 1),
-            new LootEntry(new ItemStack(Material.FEATHER, 5), 0.3)
+            new LootEntry(emerald, 1),
+            new LootEntry(new ItemStack(Material.FEATHER, Zombiedaygame.players.size()*6), 0.3)
         );
         addLoot(Zombietype.POLICE.getType(),
-            new LootEntry(Item.emerald, 1),
+            new LootEntry(emerald, 1),
                 new LootEntry(Item.handgun,0.1),
                 new LootEntry(Item.rifle,0.02),
                 new LootEntry(Item.shotgun,0.02),
                 new LootEntry(Item.submachine_gun,0.02),
-                new LootEntry(Item.grenade,0.5)
+                new LootEntry(Item.grenade,0.3)
         );
         addLoot(Zombietype.RICH.getType(),
-            new LootEntry(Item.emerald, 1),
-            new LootEntry(Item.emerald, 1),
-            new LootEntry(Item.emerald, 1)
+            new LootEntry(emerald, 1),
+            new LootEntry(emerald, 1),
+            new LootEntry(emerald, 1)
+        );
+        addLoot(Zombietype.BOSS.getType(),
+                new LootEntry(Item.key,1),
+            new LootEntry(emerald, 1),
+                new LootEntry(emerald, 1),
+                new LootEntry(emerald, 1)
         );
     }
 

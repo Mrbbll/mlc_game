@@ -3,6 +3,7 @@ package com.mlc.mlcgames.zombieday.gamephase;
 import com.mlc.mlcgames.zombieday.Item;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.inv.BulletInv;
+import com.mlc.mlcgames.zombieday.inv.FoodInv;
 import com.mlc.mlcgames.zombieday.inv.PotionInv;
 import org.bukkit.Location;
 
@@ -28,6 +29,13 @@ public class Init {
         //初始化药水商店
         PotionInv.init();
         BulletInv.init();
+        FoodInv.init();
+
+        prepareloc = zombiedayConfiguration.getLocation("location.prepareloc");
+        if(prepareloc == null){
+            prepareloc = new Location(instance.getServer().getWorld("world"),0,1,0 );
+            zombiedayConfiguration.set("location.prepareloc", prepareloc);
+        }
 
         //僵尸点位
         zombieskylocs = new ArrayList<>();
@@ -50,9 +58,27 @@ public class Init {
             zombiedayConfiguration.set("location.zombieloc2", zombieloc2);
         }
 
-//        Zombiedaygame.fixlocs = new HashSet<>();
-//        n = 1;
-//        location = zombiedayConfiguration.getLocation("location.fixloc_"+n);
+        arealoc1 = zombiedayConfiguration.getLocation("location.arealoc1");
+        if(arealoc1 == null){
+            arealoc1 = new Location(instance.getServer().getWorld("world"),0,0,0 );
+            zombiedayConfiguration.set("location.arealoc1", arealoc1);
+        }
+        arealoc2 = zombiedayConfiguration.getLocation("location.arealoc2");
+        if(arealoc2 == null){
+            arealoc2 = new Location(instance.getServer().getWorld("world"),0,0,0 );
+            zombiedayConfiguration.set("location.arealoc2", arealoc2);
+        }
+        arealoc3 = zombiedayConfiguration.getLocation("location.arealoc3");
+        if(arealoc3 == null){
+            arealoc3 = new Location(instance.getServer().getWorld("world"),0,0,0 );
+            zombiedayConfiguration.set("location.arealoc3", arealoc3);
+        }
+        arealoc4 = zombiedayConfiguration.getLocation("location.arealoc4");
+        if(arealoc4 == null){
+            arealoc4 = new Location(instance.getServer().getWorld("world"),0,0,0 );
+            zombiedayConfiguration.set("location.arealoc4", arealoc4);
+        }
+
 //        while(location != null){
 //            Zombiedaygame.fixlocs.add(location);
 //            n++;

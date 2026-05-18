@@ -3,16 +3,35 @@ package com.mlc.mlcgames.zombieday.managers;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.zombie.Spwaner;
 import com.mlc.mlcgames.zombieday.zombie.Zombietype;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.entity.Zombie;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.server;
 import static com.mlc.mlcgames.zombieday.Zombiedaygame.*;
 
 public class SpawnManager {
 
+    public static void updatezombiecount(){
+        BukkitTask task = new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                if(!Zombiedaygame.isstart){
+                    this.cancel();
+                }
+                zombies.removeIf(zombie -> !zombie.isValid());
+                Zombiedaygame.zombiecount = Zombiedaygame.zombies.size();
+            }
+        }.runTaskTimerAsynchronously(instance,20,10);
+    }
 
     public static void Spawnzombie(int turn){
         Random random = new Random();
@@ -28,8 +47,7 @@ public class SpawnManager {
 
         switch (difficulty){
             case NORMAL:
-                num = random.nextInt(turn*5,turn*(5 + playernum));
-                Zombiedaygame.zombiecount+=num;
+                num = random.nextInt(turn*5,turn * (6 + playernum));
 
                 damage = 2+ turn*0.1;
                 health = 10+ turn*0.2;
@@ -37,13 +55,15 @@ public class SpawnManager {
 
                 num1 = (int) (num* random.nextDouble(0.2,0.8));
                 num2 = num-num1;
+                server.broadcast(Component.text("Spawned "+num1+" zombies in 1 and "+num2+" zombies in 2"));
                 Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
-
+                if(turn>=4&&turn%2==0){
+                    Spwaner.spawnboss(1,zombieloc1,damage*2,health*5,speed*1.1);
+                }
                 break;
             case HARD:
-                num = random.nextInt(turn*10,turn*(10 + playernum));
-                Zombiedaygame.zombiecount+=num;
+                num = random.nextInt(turn*10,turn*(11 + playernum));
 
                 damage = 3 + turn*0.2;
                 health = 15 + turn*0.4;
@@ -58,8 +78,7 @@ public class SpawnManager {
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
                 break;
             case INSANE:
-                num = random.nextInt(turn*15,turn*(15 + playernum));
-                Zombiedaygame.zombiecount+=num;
+                num = random.nextInt(turn*15,turn*(16 + playernum));
 
                 damage = 3+ turn*0.5;
                 health = 20+ turn*0.6;
@@ -75,8 +94,7 @@ public class SpawnManager {
                 break;
 
             case TORMENT:
-                num = random.nextInt(turn*20,turn*(20 + playernum));
-                Zombiedaygame.zombiecount+=num;
+                num = random.nextInt(turn*20,turn*(21 + playernum));
 
                 damage = 3+ turn*0.5;
                 health = 30+ turn*0.6;

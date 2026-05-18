@@ -3,8 +3,11 @@ package com.mlc.mlcgames.zombieday.listener;
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.gamephase.End;
+import com.mlc.mlcgames.zombieday.inv.ArmorInv;
 import com.mlc.mlcgames.zombieday.inv.BulletInv;
+import com.mlc.mlcgames.zombieday.inv.FoodInv;
 import com.mlc.mlcgames.zombieday.inv.PotionInv;
+import com.mlc.mlcgames.zombieday.managers.areamanager;
 import com.mlc.mlcgames.zombieday.zombie.ZombieLoot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -27,12 +30,15 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.mlc.mlcgames.Mlcgames.*;
+import static com.mlc.mlcgames.zombieday.Zombiedaygame.gameworld;
 import static com.mlc.mlcgames.zombieday.zombie.Spwaner.zombie_type;
 
 public class EntityListener implements Listener {
@@ -118,15 +124,26 @@ public class EntityListener implements Listener {
     private static void saveplayer(Entity entity,Player saver) {
         String name = entity.getName();
         Player player = Bukkit.getPlayer(name);
+        entity.setInvulnerable(true);
+        Zombie zombie = (Zombie) entity;
+        zombie.setAI(false);
 
         if(player!=null && Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)) {
-            player.setGameMode(GameMode.ADVENTURE);
-            player.teleport(entity);
-            entity.remove();
-            server.broadcast(miniMessage.deserialize(saver.getName()+"救起"+player.getName()));
+            BukkitTask task = new BukkitRunnable(){
+
+                @Override
+                public void run() {
+                    if(player.isOnline()&&entity.isValid()&&Zombiedaygame.isstart){
+                        player.setGameMode(GameMode.ADVENTURE);
+                        player.teleport(entity);
+                        entity.remove();
+                        server.broadcast(miniMessage.deserialize(saver.getName()+"救起"+player.getName()));
+                    }
+                }
+            }.runTaskLater(instance,60);
+
         }
         else {
-            entity.getWorld().spawnEntity(entity.getLocation(), EntityType.PLAYER);
             entity.getWorld().spawnEntity(entity.getLocation(), EntityType.VILLAGER);
             entity.remove();
         }
@@ -144,27 +161,48 @@ public class EntityListener implements Listener {
             List<ItemStack> customDrops;
             switch (type){
                 case "normal":
-                    Zombiedaygame.zombiecount--;
+
+                    Zombiedaygame.zombies.remove(zombie);
+                    Zombiedaygame.zombiecount=Zombiedaygame.zombies.size();
+
                     customDrops = ZombieLoot.generateLoot(type);
                     event.getDrops().addAll(customDrops);
                     break;
                 case "fast":
-                    Zombiedaygame.zombiecount--;
+
+                    Zombiedaygame.zombies.remove(zombie);
+                    Zombiedaygame.zombiecount=Zombiedaygame.zombies.size();
+
                     customDrops = ZombieLoot.generateLoot(type);
                     event.getDrops().addAll(customDrops);
                     break;
                 case "highjump":
-                    Zombiedaygame.zombiecount--;
+
+                    Zombiedaygame.zombies.remove(zombie);
+                    Zombiedaygame.zombiecount=Zombiedaygame.zombies.size();
+
                     customDrops = ZombieLoot.generateLoot(type);
                     event.getDrops().addAll(customDrops);
                     break;
                 case "police":
-                    Zombiedaygame.zombiecount--;
+
+                    Zombiedaygame.zombies.remove(zombie);
+                    Zombiedaygame.zombiecount=Zombiedaygame.zombies.size();
+
                     customDrops = ZombieLoot.generateLoot(type);
                     event.getDrops().addAll(customDrops);
                     break;
                 case "rich":
-                    Zombiedaygame.zombiecount--;
+
+                    Zombiedaygame.zombies.remove(zombie);
+                    Zombiedaygame.zombiecount=Zombiedaygame.zombies.size();
+                    customDrops = ZombieLoot.generateLoot(type);
+                    event.getDrops().addAll(customDrops);
+                    break;
+                case "boss":
+                    Zombiedaygame.zombies.remove(zombie);
+                    Zombiedaygame.zombiecount=Zombiedaygame.zombies.size();
+
                     customDrops = ZombieLoot.generateLoot(type);
                     event.getDrops().addAll(customDrops);
                     break;
@@ -191,7 +229,7 @@ public class EntityListener implements Listener {
     }
 
     @EventHandler
-    public static void openshop(InventoryOpenEvent event){
+    public static void openshopandarea(InventoryOpenEvent event){
         if (!Zombiedaygame.isstart){
             return;
         }
@@ -204,6 +242,30 @@ public class EntityListener implements Listener {
             } else if (block.getType().equals(Material.IRON_BLOCK)) {
                 PotionInv.open((Player) event.getPlayer());
                 return;
+            } else if (block.getType().equals(Material.HAY_BLOCK)) {
+                FoodInv.open((Player) event.getPlayer());
+                return;
+            } else if (block.getType().equals(Material.WHITE_WOOL)) {
+                ArmorInv.open((Player) event.getPlayer());
+                return;
+            } else if (block.getType().equals(Material.COBBLESTONE_WALL)) {
+                ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
+                if (item.getType().equals(Material.TRIAL_KEY)) {
+                    int keynum = item.getAmount();
+                    if(keynum>=Zombiedaygame.requirekeynum){
+                        item.setAmount(keynum-Zombiedaygame.requirekeynum);
+                        areamanager.openarea(block.getLocation());
+                        Zombiedaygame.requirekeynum++;
+                        server.broadcast(
+                                miniMessage.deserialize("玩家"+event.getPlayer().getName()+"打开了新区域")
+                        );
+                        server.broadcast(
+                                miniMessage.deserialize("现在需要"+Zombiedaygame.requirekeynum+"个钥匙打开新区域")
+                        );
+                    }else {
+                        event.getPlayer().sendMessage(miniMessage.deserialize("你需要"+Zombiedaygame.requirekeynum+"个钥匙打开该区域"));
+                    }
+                }
             }
 
         }

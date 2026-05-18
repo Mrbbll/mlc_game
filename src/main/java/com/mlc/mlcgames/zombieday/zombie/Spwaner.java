@@ -35,18 +35,20 @@ public class Spwaner {
         World world = location.getWorld();
         for(int i = 0;i<count;i++){
             Zombie zombie = (Zombie) world.spawnEntity(location, EntityType.ZOMBIE);
+            server.broadcast(miniMessage.deserialize("spawn zombie"));
             Objects.requireNonNull(zombie.getAttribute(Attribute.ATTACK_DAMAGE)).setBaseValue(damage);
             Objects.requireNonNull(zombie.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(health);
             Objects.requireNonNull(zombie.getAttribute(Attribute.MOVEMENT_SPEED)).addModifier(new AttributeModifier(new NamespacedKey(instance,"zombie_speed"),addspeed,AttributeModifier.Operation.ADD_NUMBER));
             zombie.setMaximumNoDamageTicks(2);
             setZombieType(zombie,type);
-
+            zombies.add(zombie);
+            zombiecount = zombies.size();
             EntityScheduler entityScheduler = zombie.getScheduler();
 
             //僵尸寻路
             entityScheduler.runAtFixedRate(instance, scheduledTask->{
                 if(zombie.getPathfinder().hasPath()){
-                    server.broadcast(miniMessage.deserialize("has way"));
+//                    server.broadcast(miniMessage.deserialize("has way"));
                     return;
                 }
                 for(Player player : zombie.getLocation().getNearbyPlayers(60, 60, 60)){
@@ -79,6 +81,16 @@ public class Spwaner {
                 break;
             case RICH:
                 zombie.getEquipment().setHelmet(Item.iron_helmet);
+                break;
+            case BOSS:
+
+                zombie.getEquipment().setHelmet(Item.neitherite_helmet);
+                zombie.getEquipment().setBoots(Item.neitherite_boots);
+                zombie.getEquipment().setChestplate(Item.neitherite_chestplate);
+                zombie.getEquipment().setLeggings(Item.neitherite_leggings);
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,999999,1,true,false));
+                break;
+            default:
                 break;
         }
     }
@@ -129,6 +141,10 @@ public class Spwaner {
             }
         }.runTaskTimer(instance,0,10);
     };
+
+    public static void spawnboss(int i, Location zombieloc1, double v, double v1, double v2) {
+        spawnzombie(zombieloc1,i,v,v1,v2,Zombietype.BOSS);
+    }
 
     public static void spawnrandomzombieinair(int numair, double damage, double health, double speed) {
 

@@ -19,11 +19,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -87,7 +89,7 @@ public class EntityListener implements Listener {
         zombie.getEquipment().setItemInOffHand(player.getInventory().getItemInOffHand());
         zombie.customName(miniMessage.deserialize(player.getName()));
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,9999,1,true,false));
-        server.broadcast(miniMessage.deserialize(player.getName()+"死亡"));
+        server.broadcast(miniMessage.deserialize("<b><#ff0033>"+player.getName()+"死亡......"));
         new saveListener(player, zombie);
 
         boolean isplayeralldie = true;
@@ -137,11 +139,10 @@ public class EntityListener implements Listener {
                         player.setGameMode(GameMode.ADVENTURE);
                         player.teleport(entity);
                         entity.remove();
-                        server.broadcast(miniMessage.deserialize(saver.getName()+"救起"+player.getName()));
+                        server.broadcast(miniMessage.deserialize("<b><#47ff69>"+saver.getName()+"救起"+player.getName()));
                     }
                 }
             }.runTaskLater(instance,60);
-
         }
         else {
             entity.getWorld().spawnEntity(entity.getLocation(), EntityType.VILLAGER);
@@ -209,6 +210,8 @@ public class EntityListener implements Listener {
                 case "null":
                     break;
             }
+        } else if (event.getEntity() instanceof IronGolem||event.getEntity() instanceof Silverfish||event.getEntity() instanceof Slime) {
+            event.getDrops().clear();
         }
     }
     @EventHandler
@@ -269,12 +272,12 @@ public class EntityListener implements Listener {
                         ItemStack randomitem = Lottery.getRandomItem();
                         event.getPlayer().getInventory().addItem(randomitem);
                         server.broadcast(
-                                miniMessage.deserialize("玩家"+event.getPlayer().getName()+"在抽奖箱获得了")
+                                miniMessage.deserialize("<b><#d1ffef>"+event.getPlayer().getName()+"在抽奖箱获得了<reset>")
                                         .append(randomitem.effectiveName())
                                         .append(miniMessage.deserialize(" * "+randomitem.getAmount())));
                     }
                     else {
-                        event.getPlayer().sendMessage(miniMessage.deserialize("你需要手持64个货币抽奖"));
+                        event.getPlayer().sendMessage(miniMessage.deserialize("<b><#ff0033>你需要手持64个货币抽奖"));
                     }
                 }
             } else if (block.getType().equals(Material.COBBLESTONE_WALL)) {
@@ -286,13 +289,13 @@ public class EntityListener implements Listener {
                         areamanager.openarea(block.getLocation());
                         Zombiedaygame.requirekeynum++;
                         server.broadcast(
-                                miniMessage.deserialize("玩家"+event.getPlayer().getName()+"打开了新区域")
+                                miniMessage.deserialize("<b><#55ff55>"+event.getPlayer().getName()+"打开了新区域")
                         );
                         server.broadcast(
-                                miniMessage.deserialize("现在需要"+Zombiedaygame.requirekeynum+"个钥匙打开新区域")
+                                miniMessage.deserialize("<b><#55ff55>现在需要"+Zombiedaygame.requirekeynum+"个钥匙打开新区域")
                         );
                     }else {
-                        event.getPlayer().sendMessage(miniMessage.deserialize("你需要"+Zombiedaygame.requirekeynum+"个钥匙打开该区域"));
+                        event.getPlayer().sendMessage(miniMessage.deserialize("<b><#ff0033>你需要"+Zombiedaygame.requirekeynum+"个钥匙打开该区域"));
                     }
                 }
             }
@@ -335,6 +338,27 @@ public class EntityListener implements Listener {
 
                 }
             }
+        }
+    }
+    @EventHandler
+    public static void opentrushcan(PlayerSwapHandItemsEvent event){
+        Player player = event.getPlayer();
+        if(!Zombiedaygame.isstart){
+            return;
+        }
+        if(Teammanager.isPlayerInTeam(player,Teammanager.zombieday_team)&&player.isSneaking()){
+            TrushCan.open(player);
+            event.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public static void oninvclose(InventoryCloseEvent event){
+        if(!Zombiedaygame.isstart){
+            return;
+        }
+        Inventory inv = event.getView().getTopInventory();
+        if(inv.equals(TrushCan.inventory)){
+            TrushCan.clear();
         }
     }
 }

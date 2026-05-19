@@ -26,12 +26,12 @@ public class End {
         Zombiedaygame.countdown = 120;
         Zombiedaygame.requirekeynum =1;
         for(Player player : Zombiedaygame.players) {
-            player.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("游戏结束"));
+            player.sendTitlePart(TitlePart.TITLE,miniMessage.deserialize("<b><#ff0033>游戏结束"));
             player.clearActivePotionEffects();
             player.getInventory().clear();
             player.setExp(0);
             player.setGameMode(GameMode.ADVENTURE);
-            player.teleport(Zombiedaygame.prepareloc);
+            player.teleportAsync(Zombiedaygame.prepareloc);
             scoreboard.updatesidebar(player);
             Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20);
             Objects.requireNonNull(player.getAttribute(Attribute.MOVEMENT_SPEED)).setBaseValue(0.1);
@@ -47,7 +47,10 @@ public class End {
 
 
         for(Entity entity : gameworld.getEntities()){
-            if(entity instanceof Zombie||entity instanceof Wolf||entity instanceof Item || entity instanceof  IronGolem||entity instanceof Arrow){
+            if(entity instanceof Zombie||entity instanceof Wolf ||
+                    entity instanceof org.bukkit.entity.Item ||
+                    entity instanceof IronGolem ||entity instanceof Arrow||
+                    entity instanceof Silverfish||entity instanceof Slime){
                 entity.remove();
             }
         }

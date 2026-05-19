@@ -6,6 +6,7 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class Gunparticle {
     public static void lineGunshotparticle(Location eye, RayTraceResult hurtentity){
@@ -72,4 +73,9 @@ public class Gunparticle {
     }
 
 
+    public static void lineexplodeparticle(@NotNull Location location) {
+        World world = location.getWorld();
+        world.spawnParticle(Particle.LANDING_LAVA, location, 1, 0, 0, 0, 0);
+        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, location, 1, 0, 0, 0, 0);
+    }
 }

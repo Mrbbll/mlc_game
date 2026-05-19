@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
 import static com.mlc.mlcgames.zombieday.Zombiedaygame.*;
 
 public class Start {
@@ -32,8 +33,9 @@ public class Start {
         for(Player player : Zombiedaygame.players){
             player.teleport(respawnloc);
             player.setRespawnLocation(respawnloc,true);
-            player.sendMessage("开始游戏");
+            player.sendMessage(miniMessage.deserialize("<b><#ff0033>ZOMBIEDAY START..."));
             player.getInventory().clear();
+            player.setHealth(20);
             player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,20*99999,0));
             Item.giveitem(player);
             player.setExp(0);
@@ -45,7 +47,10 @@ public class Start {
             scoreboard.showsidebar(player);
         }
         for(Entity entity : gameworld.getEntities()){
-            if(entity instanceof Zombie||entity instanceof Wolf ||entity instanceof org.bukkit.entity.Item || entity instanceof IronGolem ||entity instanceof Arrow){
+            if(entity instanceof Zombie||entity instanceof Wolf ||
+                    entity instanceof org.bukkit.entity.Item ||
+                    entity instanceof IronGolem ||entity instanceof Arrow||
+                    entity instanceof Silverfish||entity instanceof Slime){
                 entity.remove();
             }
         }

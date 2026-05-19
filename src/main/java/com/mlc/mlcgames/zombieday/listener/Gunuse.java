@@ -101,6 +101,9 @@ public class Gunuse implements Listener {
                 GunShot.areaGunshot(player,7,10,15);
                 GunShot.setcooldown(item,1000);
                 break;
+            case "bazooka":
+                GunShot.lineexplodeshot(player,30.0,8.0);
+                GunShot.setcooldown(item,1000);
             case "null":
                 break;
         }
@@ -158,8 +161,6 @@ public class Gunuse implements Listener {
 //    }
     //枪填弹事件
     private void Gunrefillevent(ItemStack gun,Player player) {
-        player.sendActionBar(miniMessage.deserialize("<b><red>开始装弹"));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,100,0,true,false));
         int bulletcount = Gun.getbulletcount(gun);
         int maxbulletcount = Gun.getmaxbulletcount(gun);
 
@@ -167,7 +168,7 @@ public class Gunuse implements Listener {
             return;
         }
 
-        int invbulletcount = Gun.getinvbulletcount(player);
+        int invbulletcount = Gun.getinvbulletcount(player,gun);
         if(invbulletcount<=0){
             player.sendActionBar(miniMessage.deserialize("<b><red>背包弹药耗尽"));
             return;
@@ -175,9 +176,10 @@ public class Gunuse implements Listener {
         int needbulletcount = maxbulletcount-bulletcount;
         int consumebulletcount = Math.min(invbulletcount, needbulletcount);
         int newbulletcount = bulletcount+consumebulletcount;
-        Gun.removeinvbullet(player,consumebulletcount);
+        Gun.removeinvbullet(player,consumebulletcount,gun);
         Gun.setRefillcooldown(gun);
-
+        player.sendActionBar(miniMessage.deserialize("<b><red>开始装弹"));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,100,0,true,false));
 
         BukkitTask task = new BukkitRunnable(){
             @Override

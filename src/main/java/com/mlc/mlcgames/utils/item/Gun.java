@@ -1,12 +1,10 @@
 package com.mlc.mlcgames.utils.item;
 
 import com.mlc.mlcgames.zombieday.Item;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -70,19 +68,29 @@ public class Gun {
         return gun.getItemMeta().getPersistentDataContainer().getOrDefault(Item.maxbulletcountkey, PersistentDataType.INTEGER, 0);
     }
 
-    public static int getinvbulletcount(Player player) {
+    public static int getinvbulletcount(Player player,ItemStack gun) {
         int invbulletcount = 0;
+        String needbullettype = Gun.getneedbullettype(gun);
         for (ItemStack itemStack : player.getInventory().getContents()) {
-            if (itemStack != null && itemStack.getType() == Material.STONE_BUTTON) {
+            if (itemStack != null && Gun.getbullettype(itemStack).equals(needbullettype)) {
                 invbulletcount += itemStack.getAmount();
             }
         }
         return invbulletcount;
     }
 
-    public static void removeinvbullet(Player player,int bulletcount){
+    public static String getneedbullettype(ItemStack gun) {
+        return gun.getItemMeta().getPersistentDataContainer().getOrDefault(Item.needbullettypekey, PersistentDataType.STRING, "normal");
+    }
+
+    public static String getbullettype(ItemStack gun) {
+        return gun.getItemMeta().getPersistentDataContainer().getOrDefault(Item.bullettypekey, PersistentDataType.STRING, "null");
+    }
+
+    public static void removeinvbullet(Player player,int bulletcount,ItemStack gun){
+        String needbullettype = Gun.getneedbullettype(gun);
         for (ItemStack itemStack : player.getInventory().getContents()) {
-            if (itemStack != null && itemStack.getType() == Material.STONE_BUTTON) {
+            if (itemStack != null && Gun.getbullettype(itemStack).equals(needbullettype)) {
                 if(itemStack.getAmount()>=bulletcount){
                     itemStack.setAmount(itemStack.getAmount() - bulletcount);
                     return;
@@ -90,9 +98,19 @@ public class Gun {
                     itemStack.setAmount(0);
                     bulletcount-=itemStack.getAmount();
                 }
-
             }
         }
     }
 
+    public static void setneedbullettype(ItemStack gun, String needbullettype) {
+        ItemMeta itemMeta = gun.getItemMeta();
+        itemMeta.getPersistentDataContainer().set(Item.needbullettypekey, PersistentDataType.STRING, needbullettype);
+        gun.setItemMeta(itemMeta);
+    }
+
+    public static void setbullettype(ItemStack gun, String bullettype) {
+        ItemMeta itemMeta = gun.getItemMeta();
+        itemMeta.getPersistentDataContainer().set(Item.bullettypekey, PersistentDataType.STRING, bullettype);
+        gun.setItemMeta(itemMeta);
+    }
 }

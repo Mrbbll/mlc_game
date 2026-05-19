@@ -1,21 +1,21 @@
 package com.mlc.mlcgames.utils.item;
 
 import com.mlc.mlcgames.utils.particle.Gunparticle;
+import io.papermc.paper.threadedregions.scheduler.EntityScheduler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import org.eclipse.aether.metadata.Metadata;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -28,7 +28,8 @@ import static com.mlc.mlcgames.zombieday.Zombiedaygame.gameworld;
 
 public class GunShot {
     static NamespacedKey cooldownkey = new NamespacedKey(instance,"cooldown");
-
+    static NamespacedKey damagekey = new NamespacedKey(instance,"explodedamage");
+    static NamespacedKey rangekey = new NamespacedKey(instance,"exploderange");
     //获取是否在冷却
     public static boolean isincooldown(ItemStack item){
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
@@ -63,7 +64,19 @@ public class GunShot {
             hurtevet(hitentity,damage,player);
         }
     }
-
+    //火箭筒射击
+    public static void lineexplodeshot(Player player,double damage,double range){
+        Location eye  = player.getEyeLocation();
+        Vector direction = eye.getDirection();
+        Snowball rocket = player.launchProjectile(Snowball.class,direction.clone().multiply(3));
+        EntityScheduler scheduler = rocket.getScheduler();
+        scheduler.runAtFixedRate(instance,scheduledTask -> {
+            Gunparticle.lineexplodeparticle(rocket.getLocation());
+        },null,1,1);
+        PersistentDataContainer pdc = rocket.getPersistentDataContainer();
+        pdc.set(damagekey, PersistentDataType.DOUBLE,damage);
+        pdc.set(rangekey, PersistentDataType.DOUBLE,range);
+    }
 
     // 霰弹枪射击（散射式）
     public static  void areaGunshot(Player player, int damagePerPellet, int pelletCount, double spreadAngleDegrees) {

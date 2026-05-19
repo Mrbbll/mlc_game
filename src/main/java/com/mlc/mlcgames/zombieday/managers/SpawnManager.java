@@ -50,12 +50,12 @@ public class SpawnManager {
                 num = random.nextInt(turn*5/2,turn * (3 + playernum));
 
                 damage = 2+ turn*0.1;
-                health = 6+ turn*0.2;
+                health = 8+ turn*0.2;
                 speed = 0;
 
                 num1 = (int) (num* random.nextDouble(0.2,0.8));
                 num2 = num-num1;
-                server.broadcast(Component.text("Spawned "+num1+" zombies in 1 and "+num2+" zombies in 2"));
+//                server.broadcast(Component.text("Spawned "+num1+" zombies in 1 and "+num2+" zombies in 2"));
                 Spwaner.spawnrandomzombie(num1,zombieloc1,damage,health,speed);
                 Spwaner.spawnrandomzombie(num2,zombieloc2,damage,health,speed);
                 if(turn>=4&&turn%2==0){
@@ -65,9 +65,10 @@ public class SpawnManager {
             case HARD:
                 num = random.nextInt(turn*10/2,turn*(6 + playernum));
 
-                damage = 3 + turn*0.2;
+                damage = 2 + turn*0.2;
                 health = 8 + turn*0.4;
-                speed = 0;
+                //默认是0.23
+                speed = 0 + turn*0.002;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
                 num -= numair;
@@ -83,9 +84,9 @@ public class SpawnManager {
             case INSANE:
                 num = random.nextInt(turn*15/2,turn*(8 + playernum));
 
-                damage = 4+ turn*0.3;
-                health = 10+ turn*0.6;
-                speed = 0.1;
+                damage = 2+ turn*0.3;
+                health = 8+ turn*0.6;
+                speed = 0 + turn*0.003;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
                 num -= numair;
@@ -102,9 +103,9 @@ public class SpawnManager {
             case TORMENT:
                 num = random.nextInt(turn*20/2,turn*(11 + playernum));
 
-                damage = 4 + turn*0.4;
-                health = 14+ turn*0.6;
-                speed = 0.1;
+                damage = 2 + turn*0.4;
+                health = 8+ turn*0.6;
+                speed = 0 + turn*0.005;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
                 num -= numair;

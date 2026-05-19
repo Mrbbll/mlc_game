@@ -4,6 +4,7 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.zombieday.Difficulty;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.zombieday.gamephase.End;
+import com.mlc.mlcgames.zombieday.inv.TrushCan;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -45,21 +46,20 @@ public class TurnManager {
                     }
                     countdown = 120;
                 }
-
                 if(Zombiedaygame.zombiecount==0||(countdown==1&&Zombiedaygame.zombiecount<=5)){
-                    turn++;
-                    server.broadcast(miniMessage.deserialize("Turn "+ turn));
-                    SpawnManager.Spawnzombie(turn);
+                    if (turn<=29) {
+                        turn++;
+                        server.broadcast(miniMessage.deserialize("<b><#ff0033>Turn <#ff246d>"+ turn));
+                        SpawnManager.Spawnzombie(turn);
+                    }
                 }
                 for(Player player: Teammanager.getteamplayer(Teammanager.zombieday_team)){
                         scoreboard.updatesidebar(player);
                 }
-                if(Zombiedaygame.zombiecount<=0&&turn==30){
+                if(Zombiedaygame.zombiecount<=0&&turn>=30){
                     End.end();
                 }
             }
-
-
         }.runTaskTimer(instance,0,20);
     }
 }

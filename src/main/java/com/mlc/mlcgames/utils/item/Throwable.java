@@ -3,6 +3,7 @@ package com.mlc.mlcgames.utils.item;
 import org.bukkit.*;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -44,7 +45,7 @@ public class Throwable {
             }
 
             if (ticksLeft <= 0) {
-                explode();
+                explode(grenade, thrower, 8.0, 40.0);
                 cancel();
                 return;
             }
@@ -53,43 +54,43 @@ public class Throwable {
             grenade.getWorld().playSound(grenade.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 0.5f, 2.0f);
             ticksLeft--;
         }
+    }
 
-        private void explode() {
-            Location loc = grenade.getLocation();
-            grenade.remove(); // 移除手榴弹实体
+    public static void explode(Entity grenade, Entity thrower, Double range, Double damage) {
+        Location loc = grenade.getLocation();
+        grenade.remove(); // 移除手榴弹实体
 
-            // 播放爆炸特效
-            World world = loc.getWorld();
+        // 播放爆炸特效
+        World world = loc.getWorld();
 
-            world.spawnParticle(Particle.EXPLOSION_EMITTER, loc, 1, 0, 0, 0, 0);
+        world.spawnParticle(Particle.EXPLOSION_EMITTER, loc, 1, 0, 0, 0, 0);
 
-            world.spawnParticle(Particle.EXPLOSION, loc, 5, 2.5, 2.5, 2.5, 0.1);
+        world.spawnParticle(Particle.EXPLOSION, loc, 5, 2.5, 2.5, 2.5, 0.1);
 
-            world.spawnParticle(Particle.FLAME, loc, 30, 1.5, 1.5, 1.5, 0.05);
-            world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 0.1f);
+        world.spawnParticle(Particle.FLAME, loc, 30, 1.5, 1.5, 1.5, 0.05);
+        world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 0.1f);
 
-            double explosionRadius = 8.0;  // 爆炸半径
-            double maxDamage = 60.0;       // 中心最大伤害
+        double explosionRadius = range;
+        double maxDamage = damage;
 
-            // 获取范围内的所有生物（包括玩家）
-            for (LivingEntity entity : loc.getNearbyLivingEntities(explosionRadius)) {
+        // 获取范围内的所有生物（包括玩家）
+        for (LivingEntity entity : loc.getNearbyLivingEntities(explosionRadius)) {
 
-                // 计算距离因子（线性衰减：边缘伤害为0）
-                double distance = entity.getLocation().distance(loc);
-                double damageFactor = 1.0 - (distance / explosionRadius); // 0.0 到 1.0
-                damageFactor = Math.max(0.0, damageFactor);
-                double finalDamage = maxDamage * damageFactor;
+            // 计算距离因子（线性衰减：边缘伤害为0）
+            double distance = entity.getLocation().distance(loc);
+            double damageFactor = 1.0 - (distance / explosionRadius); // 0.0 到 1.0
+            damageFactor = Math.max(0.0, damageFactor);
+            double finalDamage = maxDamage * damageFactor;
 
-                if (finalDamage <= 0) continue;
+            if (finalDamage <= 0) continue;
 
-                // 使用 DamageSource 包装伤害
-                DamageSource source = DamageSource.builder(DamageType.EXPLOSION)
-                        .withDirectEntity(thrower)         // 来源是投掷者
-                        .withDamageLocation(loc)
-                        .build();
+            // 使用 DamageSource 包装伤害
+            DamageSource source = DamageSource.builder(DamageType.EXPLOSION)
+                    .withDirectEntity(thrower)         // 来源是投掷者
+                    .withDamageLocation(loc)
+                    .build();
 
-                entity.damage(finalDamage, source);
-            }
+            entity.damage(finalDamage, source);
         }
     }
 }

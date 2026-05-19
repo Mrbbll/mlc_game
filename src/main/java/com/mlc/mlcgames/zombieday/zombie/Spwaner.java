@@ -40,6 +40,7 @@ public class Spwaner {
             Objects.requireNonNull(zombie.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(health);
             Objects.requireNonNull(zombie.getAttribute(Attribute.MOVEMENT_SPEED)).addModifier(new AttributeModifier(new NamespacedKey(instance,"zombie_speed"),addspeed,AttributeModifier.Operation.ADD_NUMBER));
             setZombieType(zombie,type);
+            zombie.setHealth(health);
             zombies.add(zombie);
             zombiecount = zombies.size();
             EntityScheduler entityScheduler = zombie.getScheduler();
@@ -70,19 +71,24 @@ public class Spwaner {
                 zombie.getEquipment().setHelmet(Item.lether_helmet);
                 break;
             case FAST:
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,999999,0,true,false));
                 zombie.getEquipment().setHelmet(Item.lether_helmet);
                 zombie.getEquipment().setBoots(Item.lether_boots);
                 break;
             case HIGHJUMP:
-                zombie.getEquipment().setHelmet(Item.lether_helmet);
+                zombie.getEquipment().setHelmet(Item.iron_helmet);
                 zombie.getEquipment().setBoots(Item.iron_boots);
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,999999,2,true,false));
                 break;
             case POLICE:
                 zombie.getEquipment().setHelmet(Item.neitherite_helmet);
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.INFESTED,999999,1,true,false));
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON,999999,0,true,false));
                 break;
             case RICH:
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.OOZING,999999,1,true,false));
                 zombie.getEquipment().setHelmet(Item.iron_helmet);
+                zombie.getEquipment().setChestplate(Item.iron_chestplate);
                 break;
             case BOSS:
 
@@ -90,7 +96,10 @@ public class Spwaner {
                 zombie.getEquipment().setBoots(Item.neitherite_boots);
                 zombie.getEquipment().setChestplate(Item.neitherite_chestplate);
                 zombie.getEquipment().setLeggings(Item.neitherite_leggings);
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.OOZING,999999,1,true,false));
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.INFESTED,999999,1,true,false));
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,999999,1,true,false));
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,99999,1,true,false));
                 break;
             default:
                 break;

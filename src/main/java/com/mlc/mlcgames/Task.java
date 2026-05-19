@@ -11,6 +11,7 @@ import com.mlc.mlcgames.bank.utils.Bankgameinit;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.menus.bankmenus;
 import com.mlc.mlcgames.commands.reload;
+import com.mlc.mlcgames.utils.item.GunHitListener;
 import com.mlc.mlcgames.zombieday.commands.Zombieday;
 import com.mlc.mlcgames.zombieday.gamephase.Init;
 import com.mlc.mlcgames.zombieday.listener.EntityListener;
@@ -32,6 +33,7 @@ public class Task {
         Bukkit.getPluginManager().registerEvents(new Gunuse(),instance);
         Bukkit.getPluginManager().registerEvents(new throwitem(),instance);
         Bukkit.getPluginManager().registerEvents(new EntityListener(),instance);
+        Bukkit.getPluginManager().registerEvents(new GunHitListener(),instance);
         //命令注册
         Objects.requireNonNull(instance.getCommand("reload")).setExecutor(new reload());
         Objects.requireNonNull(instance.getCommand("bankgameprepare")).setExecutor(new bankgameprepare());

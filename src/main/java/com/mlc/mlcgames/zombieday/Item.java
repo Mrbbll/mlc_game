@@ -5,27 +5,22 @@ import io.papermc.paper.block.BlockPredicate;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAdventurePredicate;
 import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.TypedKey;
 import io.papermc.paper.registry.set.RegistryKeySet;
 import io.papermc.paper.registry.set.RegistrySet;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.BlockType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
 
@@ -36,6 +31,8 @@ public class Item {
     public static final NamespacedKey bulletcountkey = new NamespacedKey(instance,"bulletcount");
     public static final NamespacedKey maxbulletcountkey = new NamespacedKey(instance,"maxbulletcount");
     public static final NamespacedKey itemtype = new NamespacedKey(instance,"itemtype");
+    public static final NamespacedKey needbullettypekey = new NamespacedKey(instance,"needbullettype");
+    public static final NamespacedKey bullettypekey = new NamespacedKey(instance,"bullettype");
 
     public static ItemStack handgun;
     public static ItemStack shotgun;
@@ -43,6 +40,8 @@ public class Item {
     public static ItemStack submachine_gun;
     public static ItemStack bow;
     public static ItemStack crossbow;
+    public static ItemStack bazooka;
+    public static ItemStack howitzer;
     public static ItemStack grenade;
     public static ItemStack key;
     public static ItemStack bullet;
@@ -80,9 +79,10 @@ public class Item {
     public static void init(){
         handgun = new ItemStack(Material.ECHO_SHARD);
         Gun.settypedata(handgun, "handgun");
+        Gun.setneedbullettype(handgun, "normal");
         Gun.setbulletcount(handgun, 8);
         Gun.setmaxbulletcount(handgun, 8);
-        Gun.setRefilltime(handgun,5000L);
+        Gun.setRefilltime(handgun,4000L);
         ItemMeta itemMeta = handgun.getItemMeta();
         itemMeta.setMaxStackSize(1);
         itemMeta.customName(miniMessage.deserialize("<!i>手枪"));
@@ -91,6 +91,7 @@ public class Item {
 
         rifle = new ItemStack(Material.ECHO_SHARD);
         Gun.settypedata(rifle, "rifle");
+        Gun.setneedbullettype(rifle, "normal");
         Gun.setbulletcount(rifle, 30);
         Gun.setmaxbulletcount(rifle, 30);
         Gun.setRefilltime(rifle,4000L);
@@ -103,9 +104,10 @@ public class Item {
 
         shotgun = new ItemStack(Material.ECHO_SHARD);
         Gun.settypedata(shotgun, "shotgun");
+        Gun.setneedbullettype(shotgun, "normal");
         Gun.setbulletcount(shotgun, 4);
         Gun.setmaxbulletcount(shotgun, 4);
-        Gun.setRefilltime(shotgun,4000L);
+        Gun.setRefilltime(shotgun,3000L);
         ItemMeta itemMeta2 = shotgun.getItemMeta();
         itemMeta2.setMaxStackSize(1);
         itemMeta2.customName(miniMessage.deserialize("<!i>霰弹枪"));
@@ -115,9 +117,10 @@ public class Item {
 
         submachine_gun = new ItemStack(Material.ECHO_SHARD);
         Gun.settypedata(submachine_gun, "submachine_gun");
+        Gun.setneedbullettype(submachine_gun, "normal");
         Gun.setbulletcount(submachine_gun, 40);
         Gun.setmaxbulletcount(submachine_gun, 40);
-        Gun.setRefilltime(submachine_gun,5000L);
+        Gun.setRefilltime(submachine_gun,4000L);
         ItemMeta itemMeta3 = submachine_gun.getItemMeta();
         itemMeta3.setMaxStackSize(1);
         itemMeta3.customName(miniMessage.deserialize("<!i>冲锋枪"));
@@ -135,6 +138,28 @@ public class Item {
         crossbow.setItemMeta(itemMeta5);
 
 
+        bazooka = ItemStack.of(Material.ECHO_SHARD);
+        Gun.settypedata(bazooka, "bazooka");
+        Gun.setneedbullettype(bazooka, "explode");
+        Gun.setmaxbulletcount(bazooka, 1);
+        Gun.setbulletcount(bazooka, 0);
+        Gun.setRefilltime(bazooka,3000L);
+        ItemMeta itemMeta37 = bazooka.getItemMeta();
+        itemMeta37.setMaxStackSize(1);
+        itemMeta37.customName(miniMessage.deserialize("<!i>火箭筒"));
+        itemMeta37.setItemModel(NamespacedKey.fromString("mlcgames:gun/bazooka"));
+        bazooka.setItemMeta(itemMeta37);
+
+        howitzer = ItemStack.of(Material.STONE_BUTTON);
+        Gun.setbullettype(howitzer, "explode");
+        ItemMeta itemMeta38 = howitzer.getItemMeta();
+        itemMeta38.setMaxStackSize(4);
+        itemMeta38.customName(miniMessage.deserialize("<!i>火箭筒弹药"));
+        itemMeta38.setItemModel(NamespacedKey.fromString("mlcgames:gun/howitzer"));
+        howitzer.setItemMeta(itemMeta38);
+
+
+
         grenade = new ItemStack(Material.EGG);
         Gun.settypedata(grenade, "grenade");
         ItemMeta itemMeta6 = grenade.getItemMeta();
@@ -143,6 +168,7 @@ public class Item {
         grenade.setItemMeta(itemMeta6);
 
         bullet = new ItemStack(Material.STONE_BUTTON);
+        Gun.setbullettype(bullet, "normal");
         ItemMeta itemMeta7 = bullet.getItemMeta();
         itemMeta7.customName(miniMessage.deserialize("<!i>通用子弹"));
         bullet.setItemMeta(itemMeta7);
@@ -360,6 +386,8 @@ public class Item {
                 crossbow,
                 grenade,
                 bullet,
+                bazooka,
+                howitzer,
                 arrow,
                 iron_sword,
                 iron_chestplate,

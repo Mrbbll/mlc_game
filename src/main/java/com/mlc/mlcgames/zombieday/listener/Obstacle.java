@@ -45,7 +45,7 @@ public class Obstacle {
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,frontBlock.getLocation(),
                                 20,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
-                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(frontBlock.getLocation(),0f)+0.12f;
+                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(frontBlock.getLocation(),0f)+0.07f;
                         if(breaktime>=1f){
                             obstacles.remove(frontBlock);
                             frontBlock.setType(Material.AIR);
@@ -66,7 +66,7 @@ public class Obstacle {
                         loc.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,topBlock.getLocation(),
                                 20,0.5,0.5,0.5,
                                 Material.OAK_FENCE.createBlockData());
-                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(topBlock.getLocation(),0f)+0.12f;
+                        float breaktime = Zombiedaygame.obstaclebreaktime.getOrDefault(topBlock.getLocation(),0f)+0.07f;
                         if(breaktime>=1f){
                             obstacles.remove(topBlock);
                             topBlock.setType(Material.AIR);
@@ -106,7 +106,7 @@ public class Obstacle {
                         countdown=0;
                         return;
                     }
-                    Location location = player.getLocation();
+                    Location location = player.getLocation().add(player.getEyeLocation().getDirection().setY(0).normalize());
                     Block footblock = location.getBlock();
                     if(footblock.getType()!=Material.AIR){
                         countdown=0;
@@ -116,7 +116,7 @@ public class Obstacle {
                     Block block = location.clone().add(0,-1,0).getBlock();
                     if(block.isSolid()&&!obstacles.contains(block)&&block.getType()!=Material.OAK_FENCE&&block.getType()!=Material.AIR){
                         countdown++;
-                        if(countdown>=20){
+                        if(countdown>=19){
                             Block block1 = location.getBlock();
                             block1.setType(Material.OAK_FENCE);
                             obstacles.add(block1);

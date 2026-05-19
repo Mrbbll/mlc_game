@@ -41,16 +41,16 @@ public class ArmorInv {
         merchantRecipe8.setIngredients(List.of(emeraldStack));
 
         emeraldStack.setAmount(64);
-        MerchantRecipe merchantRecipe9 = new MerchantRecipe(Item.neitherite_helmet,0, 999,false);
+        MerchantRecipe merchantRecipe9 = new MerchantRecipe(Item.diamond_helmet,0, 999,false);
         merchantRecipe9.setIngredients(List.of(emeraldStack));
 
-        MerchantRecipe merchantRecipe10 = new MerchantRecipe(Item.neitherite_chestplate,0, 999,false);
+        MerchantRecipe merchantRecipe10 = new MerchantRecipe(Item.diamond_chestplate,0, 999,false);
         merchantRecipe10.setIngredients(List.of(emeraldStack));
 
-        MerchantRecipe merchantRecipe11 = new MerchantRecipe(Item.neitherite_leggings,0, 999,false);
+        MerchantRecipe merchantRecipe11 = new MerchantRecipe(Item.diamond_leggings,0, 999,false);
         merchantRecipe11.setIngredients(List.of(emeraldStack));
 
-        MerchantRecipe merchantRecipe12 = new MerchantRecipe(Item.neitherite_boots,0, 999,false);
+        MerchantRecipe merchantRecipe12 = new MerchantRecipe(Item.diamond_boots,0, 999,false);
         merchantRecipe12.setIngredients(List.of(emeraldStack));
 
         merchant.setRecipes(List.of(merchantRecipe1,merchantRecipe2,merchantRecipe3,merchantRecipe4,merchantRecipe5,merchantRecipe6,merchantRecipe7,merchantRecipe8,merchantRecipe9,merchantRecipe10,merchantRecipe11,merchantRecipe12));

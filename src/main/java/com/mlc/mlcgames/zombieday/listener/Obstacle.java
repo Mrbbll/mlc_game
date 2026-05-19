@@ -116,7 +116,7 @@ public class Obstacle {
                     Block block = location.clone().add(0,-1,0).getBlock();
                     if(block.isSolid()&&!obstacles.contains(block)&&block.getType()!=Material.OAK_FENCE&&block.getType()!=Material.AIR){
                         countdown++;
-                        if(countdown>=19){
+                        if(countdown>=16){
                             Block block1 = location.getBlock();
                             block1.setType(Material.OAK_FENCE);
                             obstacles.add(block1);
@@ -127,7 +127,6 @@ public class Obstacle {
                         }
                     }
                 }
-
             }.runTaskTimer(instance,0,1);
         }
     }

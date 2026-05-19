@@ -8,6 +8,8 @@ import com.mlc.mlcgames.zombieday.inv.TrushCan;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -43,6 +45,9 @@ public class TurnManager {
                     //日出
                     if (world != null) {
                         world.setTime(0);
+                    }
+                    for(Player player: Teammanager.getteamplayer(Teammanager.zombieday_team)){
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,20*15,0));
                     }
                     countdown = 120;
                 }

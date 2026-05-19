@@ -36,7 +36,7 @@ public class Start {
             player.sendMessage(miniMessage.deserialize("<b><#ff0033>ZOMBIEDAY START..."));
             player.getInventory().clear();
             player.setHealth(20);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,20*99999,0));
+//            player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE,20*99999,0));
             Item.giveitem(player);
             player.setExp(0);
             Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20);

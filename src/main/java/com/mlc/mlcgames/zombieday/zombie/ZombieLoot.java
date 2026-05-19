@@ -15,25 +15,25 @@ public class ZombieLoot {
         emerald.setAmount(Zombiedaygame.players.size()/2+1);
 
         addLoot(Zombietype.NORMAL.getType(),
-            new LootEntry(emerald, 0.8),
+            new LootEntry(emerald, 0.9),
             new LootEntry(new ItemStack(Material.FEATHER, Zombiedaygame.players.size()*2), 0.3)
         );
 
         addLoot(Zombietype.FAST.getType(),
-            new LootEntry(emerald, 0.8),
+            new LootEntry(emerald, 0.9),
             new LootEntry(new ItemStack(Material.FEATHER, Zombiedaygame.players.size()*6), 0.3)
         );
         addLoot(Zombietype.HIGHJUMP.getType(),
-            new LootEntry(emerald, 0.8),
+            new LootEntry(emerald, 0.9),
             new LootEntry(new ItemStack(Material.FEATHER, Zombiedaygame.players.size()*6), 0.3)
         );
         addLoot(Zombietype.POLICE.getType(),
-            new LootEntry(emerald, 0.8),
+            new LootEntry(emerald, 0.9),
                 new LootEntry(Item.handgun.clone(),0.1),
                 new LootEntry(Item.rifle.clone(),0.02),
                 new LootEntry(Item.shotgun.clone(),0.02),
                 new LootEntry(Item.submachine_gun.clone(),0.02),
-                new LootEntry(Item.grenade.clone(),0.3)
+                new LootEntry(Item.grenade.clone(),0.2)
         );
         addLoot(Zombietype.RICH.getType(),
             new LootEntry(emerald, 1),

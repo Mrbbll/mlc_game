@@ -59,7 +59,7 @@ public class GunShot {
         );
         Gunparticle.lineGunshotparticle(eye,result);
         world.playSound(eye, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3,0.5f);
-        if (result != null && result.getHitEntity() instanceof LivingEntity hitentity) {
+        if (result != null && result.getHitEntity() instanceof LivingEntity hitentity&& !(result.getHitEntity() instanceof Player)) {
 //            server.broadcast(Component.text("hit"));
             hurtevet(hitentity,damage,player);
         }

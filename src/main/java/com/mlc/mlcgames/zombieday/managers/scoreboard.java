@@ -26,7 +26,7 @@ public class scoreboard {
         setLine(scoreboard, 4,miniMessage.deserialize(getplayerheadicon()));
         setLine(scoreboard, 5,miniMessage.deserialize("剩余僵尸数："+ Zombiedaygame.zombiecount));
         setLine(scoreboard, 6,miniMessage.deserialize("time："+ Zombiedaygame.countdown));
-        setLine(scoreboard, 7,null);
+        setLine(scoreboard, 7,miniMessage.deserialize("使用下蹲加切换副手打开垃圾桶"));
         setLine(scoreboard, 8,null);
         setLine(scoreboard, 9,null);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -39,7 +39,7 @@ public class scoreboard {
         setLine(scoreboard, 4,miniMessage.deserialize(getplayerheadicon()));
         setLine(scoreboard, 5,miniMessage.deserialize("剩余僵尸数："+ Zombiedaygame.zombiecount));
         setLine(scoreboard, 6,miniMessage.deserialize("time："+ Zombiedaygame.countdown));
-        setLine(scoreboard, 7,null);
+        setLine(scoreboard, 7,miniMessage.deserialize("使用下蹲加切换副手打开垃圾桶"));
         setLine(scoreboard, 8,null);
         setLine(scoreboard, 9,null);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);

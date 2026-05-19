@@ -45,7 +45,7 @@ public class Throwable {
             }
 
             if (ticksLeft <= 0) {
-                explode(grenade, thrower, 8.0, 40.0);
+                explode(grenade, thrower, 8.0, 80.0);
                 cancel();
                 return;
             }

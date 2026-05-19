@@ -41,6 +41,7 @@ public class Spwaner {
             Objects.requireNonNull(zombie.getAttribute(Attribute.MOVEMENT_SPEED)).addModifier(new AttributeModifier(new NamespacedKey(instance,"zombie_speed"),addspeed,AttributeModifier.Operation.ADD_NUMBER));
             setZombieType(zombie,type);
             zombie.setHealth(health);
+            zombie.setAdult();
             zombies.add(zombie);
             zombiecount = zombies.size();
             EntityScheduler entityScheduler = zombie.getScheduler();
@@ -54,7 +55,7 @@ public class Spwaner {
                 if(!isstart){
                     zombie.remove();
                 }
-                for(Player player : zombie.getLocation().getNearbyPlayers(60, 60, 60)){
+                for(Player player : zombie.getLocation().getNearbyPlayers(80, 80, 80)){
                     if(player != null&&player.getGameMode()!=GameMode.CREATIVE && player.getGameMode()!= GameMode.SPECTATOR){
                             zombie.getPathfinder().moveTo(player);
                         }
@@ -82,11 +83,12 @@ public class Spwaner {
                 break;
             case POLICE:
                 zombie.getEquipment().setHelmet(Item.neitherite_helmet);
+                zombie.getEquipment().setChestplate(Item.neitherite_chestplate);
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.INFESTED,999999,1,true,false));
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON,999999,0,true,false));
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,99999,1,true,false));
                 break;
             case RICH:
-                zombie.addPotionEffect(new PotionEffect(PotionEffectType.OOZING,999999,1,true,false));
                 zombie.getEquipment().setHelmet(Item.iron_helmet);
                 zombie.getEquipment().setChestplate(Item.iron_chestplate);
                 break;
@@ -99,7 +101,7 @@ public class Spwaner {
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.OOZING,999999,1,true,false));
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.INFESTED,999999,1,true,false));
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,999999,1,true,false));
-                zombie.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,99999,1,true,false));
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,99999,0,true,false));
                 break;
             default:
                 break;

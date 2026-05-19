@@ -35,8 +35,8 @@ public class Lottery {
         ItemMeta opcrossbowMeta = opcrossbow.getItemMeta();
         opcrossbowMeta.setUnbreakable(true);
         opcrossbowMeta.customName(miniMessage.deserialize("<!i>神弩"));
-        opcrossbowMeta.addEnchant(Enchantment.QUICK_CHARGE,4,true);
-        opcrossbowMeta.addEnchant(Enchantment.PIERCING,3,true);
+        opcrossbowMeta.addEnchant(Enchantment.QUICK_CHARGE,5,true);
+        opcrossbowMeta.addEnchant(Enchantment.PIERCING,4,true);
         opcrossbowMeta.addEnchant(Enchantment.MULTISHOT,2,true);
         opcrossbow.setItemMeta(opcrossbowMeta);
         lotterymap.put(opcrossbow,1);

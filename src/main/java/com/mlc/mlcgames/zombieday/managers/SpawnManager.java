@@ -50,7 +50,7 @@ public class SpawnManager {
                 num = random.nextInt(turn*5/2,turn * (3 + playernum));
 
                 damage = 2+ turn*0.1;
-                health = 8+ turn*0.2;
+                health = 7+ turn*0.2;
                 speed = 0;
 
                 num1 = (int) (num* random.nextDouble(0.2,0.8));
@@ -66,7 +66,7 @@ public class SpawnManager {
                 num = random.nextInt(turn*10/2,turn*(6 + playernum));
 
                 damage = 2 + turn*0.2;
-                health = 8 + turn*0.4;
+                health = 7 + turn*0.4;
                 //默认是0.23
                 speed = 0 + turn*0.002;
 
@@ -85,7 +85,7 @@ public class SpawnManager {
                 num = random.nextInt(turn*15/2,turn*(8 + playernum));
 
                 damage = 2+ turn*0.3;
-                health = 8+ turn*0.6;
+                health = 7+ turn*0.6;
                 speed = 0 + turn*0.003;
 
                 numair = (int) (num*random.nextDouble(0,0.05));
@@ -104,7 +104,7 @@ public class SpawnManager {
                 num = random.nextInt(turn*20/2,turn*(11 + playernum));
 
                 damage = 2 + turn*0.4;
-                health = 8+ turn*0.6;
+                health = 7+ turn*0.6;
                 speed = 0 + turn*0.005;
 
                 numair = (int) (num*random.nextDouble(0,0.05));

@@ -62,6 +62,10 @@ public class Item {
     public static ItemStack neitherite_chestplate;
     public static ItemStack neitherite_leggings;
     public static ItemStack neitherite_boots;
+    public static ItemStack diamond_helmet;
+    public static ItemStack diamond_chestplate;
+    public static ItemStack diamond_leggings;
+    public static ItemStack diamond_boots;
     public static ItemStack speed_potion;
     public static ItemStack strength_potion;
     public static ItemStack regeneration_potion;
@@ -302,6 +306,26 @@ public class Item {
         ItemMeta itemMeta25 = neitherite_boots.getItemMeta();
         itemMeta25.setUnbreakable(true);
         neitherite_boots.setItemMeta(itemMeta25);
+
+        diamond_helmet = new ItemStack(Material.DIAMOND_HELMET);
+        ItemMeta itemMeta40 = diamond_helmet.getItemMeta();
+        itemMeta40.setUnbreakable(true);
+        diamond_helmet.setItemMeta(itemMeta40);
+
+        diamond_chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE);
+        ItemMeta itemMeta41 = diamond_chestplate.getItemMeta();
+        itemMeta41.setUnbreakable(true);
+        diamond_chestplate.setItemMeta(itemMeta41);
+
+        diamond_leggings = new ItemStack(Material.DIAMOND_LEGGINGS);
+        ItemMeta itemMeta42 = diamond_leggings.getItemMeta();
+        itemMeta42.setUnbreakable(true);
+        diamond_leggings.setItemMeta(itemMeta42);
+
+        diamond_boots = new ItemStack(Material.DIAMOND_BOOTS);
+        ItemMeta itemMeta43 = diamond_boots.getItemMeta();
+        itemMeta43.setUnbreakable(true);
+        diamond_boots.setItemMeta(itemMeta43);
 
         emerald = new ItemStack(Material.EMERALD);
         ItemMeta itemMeta21 = emerald.getItemMeta();

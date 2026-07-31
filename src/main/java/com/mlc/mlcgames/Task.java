@@ -11,6 +11,7 @@ import com.mlc.mlcgames.bank.utils.Bankgameinit;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.menus.bankmenus;
 import com.mlc.mlcgames.commands.reload;
+import com.mlc.mlcgames.sandgame.gamephase.sandgameinit;
 import com.mlc.mlcgames.utils.item.GunHitListener;
 import com.mlc.mlcgames.zombieday.commands.Zombieday;
 import com.mlc.mlcgames.zombieday.gamephase.Init;
@@ -55,5 +56,6 @@ public class Task {
         //游戏初始化
         Bankgameinit.init();
         Init.init();
+        sandgameinit.initgame();
     }
 }

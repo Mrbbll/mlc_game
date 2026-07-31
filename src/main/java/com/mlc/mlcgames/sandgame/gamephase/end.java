@@ -1,0 +1,38 @@
+package com.mlc.mlcgames.sandgame.gamephase;
+
+import com.mlc.mlcgames.Teammanager;
+import com.mlc.mlcgames.sandgame.Sandgame;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
+
+public class end {
+    private static Component end_msg;
+
+    public static void endgame_with_winner(int winner){
+        if(winner==1){
+            end_msg = Sandgame.end_msg_1;
+        }else if(winner==2){
+            end_msg = Sandgame.end_msg_2;
+        }else{
+            end_msg = Sandgame.end_msg_3;
+        }
+        endgame();
+    }
+
+    public static void endgame(){
+        for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_1)){
+            endplayergame(player);
+        }
+        for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_2)){
+            endplayergame(player);
+        }
+
+        Sandgame.isstart=false;
+        Sandgame.countdown=0;
+        Sandgame.timer.cancel();
+    }
+
+    private static void endplayergame(Player player){
+        player.sendMessage(end_msg);
+    }
+}

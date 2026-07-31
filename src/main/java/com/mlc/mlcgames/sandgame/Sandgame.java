@@ -1,0 +1,33 @@
+package com.mlc.mlcgames.sandgame;
+
+import com.mlc.mlcgames.sandgame.managers.Timer;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Sandgame {
+    public static boolean isstart;
+    public static int countdown = 0;
+    public static Timer timer;
+    public static int team_1_sand_count = 0;
+    public static int team_2_sand_count = 0;
+    public static Location team_1_loc;
+    public static Location team_2_loc;
+    public static Location ready_loc;
+    public static Location sand_spawn_loc;
+    public static Location item_spawn_loc_1;
+    public static Location item_spawn_loc_2;
+
+    public static Map<Player,Integer> player_kill_count = new HashMap<>();
+    public static Map<Player,Integer> player_money = new HashMap<>();
+    public static Component start_msg;
+    public static Component end_msg_1;
+    public static Component end_msg_2;
+    public static Component end_msg_3;
+
+}

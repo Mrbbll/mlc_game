@@ -27,6 +27,10 @@ public class Teammanager {
 
     public static Team zombieday_team;
 
+    public static Team sandgame_prepareteam;
+    public static Team sandgame_team_1;
+    public static Team sandgame_team_2;
+
     public static Team team_1;
     public static Team team_2;
     public static Team team_3;
@@ -54,6 +58,10 @@ public class Teammanager {
 
         zombieday_team = createTeam("zombieday_team", NamedTextColor.GREEN);
 
+
+        sandgame_prepareteam = createTeam("sandgame_prepareteam", NamedTextColor.YELLOW);
+        sandgame_team_1 = createTeam("sandgame_team_1", NamedTextColor.RED);
+        sandgame_team_2 = createTeam("sandgame_team_2", NamedTextColor.BLUE);
 
         team_1 = createTeam("AQUA", NamedTextColor.AQUA);
         team_1.displayName(Component.text("青队"));

@@ -1,0 +1,31 @@
+package com.mlc.mlcgames.sandgame.gamephase;
+
+import com.mlc.mlcgames.Mlcgames;
+import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.menus.SandGameMenu;
+import org.bukkit.Location;
+
+
+import java.util.Objects;
+
+import static com.mlc.mlcgames.Mlcgames.instance;
+
+public class sandgameinit {
+    public static void initgame(){
+        Sandgame.isstart = false;
+        SandGameMenu.init();
+        Sandgame.player_money.clear();
+        Sandgame.player_kill_count.clear();
+
+        Location def_loc = Objects.requireNonNull(instance.getServer().getWorld("world")).getSpawnLocation();
+        Sandgame.sand_spawn_loc = Mlcgames.sandgameConfiguration.getLocation("spawn_loc",def_loc);
+        Sandgame.team_1_loc = Mlcgames.sandgameConfiguration.getLocation("team_1_loc",def_loc);
+        Sandgame.team_2_loc = Mlcgames.sandgameConfiguration.getLocation("team_2_loc",def_loc);
+        Sandgame.ready_loc = Mlcgames.sandgameConfiguration.getLocation("ready_loc",def_loc);
+        Sandgame.item_spawn_loc_1 = Mlcgames.sandgameConfiguration.getLocation("item_spawn_loc_1",def_loc);
+        Sandgame.item_spawn_loc_2 = Mlcgames.sandgameConfiguration.getLocation("item_spawn_loc_2",def_loc);
+        Sandgame.countdown = Mlcgames.sandgameConfiguration.getInt("countdown",0);
+
+    }
+
+}

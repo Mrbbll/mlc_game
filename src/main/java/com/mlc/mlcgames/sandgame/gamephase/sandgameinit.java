@@ -2,7 +2,10 @@ package com.mlc.mlcgames.sandgame.gamephase;
 
 import com.mlc.mlcgames.Mlcgames;
 import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.items.itemmanager;
+import com.mlc.mlcgames.sandgame.items.shopmenuitem;
 import com.mlc.mlcgames.sandgame.menus.SandGameMenu;
+import com.mlc.mlcgames.sandgame.menus.ShopMenu;
 import org.bukkit.Location;
 
 
@@ -11,13 +14,23 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class sandgameinit {
     public static void init() throws IOException {
         Sandgame.isstart = false;
+        // 物品与菜单初始化：itemmanager/shopmenuitem 的静态物品字段必须先 init，
+        // SandGameMenu/ShopMenu 才能引用到非 null 物品
+        itemmanager.init();
+        shopmenuitem.init();
         SandGameMenu.init();
+        ShopMenu.init();
         Sandgame.player_money.clear();
         Sandgame.player_kill_count.clear();
+        Sandgame.end_msg_1 = miniMessage.deserialize("1");
+        Sandgame.end_msg_2 = miniMessage.deserialize("2");
+        Sandgame.end_msg_3 = miniMessage.deserialize("3");
+
 
         Location def_loc = Objects.requireNonNull(instance.getServer().getWorld("world")).getSpawnLocation();
         Sandgame.sand_spawn_loc = Mlcgames.sandgameConfiguration.getLocation("spawn_loc",def_loc);

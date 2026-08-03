@@ -2,6 +2,7 @@ package com.mlc.mlcgames.sandgame.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.items.shopmenuitem;
 import com.mlc.mlcgames.sandgame.menus.ShopMenu;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -17,6 +18,10 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Map;
+
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class Sand_Game_Listener implements Listener {
 
@@ -61,10 +66,31 @@ public class Sand_Game_Listener implements Listener {
 
     @EventHandler
     public void onPlayerClickShopMenu(InventoryClickEvent event){
-        if(event.getInventory().equals(ShopMenu.shop_menu)){
+        // 只处理点在商店格子上的点击，避免玩家在自己背包栏点击被误判为购买
+        if(event.getClickedInventory() != null && event.getClickedInventory().equals(ShopMenu.shop_menu)){
             event.setCancelled(true);
+            Player player = (Player) event.getWhoClicked();
+            if(!Sandgame.isstart){
+                return;
+            }
+            ItemStack clickeditem = event.getCurrentItem();
+            if(clickeditem == null){
+                return;
+            }
+            Integer price = shopmenuitem.prices.get(clickeditem.getType());
+            if(price == null){
+                return;
+            }
+            int money = Sandgame.player_money.getOrDefault(player,0);
+            if(money < price){
+                player.sendMessage(miniMessage.deserialize("<red>金币不足，需要 "+price));
+                return;
+            }
+            Sandgame.player_money.put(player, money - price);
 
-
+            Map<Integer, ItemStack> leftover = player.getInventory().addItem(clickeditem.clone());
+            leftover.values().forEach(item -> player.getWorld().dropItemNaturally(player.getLocation(), item));
+            player.sendMessage(miniMessage.deserialize("<green>购买成功"));
         }
     }
 
@@ -100,8 +126,9 @@ public class Sand_Game_Listener implements Listener {
                 ItemStack item = event.getItem().getItemStack();
                 if(item.getType().equals(Material.EMERALD)){
                     event.setCancelled(true);
+                    int amount = item.getAmount();
                     item.setAmount(0);
-                    Sandgame.player_money.put(player,Sandgame.player_money.getOrDefault(player,0)+item.getAmount()*50);
+                    Sandgame.player_money.put(player,Sandgame.player_money.getOrDefault(player,0)+amount*50);
                 }
             }
         }

@@ -25,7 +25,7 @@ public class sidebarmanager {
         setLine(scoreboard, 3,miniMessage.deserialize(""));
         setLine(scoreboard, 4,miniMessage.deserialize(get_team_1_playerheadicon()));
         setLine(scoreboard, 5,miniMessage.deserialize(get_team_2_playerheadicon()));
-        setLine(scoreboard, 6,miniMessage.deserialize("time："));
+        setLine(scoreboard, 6,miniMessage.deserialize("time："+Sandgame.countdown));
         setLine(scoreboard, 7,miniMessage.deserialize("money:"+ Sandgame.player_money.getOrDefault(player,0)));
         setLine(scoreboard, 8,null);
         setLine(scoreboard, 9,null);
@@ -38,7 +38,7 @@ public class sidebarmanager {
         setLine(scoreboard, 3,miniMessage.deserialize(""));
         setLine(scoreboard, 4,miniMessage.deserialize(get_team_1_playerheadicon()));
         setLine(scoreboard, 5,miniMessage.deserialize(get_team_2_playerheadicon()));
-        setLine(scoreboard, 6,miniMessage.deserialize("time："));
+        setLine(scoreboard, 6,miniMessage.deserialize("time："+Sandgame.countdown));
         setLine(scoreboard, 7,miniMessage.deserialize("money:"+ Sandgame.player_money.getOrDefault(player,0)));
         setLine(scoreboard, 8,null);
         setLine(scoreboard, 9,null);

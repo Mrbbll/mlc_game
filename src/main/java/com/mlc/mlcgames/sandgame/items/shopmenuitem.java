@@ -1,7 +1,19 @@
 package com.mlc.mlcgames.sandgame.items;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class shopmenuitem {
     public static ItemStack wool;
@@ -13,17 +25,73 @@ public class shopmenuitem {
     public static ItemStack arrow;
     public static ItemStack goldenapple;
 
+    // 按物品类型定价（价格为一份商品的价格）
+    public static Map<Material, Integer> prices = new HashMap<>();
+
     public static void init(){
-        wool = ItemStack.of(Material.WHITE_WOOL,16);
-        sand = ItemStack.of(Material.SAND,1);
-        stonesword = ItemStack.of(Material.STONE_SWORD,1);
-        beef = ItemStack.of(Material.BEEF,3);
-        cobweb = ItemStack.of(Material.COBWEB,3);
-        bow = ItemStack.of(Material.BOW,1);
-        arrow = ItemStack.of(Material.ARROW,1);
-        goldenapple = ItemStack.of(Material.GOLDEN_APPLE,1);
+        wool = new ItemStack(Material.WHITE_WOOL, 16);
+        wool.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><white>白色羊毛"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>通用建筑材料")));
+            meta.setCanPlaceOn(Set.of(Material.SAND));
+        });
 
+        sand = new ItemStack(Material.SAND);
+        sand.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><#e6c35c>沙子"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>掩体与建筑材料")));
+        });
 
+        stonesword = new ItemStack(Material.STONE_SWORD);
+        stonesword.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><gold>石剑"));
+            meta.lore(List.of(miniMessage.deserialize("<gold>更锋利的武器")));
+            meta.setUnbreakable(true);
+            meta.setCanDestroy(itemmanager.breakableMaterials());
+            meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
+                    new AttributeModifier(new NamespacedKey(instance, "stone_sword_damage"), 5.0,
+                            AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND));
+        });
+
+        beef = new ItemStack(Material.BEEF, 3);
+        beef.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><white>生牛肉"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>补充饥饿值")));
+        });
+
+        cobweb = new ItemStack(Material.COBWEB, 3);
+        cobweb.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><white>蜘蛛网"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>减缓敌人移动")));
+        });
+
+        bow = new ItemStack(Material.BOW);
+        bow.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><gold>强化弓"));
+            meta.lore(List.of(miniMessage.deserialize("<gold>远程压制")));
+            meta.setUnbreakable(true);
+        });
+
+        arrow = new ItemStack(Material.ARROW);
+        arrow.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><white>箭矢"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>弓的弹药")));
+        });
+
+        goldenapple = new ItemStack(Material.GOLDEN_APPLE);
+        goldenapple.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><gold>金苹果"));
+            meta.lore(List.of(miniMessage.deserialize("<gold>恢复生命并附加增益")));
+        });
+
+        prices.put(Material.WHITE_WOOL, 30);
+        prices.put(Material.SAND, 10);
+        prices.put(Material.STONE_SWORD, 40);
+        prices.put(Material.BEEF, 15);
+        prices.put(Material.COBWEB, 20);
+        prices.put(Material.BOW, 50);
+        prices.put(Material.ARROW, 5);
+        prices.put(Material.GOLDEN_APPLE, 80);
     }
 
 }

@@ -3,11 +3,14 @@ package com.mlc.mlcgames.sandgame.gamephase;
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import net.kyori.adventure.text.Component;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
+
 public class end {
-    private static Component end_msg;
+    private static Component end_msg = miniMessage.deserialize("<gray>游戏结束");
 
     public static void endgame_with_winner(int winner){
         if(winner==1){
@@ -30,11 +33,16 @@ public class end {
 
         Sandgame.isstart=false;
         Sandgame.countdown=0;
-        Sandgame.timer.cancel();
+        // 未开赛就 /sandgame end 时 timer 为 null
+        if (Sandgame.timer != null) {
+            Sandgame.timer.cancel();
+        }
         HandlerList.unregisterAll(Sandgame.sandGameListener);
     }
 
     private static void endplayergame(Player player){
         player.sendMessage(end_msg);
+        // 恢复生存模式（start 时设为了冒险模式）
+        player.setGameMode(GameMode.SURVIVAL);
     }
 }

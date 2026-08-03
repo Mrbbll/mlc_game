@@ -1,12 +1,11 @@
 package com.mlc.mlcgames.sandgame;
 
+import com.mlc.mlcgames.sandgame.listener.Sand_Game_Listener;
 import com.mlc.mlcgames.sandgame.managers.Timer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,5 +28,5 @@ public class Sandgame {
     public static Component end_msg_1;
     public static Component end_msg_2;
     public static Component end_msg_3;
-
+    public static Sand_Game_Listener sandGameListener = new Sand_Game_Listener();
 }

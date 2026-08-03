@@ -4,6 +4,7 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 public class end {
     private static Component end_msg;
@@ -30,6 +31,7 @@ public class end {
         Sandgame.isstart=false;
         Sandgame.countdown=0;
         Sandgame.timer.cancel();
+        HandlerList.unregisterAll(Sandgame.sandGameListener);
     }
 
     private static void endplayergame(Player player){

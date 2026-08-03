@@ -3,7 +3,9 @@ package com.mlc.mlcgames.sandgame.gamephase;
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.managers.Timer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 
@@ -26,6 +28,7 @@ public class start {
             player.clearActivePotionEffects();
             player.teleportAsync(Sandgame.team_2_loc);
         }
+        Bukkit.getPluginManager().registerEvents(Sandgame.sandGameListener,instance);
 
     }
 }

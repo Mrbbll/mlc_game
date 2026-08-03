@@ -14,3 +14,5 @@ commands:
     description: 结束
   zombieday:
     description: 僵尸末日
+  sandgame:
+    description: 沙子游戏

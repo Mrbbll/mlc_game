@@ -35,11 +35,18 @@ public class itemmanager {
         baseitem_helmet_1 = new ItemStack(Material.LEATHER_HELMET);
         baseitem_helmet_2 = new ItemStack(Material.LEATHER_HELMET);
         baseitem_shears = new ItemStack(Material.SHEARS);
-
+        arrow = new ItemStack(Material.ARROW);
+        bow = new ItemStack(Material.BOW);
+        potion_speed = new ItemStack(Material.POTION);
+        potion_jump = new ItemStack(Material.POTION);
+        potion_regeneration = new ItemStack(Material.POTION);
+        beef = new ItemStack(Material.BEEF);
         wool_1 = new ItemStack(Material.RED_WOOL);
         wool_1.setAmount(64);
         wool_2 = new ItemStack(Material.BLUE_WOOL);
         wool_2.setAmount(64);
+
+
     }
 
     public static void giveBaseItems(Player player){

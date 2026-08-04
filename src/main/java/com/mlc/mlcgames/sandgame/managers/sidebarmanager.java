@@ -49,7 +49,7 @@ public class sidebarmanager {
         StringBuilder sb = new StringBuilder();
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_1)){
             String name = player.getName();
-                sb.append("<reset><red><head:");
+                sb.append("<reset><head:");
                 sb.append(name);
                 sb.append(">");
                 break;
@@ -61,7 +61,7 @@ public class sidebarmanager {
         StringBuilder sb = new StringBuilder();
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_2)){
             String name = player.getName();
-            sb.append("<reset><red><head:");
+            sb.append("<reset><head:");
             sb.append(name);
             sb.append(">");
             break;

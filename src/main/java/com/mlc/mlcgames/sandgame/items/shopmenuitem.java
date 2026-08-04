@@ -1,5 +1,6 @@
 package com.mlc.mlcgames.sandgame.items;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -10,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -33,8 +33,8 @@ public class shopmenuitem {
         wool.editMeta(meta -> {
             meta.displayName(miniMessage.deserialize("<b><white>白色羊毛"));
             meta.lore(List.of(miniMessage.deserialize("<gray>通用建筑材料")));
-            meta.setCanPlaceOn(Set.of(Material.SAND));
         });
+        wool.setData(DataComponentTypes.CAN_PLACE_ON, itemmanager.buildAdventurePredicate(List.of(Material.SAND)));
 
         sand = new ItemStack(Material.SAND);
         sand.editMeta(meta -> {
@@ -47,11 +47,11 @@ public class shopmenuitem {
             meta.displayName(miniMessage.deserialize("<b><gold>石剑"));
             meta.lore(List.of(miniMessage.deserialize("<gold>更锋利的武器")));
             meta.setUnbreakable(true);
-            meta.setCanDestroy(itemmanager.breakableMaterials());
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
                     new AttributeModifier(new NamespacedKey(instance, "stone_sword_damage"), 5.0,
                             AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND));
         });
+        stonesword.setData(DataComponentTypes.CAN_BREAK, itemmanager.buildAdventurePredicate(itemmanager.breakableMaterials()));
 
         beef = new ItemStack(Material.BEEF, 3);
         beef.editMeta(meta -> {

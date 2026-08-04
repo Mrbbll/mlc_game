@@ -5,6 +5,7 @@ import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.items.shopmenuitem;
 import com.mlc.mlcgames.sandgame.menus.ShopMenu;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -83,14 +84,16 @@ public class Sand_Game_Listener implements Listener {
             }
             int money = Sandgame.player_money.getOrDefault(player,0);
             if(money < price){
-                player.sendMessage(miniMessage.deserialize("<red>金币不足，需要 "+price));
+                player.sendMessage(Sandgame.shop_fail_msg);
+                player.playSound(player, Sound.BLOCK_ANVIL_BREAK,1.0f,1.5f);
                 return;
             }
             Sandgame.player_money.put(player, money - price);
 
             Map<Integer, ItemStack> leftover = player.getInventory().addItem(clickeditem.clone());
             leftover.values().forEach(item -> player.getWorld().dropItemNaturally(player.getLocation(), item));
-            player.sendMessage(miniMessage.deserialize("<green>购买成功"));
+            player.sendMessage(Sandgame.shop_success_msg);
+            player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,2.0f);
         }
     }
 
@@ -108,7 +111,7 @@ public class Sand_Game_Listener implements Listener {
                 event.setCancelled(true);
 
                 player.openInventory(ShopMenu.shop_menu);
-
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,0.2f);
             }
         }
     }

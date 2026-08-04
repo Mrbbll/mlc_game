@@ -6,6 +6,7 @@ import com.mlc.mlcgames.sandgame.items.itemmanager;
 import com.mlc.mlcgames.sandgame.managers.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.CompletableFuture;
@@ -46,7 +47,7 @@ public class start {
             });
         }
         Bukkit.getPluginManager().registerEvents(Sandgame.sandGameListener,instance);
-
+        instance.getServer().broadcast(Sandgame.start_msg);
     }
 
     private static void initstate(Player player) {
@@ -54,7 +55,7 @@ public class start {
         player.setFoodLevel(20);
         player.setHealth(20);
         player.clearActivePotionEffects();
-        // 冒险模式：配合物品 CanDestroy/CanPlaceOn 限制破坏与放置
+        player.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL,1.0f,0.2f);
         player.setGameMode(GameMode.ADVENTURE);
     }
 }

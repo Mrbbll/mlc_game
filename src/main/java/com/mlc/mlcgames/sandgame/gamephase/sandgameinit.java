@@ -30,6 +30,11 @@ public class sandgameinit {
         Sandgame.end_msg_1 = miniMessage.deserialize("1");
         Sandgame.end_msg_2 = miniMessage.deserialize("2");
         Sandgame.end_msg_3 = miniMessage.deserialize("3");
+        Sandgame.shop_success_msg = miniMessage.deserialize("4");
+        Sandgame.shop_fail_msg = miniMessage.deserialize("5");
+        Sandgame.sand_spawn_msg = miniMessage.deserialize("6");
+        Sandgame.team_join_msg_1 = miniMessage.deserialize("7");
+        Sandgame.team_join_msg_2 = miniMessage.deserialize("8");
 
 
         Location def_loc = Objects.requireNonNull(instance.getServer().getWorld("world")).getSpawnLocation();

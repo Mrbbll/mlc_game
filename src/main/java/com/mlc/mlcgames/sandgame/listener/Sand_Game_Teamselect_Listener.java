@@ -4,6 +4,7 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.menus.SandGameMenu;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,9 +29,11 @@ public class Sand_Game_Teamselect_Listener implements Listener {
                 return;
             }else if(clickeditem.getType().equals(Material.RED_WOOL)){
                 Teammanager.addPlayerToTeam(Teammanager.sandgame_team_1,player);
+                player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC,1.0f,0.2f);
                 player.sendMessage(miniMessage.deserialize("team 1"));
             }else if(clickeditem.getType().equals(Material.BLUE_WOOL)){
                 Teammanager.addPlayerToTeam(Teammanager.sandgame_team_2,player);
+                player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC,1.0f,0.2f);
                 player.sendMessage(miniMessage.deserialize("team 2"));
             }
         }
@@ -48,7 +51,7 @@ public class Sand_Game_Teamselect_Listener implements Listener {
 
             if(event.getInventory().getType().equals(InventoryType.DROPPER)){
                 event.setCancelled(true);
-
+                player.playSound(player, Sound.ENTITY_GOAT_MILK,1.0f,0.2f);
                 player.openInventory(SandGameMenu.gamemenu);
 
             }

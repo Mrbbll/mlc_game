@@ -1,12 +1,19 @@
 package com.mlc.mlcgames.sandgame.items;
 
 import com.mlc.mlcgames.Teammanager;
+import com.mlc.mlcgames.sandgame.Sandgame;
+import io.papermc.paper.block.BlockPredicate;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemAdventurePredicate;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.set.RegistrySet;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.block.BlockType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
@@ -16,9 +23,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -44,16 +51,27 @@ public class itemmanager {
     public static ItemStack wool_2;
 
     // 剑/剪刀在冒险模式下可破坏的方块：所有羊毛 + 蜘蛛网 + 沙子
-    static Set<Material> breakableMaterials(){
-        Set<Material> set = new HashSet<>();
+    static List<Material> breakableMaterials(){
+        List<Material> list = new ArrayList<>();
         for (Material m : Material.values()) {
             if (m.name().endsWith("_WOOL")) {
-                set.add(m);
+                list.add(m);
             }
         }
-        set.add(Material.COBWEB);
-        set.add(Material.SAND);
-        return set;
+        list.add(Material.COBWEB);
+        list.add(Material.SAND);
+        return list;
+    }
+
+    // 把 Material 列表转成冒险模式破坏/放置谓词（Data Component API，替代弃用的 setCanDestroy/setCanPlaceOn）
+    static ItemAdventurePredicate buildAdventurePredicate(List<Material> materials) {
+        List<BlockType> blocks = materials.stream()
+                .map(m -> Objects.requireNonNull(m.asBlockType()))
+                .toList();
+        BlockPredicate predicate = BlockPredicate.predicate()
+                .blocks(RegistrySet.keySetFromValues(RegistryKey.BLOCK, blocks))
+                .build();
+        return ItemAdventurePredicate.itemAdventurePredicate(List.of(predicate));
     }
 
     public static void init(){
@@ -68,19 +86,19 @@ public class itemmanager {
             meta.displayName(miniMessage.deserialize("<b><white>木剑"));
             meta.lore(List.of(miniMessage.deserialize("<gray>最基本的武器")));
             meta.setUnbreakable(true);
-            meta.setCanDestroy(breakableMaterials());
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
                     new AttributeModifier(new NamespacedKey(instance, "base_sword_damage"), 3.0,
                             AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HAND));
         });
+        baseitem_sword.setData(DataComponentTypes.CAN_BREAK, buildAdventurePredicate(breakableMaterials()));
 
         baseitem_shovel = new ItemStack(Material.WOODEN_SHOVEL);
         baseitem_shovel.editMeta(meta -> {
             meta.displayName(miniMessage.deserialize("<b><#e6c35c>木锹"));
             meta.lore(List.of(miniMessage.deserialize("<gray>只能破坏沙子")));
             meta.setUnbreakable(true);
-            meta.setCanDestroy(Set.of(Material.SAND));
         });
+        baseitem_shovel.setData(DataComponentTypes.CAN_BREAK, buildAdventurePredicate(List.of(Material.SAND)));
 
         team_1_wool = new ItemStack(Material.RED_WOOL);
         team_1_wool.editMeta(meta -> {
@@ -121,8 +139,8 @@ public class itemmanager {
             meta.displayName(miniMessage.deserialize("<b><white>剪刀"));
             meta.lore(List.of(miniMessage.deserialize("<gray>只能破坏羊毛/蜘蛛网/沙子")));
             meta.setUnbreakable(true);
-            meta.setCanDestroy(breakableMaterials());
         });
+        baseitem_shears.setData(DataComponentTypes.CAN_BREAK, buildAdventurePredicate(breakableMaterials()));
 
         arrow = new ItemStack(Material.ARROW);
         arrow.editMeta(meta -> {
@@ -171,16 +189,16 @@ public class itemmanager {
         wool_1.editMeta(meta -> {
             meta.displayName(miniMessage.deserialize("<b><#ff5555>红色羊毛"));
             meta.lore(List.of(miniMessage.deserialize("<gray>建筑与掩体材料")));
-            meta.setCanPlaceOn(Set.of(Material.SAND));
         });
+        wool_1.setData(DataComponentTypes.CAN_PLACE_ON, buildAdventurePredicate(List.of(Material.SAND)));
         wool_1.setAmount(64);
 
         wool_2 = new ItemStack(Material.BLUE_WOOL);
         wool_2.editMeta(meta -> {
             meta.displayName(miniMessage.deserialize("<b><#55aaff>蓝色羊毛"));
             meta.lore(List.of(miniMessage.deserialize("<gray>建筑与掩体材料")));
-            meta.setCanPlaceOn(Set.of(Material.SAND));
         });
+        wool_2.setData(DataComponentTypes.CAN_PLACE_ON, buildAdventurePredicate(List.of(Material.SAND)));
         wool_2.setAmount(64);
     }
 
@@ -203,6 +221,7 @@ public class itemmanager {
 
     public static void spawnsand(Location loc){
         loc.getWorld().dropItem(loc, sand);
+        instance.getServer().broadcast(Sandgame.sand_spawn_msg);
     }
 
     public static void spawnitem(Location loc){

@@ -28,5 +28,12 @@ public class Sandgame {
     public static Component end_msg_1;
     public static Component end_msg_2;
     public static Component end_msg_3;
+    public static Component shop_success_msg;
+    public static Component shop_fail_msg;
+
+    public static Component sand_spawn_msg;
+    public static Component team_join_msg_1;
+    public static Component team_join_msg_2;
+
     public static Sand_Game_Listener sandGameListener = new Sand_Game_Listener();
 }

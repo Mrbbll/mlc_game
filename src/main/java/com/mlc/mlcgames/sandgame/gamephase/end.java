@@ -43,6 +43,7 @@ public class end {
     private static void endplayergame(Player player){
         player.sendMessage(end_msg);
         // 恢复生存模式（start 时设为了冒险模式）
-        player.setGameMode(GameMode.SURVIVAL);
+        player.setGameMode(GameMode.ADVENTURE);
+        player.teleportAsync(Sandgame.ready_loc);
     }
 }

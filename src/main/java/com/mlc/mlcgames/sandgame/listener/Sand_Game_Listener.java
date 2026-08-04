@@ -2,6 +2,7 @@ package com.mlc.mlcgames.sandgame.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.gamephase.end;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
 import com.mlc.mlcgames.sandgame.items.shopmenuitem;
 import com.mlc.mlcgames.sandgame.menus.ShopMenu;
@@ -19,13 +20,16 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -87,7 +91,6 @@ public class Sand_Game_Listener implements Listener {
         player.clearActivePotionEffects();
         player.teleport(playerTeamLoc(player));
     }
-
     private Location playerTeamLoc(Player player){
         Team team = Teammanager.getPlayerTeam(player);
         if(team.equals(Teammanager.sandgame_team_1)){
@@ -103,8 +106,7 @@ public class Sand_Game_Listener implements Listener {
         }
 
         if(event.getEntity() instanceof Player player){
-            if(Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_1)
-                    ||Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_2)){
+            if(Sandgame.isSandgamePlayer(player)){
                 Entity damager = event.getDamager();
              if(damager instanceof  Player){
                  player.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -151,10 +153,7 @@ public class Sand_Game_Listener implements Listener {
             return;
         }
         Player player = (Player) event.getPlayer();
-        if(Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_1)
-                ||Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_2)
-                ||Teammanager.isPlayerInTeam(player,Teammanager.sandgame_prepareteam)){
-
+        if(Sandgame.isSandgamePlayer(player)){
             if(event.getInventory().getType().equals(InventoryType.BARREL)){
                 event.setCancelled(true);
 
@@ -171,9 +170,7 @@ public class Sand_Game_Listener implements Listener {
         }
         Entity entity = event.getEntity();
         if(entity instanceof Player player){
-            if(Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_1)
-                    ||Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_2)
-                    ||Teammanager.isPlayerInTeam(player,Teammanager.sandgame_prepareteam)){
+            if(Sandgame.isSandgamePlayer(player)){
                 ItemStack item = event.getItem().getItemStack();
                 if(item.getType().equals(Material.EMERALD)){
                     event.setCancelled(true);
@@ -184,5 +181,30 @@ public class Sand_Game_Listener implements Listener {
             }
         }
 
+    }
+    @EventHandler
+    public void onlastplayerquit(PlayerQuitEvent event){
+        if(!Sandgame.isstart){
+            return;
+        }
+        Player player = event.getPlayer();
+        if(!Sandgame.isSandgamePlayer(player)){
+            return;
+        }
+        // 清理离开玩家的队伍与状态
+        Teammanager.removePlayerFromTeam(player);
+        // 两队已无在线玩家 → 结束游戏
+        if(remainingPlayers().isEmpty()){
+            end.endgame();
+        }
+    }
+
+
+
+    private Set<Player> remainingPlayers(){
+        Set<Player> players = new HashSet<>();
+        players.addAll(Teammanager.getteamplayer(Teammanager.sandgame_team_1));
+        players.addAll(Teammanager.getteamplayer(Teammanager.sandgame_team_2));
+        return players;
     }
 }

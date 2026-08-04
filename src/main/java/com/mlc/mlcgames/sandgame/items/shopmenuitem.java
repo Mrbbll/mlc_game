@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 
@@ -70,6 +71,7 @@ public class shopmenuitem {
             meta.displayName(miniMessage.deserialize("<b><gold>强化弓"));
             meta.lore(List.of(miniMessage.deserialize("<gold>远程压制")));
             meta.setUnbreakable(true);
+            meta.addEnchant(Enchantment.POWER,2,true);
         });
 
         arrow = new ItemStack(Material.ARROW);

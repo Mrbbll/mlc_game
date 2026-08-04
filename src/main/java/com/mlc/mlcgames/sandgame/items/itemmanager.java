@@ -150,7 +150,7 @@ public class itemmanager {
 
         bow = new ItemStack(Material.BOW);
         bow.editMeta(meta -> {
-            meta.displayName(miniMessage.deserialize("<b><white>木弓"));
+            meta.displayName(miniMessage.deserialize("<b><white>弓"));
             meta.lore(List.of(miniMessage.deserialize("<gray>远程射击")));
             meta.setUnbreakable(true);
         });

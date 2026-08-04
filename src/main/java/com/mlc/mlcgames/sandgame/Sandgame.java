@@ -1,5 +1,6 @@
 package com.mlc.mlcgames.sandgame;
 
+import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.listener.Sand_Game_Listener;
 import com.mlc.mlcgames.sandgame.managers.Timer;
 import net.kyori.adventure.text.Component;
@@ -36,4 +37,10 @@ public class Sandgame {
     public static Component team_join_msg_2;
 
     public static Sand_Game_Listener sandGameListener = new Sand_Game_Listener();
+
+    public static boolean isSandgamePlayer(Player player){
+        return Teammanager.isPlayerInTeam(player, Teammanager.sandgame_team_1)
+                || Teammanager.isPlayerInTeam(player, Teammanager.sandgame_team_2)
+                || Teammanager.isPlayerInTeam(player, Teammanager.sandgame_prepareteam);
+    }
 }

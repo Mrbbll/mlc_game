@@ -309,4 +309,5 @@ public class Sand_Game_Listener implements Listener {
         players.addAll(Teammanager.getteamplayer(Teammanager.sandgame_team_2));
         return players;
     }
+
 }

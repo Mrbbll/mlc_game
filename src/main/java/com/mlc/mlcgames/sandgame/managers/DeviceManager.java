@@ -16,6 +16,7 @@ import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
@@ -156,6 +157,9 @@ public class DeviceManager {
                 continue;
             }
             if (!isEnemy(d, p)) {
+                continue;
+            }
+            if(p.hasPotionEffect(PotionEffectType.INVISIBILITY)){
                 continue;
             }
             double dist = p.getLocation().distance(d.location);

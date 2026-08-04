@@ -29,6 +29,9 @@ public class shopmenuitem {
     // 按物品类型定价（价格为一份商品的价格）
     public static Map<Material, Integer> prices = new HashMap<>();
 
+    // 实际售出的干净物品（不带价格/点击提示 lore），按类型查找
+    public static Map<Material, ItemStack> sellables = new HashMap<>();
+
     public static void init(){
         wool = new ItemStack(Material.WHITE_WOOL, 16);
         wool.editMeta(meta -> {
@@ -94,6 +97,15 @@ public class shopmenuitem {
         prices.put(Material.BOW, 50);
         prices.put(Material.ARROW, 5);
         prices.put(Material.GOLDEN_APPLE, 80);
+
+        sellables.put(Material.WHITE_WOOL, wool);
+        sellables.put(Material.SAND, sand);
+        sellables.put(Material.STONE_SWORD, stonesword);
+        sellables.put(Material.BEEF, beef);
+        sellables.put(Material.COBWEB, cobweb);
+        sellables.put(Material.BOW, bow);
+        sellables.put(Material.ARROW, arrow);
+        sellables.put(Material.GOLDEN_APPLE, goldenapple);
     }
 
 }

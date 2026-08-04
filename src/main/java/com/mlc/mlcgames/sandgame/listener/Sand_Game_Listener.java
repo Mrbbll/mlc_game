@@ -132,6 +132,10 @@ public class Sand_Game_Listener implements Listener {
             if(price == null){
                 return;
             }
+            ItemStack sellItem = shopmenuitem.sellables.get(clickeditem.getType());
+            if(sellItem == null){
+                return;
+            }
             int money = Sandgame.player_money.getOrDefault(player,0);
             if(money < price){
                 player.sendMessage(Sandgame.shop_fail_msg);
@@ -140,7 +144,8 @@ public class Sand_Game_Listener implements Listener {
             }
             Sandgame.player_money.put(player, money - price);
 
-            Map<Integer, ItemStack> leftover = player.getInventory().addItem(clickeditem.clone());
+            // 给干净的售出物品，不带商店展示用的价格/点击提示 lore
+            Map<Integer, ItemStack> leftover = player.getInventory().addItem(sellItem.clone());
             leftover.values().forEach(item -> player.getWorld().dropItemNaturally(player.getLocation(), item));
             player.sendMessage(Sandgame.shop_success_msg);
             player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,2.0f);

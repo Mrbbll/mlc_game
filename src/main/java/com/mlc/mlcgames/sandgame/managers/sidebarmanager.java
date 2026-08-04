@@ -4,6 +4,7 @@ import com.mlc.mlcgames.Gamesidebar;
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -49,10 +50,16 @@ public class sidebarmanager {
         StringBuilder sb = new StringBuilder();
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_1)){
             String name = player.getName();
+            if(player.getGameMode().equals(GameMode.SPECTATOR)){
+                sb.append("<reset><red><head:");
+                sb.append(name);
+                sb.append(">");
+            }else {
                 sb.append("<reset><head:");
                 sb.append(name);
                 sb.append(">");
                 break;
+            }
         }
         return sb.toString();
     }
@@ -61,10 +68,16 @@ public class sidebarmanager {
         StringBuilder sb = new StringBuilder();
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_2)){
             String name = player.getName();
-            sb.append("<reset><head:");
-            sb.append(name);
-            sb.append(">");
-            break;
+            if(player.getGameMode().equals(GameMode.SPECTATOR)){
+                sb.append("<reset><red><head:");
+                sb.append(name);
+                sb.append(">");
+            }else {
+                sb.append("<reset><head:");
+                sb.append(name);
+                sb.append(">");
+                break;
+            }
         }
         return sb.toString();
     }

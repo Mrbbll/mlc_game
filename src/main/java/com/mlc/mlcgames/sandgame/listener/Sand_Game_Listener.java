@@ -2,8 +2,11 @@ package com.mlc.mlcgames.sandgame.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.items.itemmanager;
 import com.mlc.mlcgames.sandgame.items.shopmenuitem;
 import com.mlc.mlcgames.sandgame.menus.ShopMenu;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -19,15 +22,21 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
 
 import java.util.Map;
 
+import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class Sand_Game_Listener implements Listener {
 
     @EventHandler
     public void onPlayerDie(PlayerDeathEvent event){
+        if(!Sandgame.isstart){
+            return;
+        }
         Player player = event.getEntity();
         ItemStack offhanditem = player.getInventory().getItemInOffHand();
         Inventory inventory = player.getInventory();
@@ -46,6 +55,45 @@ public class Sand_Game_Listener implements Listener {
 
         Player killer = player.getKiller();
         Sandgame.player_kill_count.put(killer,Sandgame.player_kill_count.getOrDefault(killer,0)+1);
+
+        // 死亡后进入旁观模式，5 秒倒计时后复活回本队位置
+        player.setGameMode(GameMode.SPECTATOR);
+        new BukkitRunnable() {
+            int seconds = 5;
+            @Override
+            public void run() {
+                if(!Sandgame.isstart || !player.isOnline()){
+                    this.cancel();
+                    return;
+                }
+                seconds--;
+                if(seconds <= 0){
+                    respawnPlayer(player);
+                    this.cancel();
+                    return;
+                }
+                player.sendActionBar(miniMessage.deserialize("<yellow>复活倒计时：<b>" + seconds + "s"));
+            }
+        }.runTaskTimer(instance, 20, 20);
+    }
+
+    private void respawnPlayer(Player player){
+        if(!Sandgame.isstart || !player.isOnline()){
+            return;
+        }
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.clearActivePotionEffects();
+        player.teleport(playerTeamLoc(player));
+    }
+
+    private Location playerTeamLoc(Player player){
+        Team team = Teammanager.getPlayerTeam(player);
+        if(team.equals(Teammanager.sandgame_team_1)){
+            return Sandgame.team_1_loc;
+        }
+        return Sandgame.team_2_loc;
     }
 
     @EventHandler

@@ -18,6 +18,8 @@ public class Timer extends BukkitRunnable {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 sidebarmanager.updatesidebar(player);
             }
+            // 设备 tick（生成器产出、防御塔攻击）
+            DeviceManager.tick();
             if(Sandgame.countdown<=0){
                 Sandgame.countdown = 30;
                 itemmanager.spawnsand(Sandgame.sand_spawn_loc);

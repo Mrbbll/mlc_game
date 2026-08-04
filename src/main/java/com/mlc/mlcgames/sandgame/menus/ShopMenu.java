@@ -23,6 +23,14 @@ public class ShopMenu {
         setShopItem(5, shopmenuitem.bow);
         setShopItem(6, shopmenuitem.arrow);
         setShopItem(7, shopmenuitem.goldenapple);
+        setShopItem(8, shopmenuitem.invispotion);
+        setShopItem(9, shopmenuitem.coingen);
+        setShopItem(10, shopmenuitem.coingenfast);
+        setShopItem(11, shopmenuitem.bomb);
+        setShopItem(12, shopmenuitem.tower);
+        setShopItem(13, shopmenuitem.towerdmg);
+        setShopItem(14, shopmenuitem.towerarmor);
+        setShopItem(15, shopmenuitem.sandgen);
     }
 
     // 展示用物品：在基础 lore 后追加价格与点击购买提示（实际售出仍用 shopmenuitem 的干净基础物品）

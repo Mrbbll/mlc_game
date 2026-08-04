@@ -5,11 +5,13 @@ import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.gamephase.end;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
 import com.mlc.mlcgames.sandgame.items.shopmenuitem;
+import com.mlc.mlcgames.sandgame.managers.DeviceManager;
 import com.mlc.mlcgames.sandgame.menus.ShopMenu;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +22,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -187,6 +190,100 @@ public class Sand_Game_Listener implements Listener {
         }
 
     }
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event){
+        if(!Sandgame.isstart){
+            return;
+        }
+        if(!event.getAction().isRightClick()){
+            return;
+        }
+        Player player = event.getPlayer();
+        if(!Sandgame.isSandgamePlayer(player)){
+            return;
+        }
+        // 木桶右键照常打开商店
+        if(event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.BARREL){
+            return;
+        }
+        ItemStack item = event.getItem();
+        if(item == null){
+            return;
+        }
+        switch (item.getType()){
+            case EMERALD_BLOCK, SANDSTONE, OBSIDIAN -> {
+                event.setCancelled(true);
+                deployDevice(player, deviceTypeOf(item.getType()), placementLocation(event), item);
+            }
+            case SUGAR, BLAZE_POWDER, SHIELD -> {
+                event.setCancelled(true);
+                upgradeDevice(player, upgradeTypeOf(item.getType()), item);
+            }
+            case TNT -> {
+                event.setCancelled(true);
+                bomb(player, event.getClickedBlock(), item);
+            }
+            default -> {}
+        }
+    }
+
+    private void deployDevice(Player player, DeviceManager.DeviceType type, Location loc, ItemStack item){
+        if(type == null){
+            return;
+        }
+        DeviceManager.Device device = DeviceManager.placeDevice(type, player, loc);
+        if(device == null){
+            player.sendMessage(miniMessage.deserialize("<red>这里空间不足，无法放置"));
+            return;
+        }
+        item.setAmount(item.getAmount() - 1);
+        player.playSound(player.getLocation(), Sound.BLOCK_STONE_PLACE, 1f, 1f);
+    }
+
+    private Location placementLocation(PlayerInteractEvent event){
+        Block clicked = event.getClickedBlock();
+        if(clicked != null){
+            return clicked.getLocation().add(0.5, 1, 0.5);
+        }
+        Player player = event.getPlayer();
+        return player.getLocation().add(player.getLocation().getDirection().multiply(2)).add(0, 0.5, 0);
+    }
+
+    private void upgradeDevice(Player player, DeviceManager.UpgradeType upgrade, ItemStack item){
+        if(upgrade == null){
+            return;
+        }
+        if(DeviceManager.upgradeDevice(player, upgrade)){
+            item.setAmount(item.getAmount() - 1);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f);
+        }
+    }
+
+    private void bomb(Player player, Block clicked, ItemStack item){
+        // 以右键点击的方块为中心引爆；没有目标则不动用炸弹
+        if(DeviceManager.detonateBomb(player, clicked)){
+            item.setAmount(item.getAmount() - 1);
+        }
+    }
+
+    private DeviceManager.DeviceType deviceTypeOf(Material material){
+        return switch (material){
+            case EMERALD_BLOCK -> DeviceManager.DeviceType.COIN_GENERATOR;
+            case SANDSTONE -> DeviceManager.DeviceType.SAND_GENERATOR;
+            case OBSIDIAN -> DeviceManager.DeviceType.TOWER;
+            default -> null;
+        };
+    }
+
+    private DeviceManager.UpgradeType upgradeTypeOf(Material material){
+        return switch (material){
+            case SUGAR -> DeviceManager.UpgradeType.SPEED;
+            case BLAZE_POWDER -> DeviceManager.UpgradeType.ATTACK;
+            case SHIELD -> DeviceManager.UpgradeType.ARMOR;
+            default -> null;
+        };
+    }
+
     @EventHandler
     public void onlastplayerquit(PlayerQuitEvent event){
         if(!Sandgame.isstart){

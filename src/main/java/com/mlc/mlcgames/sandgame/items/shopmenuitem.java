@@ -1,6 +1,7 @@
 package com.mlc.mlcgames.sandgame.items;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -8,6 +9,9 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +29,16 @@ public class shopmenuitem {
     public static ItemStack bow;
     public static ItemStack arrow;
     public static ItemStack goldenapple;
+
+    // 新增：设备与升级
+    public static ItemStack invispotion;
+    public static ItemStack coingen;
+    public static ItemStack coingenfast;
+    public static ItemStack bomb;
+    public static ItemStack tower;
+    public static ItemStack towerdmg;
+    public static ItemStack towerarmor;
+    public static ItemStack sandgen;
 
     // 按物品类型定价（价格为一份商品的价格）
     public static Map<Material, Integer> prices = new HashMap<>();
@@ -89,6 +103,56 @@ public class shopmenuitem {
             meta.lore(List.of(miniMessage.deserialize("<gold>恢复生命并附加增益")));
         });
 
+        invispotion = new ItemStack(Material.POTION);
+        invispotion.editMeta(PotionMeta.class, meta -> {
+            meta.displayName(miniMessage.deserialize("<b><#ff55ff>隐身药水"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>隐身30秒")));
+            meta.setColor(Color.fromRGB(255, 85, 255));
+            meta.addCustomEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20*30, 0, true, true, true), true);
+        });
+
+        coingen = new ItemStack(Material.EMERALD_BLOCK);
+        coingen.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><green>金币生成器"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>右键放置，每3秒生成1个绿宝石")));
+        });
+
+        coingenfast = new ItemStack(Material.SUGAR);
+        coingenfast.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><yellow>金币生成器速度加强版"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>右键金币生成器，加速为每1秒1个")));
+        });
+
+        bomb = new ItemStack(Material.TNT);
+        bomb.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><red>炸弹"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>右键引爆，拆除3格内设备")));
+        });
+
+        tower = new ItemStack(Material.OBSIDIAN);
+        tower.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><dark_purple>防御塔"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>右键放置，攻击5格内敌人")));
+        });
+
+        towerdmg = new ItemStack(Material.BLAZE_POWDER);
+        towerdmg.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><gold>防御塔攻击加强版"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>右键防御塔，伤害翻倍为14")));
+        });
+
+        towerarmor = new ItemStack(Material.SHIELD);
+        towerarmor.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><aqua>防御塔护甲加强版"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>右键设备，可抵挡1次炸弹")));
+        });
+
+        sandgen = new ItemStack(Material.SANDSTONE);
+        sandgen.editMeta(meta -> {
+            meta.displayName(miniMessage.deserialize("<b><yellow>沙子生成器"));
+            meta.lore(List.of(miniMessage.deserialize("<gray>右键放置，每30秒生成1个沙子")));
+        });
+
         prices.put(Material.WHITE_WOOL, 30);
         prices.put(Material.SAND, 10);
         prices.put(Material.STONE_SWORD, 40);
@@ -97,6 +161,14 @@ public class shopmenuitem {
         prices.put(Material.BOW, 50);
         prices.put(Material.ARROW, 5);
         prices.put(Material.GOLDEN_APPLE, 80);
+        prices.put(Material.POTION, 200);
+        prices.put(Material.EMERALD_BLOCK, 500);
+        prices.put(Material.SUGAR, 100);
+        prices.put(Material.TNT, 100);
+        prices.put(Material.OBSIDIAN, 200);
+        prices.put(Material.BLAZE_POWDER, 200);
+        prices.put(Material.SHIELD, 200);
+        prices.put(Material.SANDSTONE, 1000);
 
         sellables.put(Material.WHITE_WOOL, wool);
         sellables.put(Material.SAND, sand);
@@ -106,6 +178,14 @@ public class shopmenuitem {
         sellables.put(Material.BOW, bow);
         sellables.put(Material.ARROW, arrow);
         sellables.put(Material.GOLDEN_APPLE, goldenapple);
+        sellables.put(Material.POTION, invispotion);
+        sellables.put(Material.EMERALD_BLOCK, coingen);
+        sellables.put(Material.SUGAR, coingenfast);
+        sellables.put(Material.TNT, bomb);
+        sellables.put(Material.OBSIDIAN, tower);
+        sellables.put(Material.BLAZE_POWDER, towerdmg);
+        sellables.put(Material.SHIELD, towerarmor);
+        sellables.put(Material.SANDSTONE, sandgen);
     }
 
 }

@@ -2,6 +2,7 @@ package com.mlc.mlcgames.sandgame.gamephase;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.managers.DeviceManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -33,6 +34,8 @@ public class end {
 
         Sandgame.isstart=false;
         Sandgame.countdown=0;
+        // 清理场上设备（生成器/塔展示实体）
+        DeviceManager.cleanup();
         // 未开赛就 /sandgame end 时 timer 为 null
         if (Sandgame.timer != null) {
             Sandgame.timer.cancel();

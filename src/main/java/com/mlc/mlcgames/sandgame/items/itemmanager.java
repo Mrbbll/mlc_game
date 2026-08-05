@@ -78,7 +78,7 @@ public class itemmanager {
         sand = new ItemStack(Material.SAND);
         sand.editMeta(meta -> {
             meta.displayName(miniMessage.deserialize("<b><#e6c35c>沙子"));
-            meta.lore(List.of(miniMessage.deserialize("<gray>建筑与掩体材料")));
+            meta.lore(List.of(miniMessage.deserialize("<gold><b>重要材料")));
         });
 
         baseitem_sword = new ItemStack(Material.WOODEN_SWORD);

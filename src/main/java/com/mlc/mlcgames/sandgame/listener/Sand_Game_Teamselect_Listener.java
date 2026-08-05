@@ -2,6 +2,7 @@ package com.mlc.mlcgames.sandgame.listener;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.managers.Bossbarmanager;
 import com.mlc.mlcgames.sandgame.menus.SandGameMenu;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -30,10 +31,12 @@ public class Sand_Game_Teamselect_Listener implements Listener {
             }else if(clickeditem.getType().equals(Material.RED_WOOL)){
                 Teammanager.addPlayerToTeam(Teammanager.sandgame_team_1,player);
                 player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC,1.0f,0.2f);
+                player.showBossBar(Bossbarmanager.bossBar);
                 player.sendMessage(miniMessage.deserialize("team 1"));
             }else if(clickeditem.getType().equals(Material.BLUE_WOOL)){
                 Teammanager.addPlayerToTeam(Teammanager.sandgame_team_2,player);
                 player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC,1.0f,0.2f);
+                player.showBossBar(Bossbarmanager.bossBar);
                 player.sendMessage(miniMessage.deserialize("team 2"));
             }
         }

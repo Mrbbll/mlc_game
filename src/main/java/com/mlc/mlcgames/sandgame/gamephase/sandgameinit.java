@@ -4,6 +4,7 @@ import com.mlc.mlcgames.Mlcgames;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
 import com.mlc.mlcgames.sandgame.items.shopmenuitem;
+import com.mlc.mlcgames.sandgame.managers.Bossbarmanager;
 import com.mlc.mlcgames.sandgame.menus.SandGameMenu;
 import com.mlc.mlcgames.sandgame.menus.ShopMenu;
 import org.bukkit.Location;
@@ -25,6 +26,7 @@ public class sandgameinit {
         shopmenuitem.init();
         SandGameMenu.init();
         ShopMenu.init();
+        Bossbarmanager.init();
         Sandgame.player_money.clear();
         Sandgame.player_kill_count.clear();
         Sandgame.end_msg_1 = miniMessage.deserialize("1");
@@ -52,6 +54,11 @@ public class sandgameinit {
         Mlcgames.sandgameConfiguration.set("item_spawn_loc_2",Sandgame.item_spawn_loc_2);
         Sandgame.countdown = Mlcgames.sandgameConfiguration.getInt("countdown",0);
         Mlcgames.sandgameConfiguration.set("countdown",Sandgame.countdown);
+        Sandgame.team_1_sand_loc = Mlcgames.sandgameConfiguration.getLocation("team_1_sand_loc",def_loc);
+        Mlcgames.sandgameConfiguration.set("team_1_sand_loc",Sandgame.team_1_sand_loc);
+        Sandgame.team_2_sand_loc = Mlcgames.sandgameConfiguration.getLocation("team_2_sand_loc",def_loc);
+        Mlcgames.sandgameConfiguration.set("team_2_sand_loc",Sandgame.team_2_sand_loc);
+
 
         Mlcgames.sandgameConfiguration.save(new File(instance.getDataFolder(),"sandgame.yml"));
     }

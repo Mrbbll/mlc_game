@@ -2,9 +2,11 @@ package com.mlc.mlcgames.sandgame.gamephase;
 
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
+import com.mlc.mlcgames.sandgame.managers.Bossbarmanager;
 import com.mlc.mlcgames.sandgame.managers.DeviceManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
@@ -33,7 +35,7 @@ public class end {
         }
 
         Sandgame.isstart=false;
-        Sandgame.countdown=0;
+        Sandgame.countdown=30;
         // 清理场上设备（生成器/塔展示实体）
         DeviceManager.cleanup();
         // 未开赛就 /sandgame end 时 timer 为 null
@@ -41,12 +43,15 @@ public class end {
             Sandgame.timer.cancel();
         }
         HandlerList.unregisterAll(Sandgame.sandGameListener);
+        Bossbarmanager.updateBossBar();
     }
 
     private static void endplayergame(Player player){
         player.sendMessage(end_msg);
+        player.playSound(player, Sound.ENTITY_CAMEL_DEATH, 1.0f, 1.0f);
         // 恢复生存模式（start 时设为了冒险模式）
         player.setGameMode(GameMode.ADVENTURE);
         player.teleportAsync(Sandgame.ready_loc);
+        player.hideBossBar(Bossbarmanager.bossBar);
     }
 }

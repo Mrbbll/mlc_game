@@ -8,7 +8,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Sandgame {
     public static boolean isstart;
@@ -22,6 +24,9 @@ public class Sandgame {
     public static Location sand_spawn_loc;
     public static Location item_spawn_loc_1;
     public static Location item_spawn_loc_2;
+    public static Location team_1_sand_loc;
+    public static Location team_2_sand_loc;
+
 
     public static Map<Player,Integer> player_kill_count = new HashMap<>();
     public static Map<Player,Integer> player_money = new HashMap<>();
@@ -35,6 +40,10 @@ public class Sandgame {
     public static Component sand_spawn_msg;
     public static Component team_join_msg_1;
     public static Component team_join_msg_2;
+    public static Component team_1_sand_steal_msg;
+    public static Component team_2_sand_steal_msg;
+    public static Component team_1_sand_bring_msg;
+    public static Component team_2_sand_bring_msg;
 
     public static Sand_Game_Listener sandGameListener = new Sand_Game_Listener();
 
@@ -42,5 +51,11 @@ public class Sandgame {
         return Teammanager.isPlayerInTeam(player, Teammanager.sandgame_team_1)
                 || Teammanager.isPlayerInTeam(player, Teammanager.sandgame_team_2)
                 || Teammanager.isPlayerInTeam(player, Teammanager.sandgame_prepareteam);
+    }
+    public static Set<Player> getSandgamePlayer(){
+        Set<Player> players = new HashSet<>();
+        players.addAll(Teammanager.getteamplayer(Teammanager.sandgame_team_1));
+        players.addAll(Teammanager.getteamplayer(Teammanager.sandgame_team_2));
+        return players;
     }
 }

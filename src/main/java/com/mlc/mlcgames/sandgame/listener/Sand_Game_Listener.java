@@ -65,6 +65,7 @@ public class Sand_Game_Listener implements Listener {
 
         // 死亡后进入旁观模式，5 秒倒计时后复活回本队位置
         player.setGameMode(GameMode.SPECTATOR);
+        player.teleport(playerTeamLoc(player));
         new BukkitRunnable() {
             int seconds = 5;
             @Override
@@ -184,6 +185,7 @@ public class Sand_Game_Listener implements Listener {
                     event.setCancelled(true);
                     int amount = item.getAmount();
                     item.setAmount(0);
+                    player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,2.0f);
                     Sandgame.player_money.put(player,Sandgame.player_money.getOrDefault(player,0)+amount*50);
                 }
             }
@@ -191,7 +193,7 @@ public class Sand_Game_Listener implements Listener {
 
     }
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event){
+    public void onPlayeruseItem(PlayerInteractEvent event){
         if(!Sandgame.isstart){
             return;
         }

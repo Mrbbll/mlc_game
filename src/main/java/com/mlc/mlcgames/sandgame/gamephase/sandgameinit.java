@@ -37,7 +37,11 @@ public class sandgameinit {
         Sandgame.sand_spawn_msg = miniMessage.deserialize("6");
         Sandgame.team_join_msg_1 = miniMessage.deserialize("7");
         Sandgame.team_join_msg_2 = miniMessage.deserialize("8");
-
+        Sandgame.team_1_sand_bring_msg = miniMessage.deserialize("9");
+        Sandgame.team_2_sand_bring_msg = miniMessage.deserialize("10");
+        Sandgame.team_1_sand_steal_msg = miniMessage.deserialize("11");
+        Sandgame.team_2_sand_steal_msg = miniMessage.deserialize("12");
+        Sandgame.start_msg = miniMessage.deserialize("13");
 
         Location def_loc = Objects.requireNonNull(instance.getServer().getWorld("world")).getSpawnLocation();
         Sandgame.sand_spawn_loc = Mlcgames.sandgameConfiguration.getLocation("spawn_loc",def_loc);
@@ -58,7 +62,6 @@ public class sandgameinit {
         Mlcgames.sandgameConfiguration.set("team_1_sand_loc",Sandgame.team_1_sand_loc);
         Sandgame.team_2_sand_loc = Mlcgames.sandgameConfiguration.getLocation("team_2_sand_loc",def_loc);
         Mlcgames.sandgameConfiguration.set("team_2_sand_loc",Sandgame.team_2_sand_loc);
-
 
         Mlcgames.sandgameConfiguration.save(new File(instance.getDataFolder(),"sandgame.yml"));
     }

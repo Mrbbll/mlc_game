@@ -19,7 +19,8 @@ import static com.mlc.mlcgames.Mlcgames.miniMessage;
 public class Sand_Game_Teamselect_Listener implements Listener {
     @EventHandler
     public void onPlayerClickInventory(InventoryClickEvent event){
-        if(event.getInventory().equals(SandGameMenu.gamemenu)){
+
+        if( event.getView().getTopInventory().equals(SandGameMenu.gamemenu)){
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
             if(Sandgame.isstart){

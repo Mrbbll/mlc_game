@@ -20,30 +20,21 @@ public class sidebarmanager {
     static Objective objective = Gamesidebar.objective;
 
 
-    public static void showsidebar(Player player){
+    public static void showsidebar(){
         setLine(scoreboard, 1,miniMessage.deserialize("<b><#02a82e>SAND GAME"));
         setLine(scoreboard, 2,miniMessage.deserialize(""));
         setLine(scoreboard, 3,miniMessage.deserialize(""));
         setLine(scoreboard, 4,miniMessage.deserialize(get_team_1_playerheadicon()));
         setLine(scoreboard, 5,miniMessage.deserialize(get_team_2_playerheadicon()));
         setLine(scoreboard, 6,miniMessage.deserialize("time："+Sandgame.countdown));
-        setLine(scoreboard, 7,miniMessage.deserialize("money:"+ Sandgame.player_money.getOrDefault(player,0)));
+        setLine(scoreboard, 7,miniMessage.deserialize("<red>红队沙:<b>" + Sandgame.team_1_sand_count + " <blue>蓝队沙:<b>" + Sandgame.team_2_sand_count));
         setLine(scoreboard, 8,null);
         setLine(scoreboard, 9,null);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
-    public static void updatesidebar(Player player){
-        setLine(scoreboard, 1,miniMessage.deserialize("<b><#02a82e>SAND GAME"));
-        setLine(scoreboard, 2,miniMessage.deserialize(""));
-        setLine(scoreboard, 3,miniMessage.deserialize(""));
-        setLine(scoreboard, 4,miniMessage.deserialize(get_team_1_playerheadicon()));
-        setLine(scoreboard, 5,miniMessage.deserialize(get_team_2_playerheadicon()));
-        setLine(scoreboard, 6,miniMessage.deserialize("time："+Sandgame.countdown));
-        setLine(scoreboard, 7,miniMessage.deserialize("money:"+ Sandgame.player_money.getOrDefault(player,0)));
-        setLine(scoreboard, 8,null);
-        setLine(scoreboard, 9,null);
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    public static void updatesidebar(){
+        showsidebar();
     }
 
     public static String get_team_1_playerheadicon(){

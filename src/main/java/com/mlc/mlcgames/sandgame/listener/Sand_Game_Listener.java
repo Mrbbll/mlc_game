@@ -61,7 +61,10 @@ public class Sand_Game_Listener implements Listener {
 
 
         Player killer = player.getKiller();
-        Sandgame.player_kill_count.put(killer,Sandgame.player_kill_count.getOrDefault(killer,0)+1);
+        if(killer != null){
+            Sandgame.player_kill_count.put(killer,Sandgame.player_kill_count.getOrDefault(killer,0)+1);
+        }
+
 
         // 死亡后进入旁观模式，5 秒倒计时后复活回本队位置
         player.setGameMode(GameMode.SPECTATOR);
@@ -122,7 +125,7 @@ public class Sand_Game_Listener implements Listener {
     @EventHandler
     public void onPlayerClickShopMenu(InventoryClickEvent event){
         // 只处理点在商店格子上的点击，避免玩家在自己背包栏点击被误判为购买
-        if(event.getClickedInventory() != null && event.getClickedInventory().equals(ShopMenu.shop_menu)){
+        if(event.getClickedInventory() != null && event.getView().getTopInventory().equals(ShopMenu.shop_menu)){
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
             if(!Sandgame.isstart){

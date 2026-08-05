@@ -10,6 +10,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
+import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class end {
@@ -33,7 +34,11 @@ public class end {
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_2)){
             endplayergame(player);
         }
-
+        Player top = Sandgame.getTopKiller();
+        if (top != null) {
+           instance.getServer().broadcast(miniMessage.deserialize("<gold>MVP：" + top.getName()
+                    + "（击杀 " + Sandgame.player_kill_count.get(top) + " 人）"));
+        }
         Sandgame.isstart=false;
         Sandgame.countdown=30;
         // 清理场上设备（生成器/塔展示实体）
@@ -43,11 +48,12 @@ public class end {
             Sandgame.timer.cancel();
         }
         HandlerList.unregisterAll(Sandgame.sandGameListener);
-        Bossbarmanager.updateBossBar();
+
     }
 
     private static void endplayergame(Player player){
         player.sendMessage(end_msg);
+        player.getInventory().clear();
         player.playSound(player, Sound.ENTITY_CAMEL_DEATH, 1.0f, 1.0f);
         // 恢复生存模式（start 时设为了冒险模式）
         player.setGameMode(GameMode.ADVENTURE);

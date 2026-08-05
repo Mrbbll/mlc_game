@@ -3,6 +3,7 @@ package com.mlc.mlcgames.sandgame.gamephase;
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
+import com.mlc.mlcgames.sandgame.managers.StealTimer;
 import com.mlc.mlcgames.sandgame.managers.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -19,13 +20,13 @@ public class start {
         if (Sandgame.isstart) return;
 
         Sandgame.isstart=true;
-        Sandgame.countdown=60;
+        Sandgame.countdown=30;
         Sandgame.timer=new Timer();
-        // period=20 才是 1 秒一次，原来 period=1（50ms）导致 60 秒倒计时 3 秒就走完
+        Sandgame.stealtimer=new StealTimer();
         Sandgame.timer.runTaskTimer(instance,20,20);
+        Sandgame.stealtimer.runTaskTimer(instance,20,1);
         Sandgame.player_money.clear();
         Sandgame.player_kill_count.clear();
-        // 沙量从未初始化（恒 0），第一轮计时结束就直接判平局
         Sandgame.team_1_sand_count = 10;
         Sandgame.team_2_sand_count = 10;
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_1)){

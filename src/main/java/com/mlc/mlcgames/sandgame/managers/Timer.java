@@ -5,6 +5,7 @@ import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.gamephase.end;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
+import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class Timer extends BukkitRunnable {
     @Override
@@ -22,9 +24,11 @@ public class Timer extends BukkitRunnable {
             Bossbarmanager.updateBossBar();
             //写回 Map，必须 replaceAll
             Sandgame.player_money.replaceAll((player, money) -> money + 5);
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                sidebarmanager.updatesidebar(player);
+            for (Player player : Sandgame.getSandgamePlayer()) {
+                player.sendActionBar(miniMessage.deserialize("<green>金钱：<yellow><b>" + Sandgame.player_money.getOrDefault(player, 0)));
+
             }
+            sidebarmanager.updatesidebar();
             // 设备 tick（生成器产出、防御塔攻击）
             DeviceManager.tick();
             if(Sandgame.countdown<=0){
@@ -37,9 +41,9 @@ public class Timer extends BukkitRunnable {
                 if(Sandgame.team_1_sand_count<=0&&Sandgame.team_2_sand_count<=0){
                     end.endgame_with_winner(3);
                 }else if(Sandgame.team_1_sand_count<=0){
-                    end.endgame_with_winner(1);
-                }else if(Sandgame.team_2_sand_count<=0){
                     end.endgame_with_winner(2);
+                }else if(Sandgame.team_2_sand_count<=0){
+                    end.endgame_with_winner(1);
                 }
 
             }
@@ -56,6 +60,7 @@ public class Timer extends BukkitRunnable {
                     if(itemstack!=null){
                         if(itemstack.getType().equals(org.bukkit.Material.SAND)){
                             Sandgame.team_1_sand_count+=itemstack.getAmount();
+                            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.0f);
                             instance.getServer().broadcast(Sandgame.team_1_sand_bring_msg);
                             itemstack.setAmount(0);
                         }
@@ -70,6 +75,7 @@ public class Timer extends BukkitRunnable {
                     if(itemstack!=null){
                         if(itemstack.getType().equals(org.bukkit.Material.SAND)){
                             Sandgame.team_2_sand_count+=itemstack.getAmount();
+                            player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 1.0f, 1.0f);
                             instance.getServer().broadcast(Sandgame.team_2_sand_bring_msg);
                             itemstack.setAmount(0);
                         }

@@ -5,6 +5,7 @@ import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.gamephase.end;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -26,11 +27,11 @@ public class StealTimer extends BukkitRunnable {
             this.cancel();
         }
         for(Player player : Sandgame.team_1_sand_loc.getNearbyPlayers(1.5)){
-            if(!Teammanager.isPlayerInTeam(player,Teammanager.team_2)){
-                return;
+            if(!Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_2)){
+                continue;
             }
             if(!player.getGameMode().equals(GameMode.ADVENTURE)){
-                return;
+                continue;
             }
             if (player == team_1_steal_player){
                 remaintime_1 = steal_time_map.getOrDefault(player,60)-1;
@@ -44,19 +45,21 @@ public class StealTimer extends BukkitRunnable {
                     }
                     break;
                 }
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                 steal_time_map.put(player,remaintime_1);
             }else{
                 remaintime_1 = 60-1;
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                 team_1_steal_player=player;
                 steal_time_map.put(player,remaintime_1);
             }
         }
         for(Player player : Sandgame.team_2_sand_loc.getNearbyPlayers(1.5)){
-            if(!Teammanager.isPlayerInTeam(player,Teammanager.team_1)){
-                return;
+            if(!Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_1)){
+                continue;
             }
             if(!player.getGameMode().equals(GameMode.ADVENTURE)){
-                return;
+                continue;
             }
             if (player == team_2_steal_player){
                 remaintime_2 = steal_time_map.getOrDefault(player,60)-1;
@@ -70,10 +73,12 @@ public class StealTimer extends BukkitRunnable {
                     }
                     break;
                 }
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                 steal_time_map.put(player,remaintime_2);
             }else{
                 remaintime_2 = 60-1;
                 team_2_steal_player=player;
+                player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                 steal_time_map.put(player,remaintime_2);
             }
         }

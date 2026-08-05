@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("com.gradleup.shadow") version "9.3.1"
 }
 
 group = 'com.mlc'
@@ -16,10 +17,12 @@ repositories {
         name = "placeholderapi"
         url = 'https://repo.extendedclip.com/releases/'
     }
-
+    maven { url = "https://repo.codemc.io/repository/maven-releases/" }
+    maven { url = "https://repo.codemc.io/repository/maven-snapshots/" }
 }
 
 dependencies {
+    compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly 'me.clip:placeholderapi:2.11.7'
     implementation 'net.kyori:adventure-text-minimessage:4.13.0'
@@ -32,6 +35,13 @@ tasks {
         // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("1.21")
     }
+}
+
+tasks.shadowJar {
+    relocate("com.github.retrooper", "com.mlc.mlcgames.libs.packetevents")
+    relocate("io.github.retrooper", "com.mlc.mlcgames.libs.packetevents")
+    relocate("net.kyori", "com.mlc.mlcgames.libs.kyori")
+    relocate("com.google.gson", "com.mlc.mlcgames.libs.gson")
 }
 
 def targetJavaVersion = 21

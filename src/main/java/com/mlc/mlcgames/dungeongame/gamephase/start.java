@@ -32,7 +32,7 @@ public class start {
 
             List<Room> pool = new ArrayList<>(Dungeongame.rooms);
             Room startRoom = Dungeongame.start_room != null ? Dungeongame.start_room : pool.get(0);
-            RoomCombiner.combine(world, pool, startRoom);
+//            RoomCombiner.combine(world, pool, startRoom);
 
             // 出生点放在起点房间中心
             int sx = startRoom.getSizeX() / 2;

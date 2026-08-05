@@ -18,3 +18,10 @@ commands:
     description: 沙子游戏
   dungeongame:
     description: 地牢游戏
+softdepend:
+  - ProtocolLib
+  - ProtocolSupport
+  - ViaVersion
+  - ViaBackwards
+  - ViaRewind
+  - Geyser-Spigot

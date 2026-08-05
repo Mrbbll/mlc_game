@@ -1,0 +1,27 @@
+# 地牢游戏配置
+# grid_size: 房间网格 n*n（生成 n*n 个格子）
+# floor_y: 房间地板在生成世界里的 Y 高度
+# random_rotation: 是否随机旋转房间(仅宽=深的房间生效，否则会破坏网格对齐)
+# capture_entities: 截取房间时是否连实体(怪/物品展示框/盔甲架)一起复制。
+#   为 true 时，框选房间和生成地牢时不要站在房间区域里，否则会把自己复制进地牢。
+# start_room: 出生房间名，必须存在于下面的 rooms 里
+# rooms: 每个房间 = 模板世界(如 dungeon_template)里框选的一块区域
+#   world: 模板世界名
+#   corner_1 / corner_2: 区域两个对角坐标 "x,y,z"
+#
+# 用 /dungeongame pos1 <名> 和 pos2 <名> 对着方块框选即可自动写入，无需手改。
+# 所有房间最好宽×深一致、外墙 1 格厚、四面都有居中门，这样随机拼接时墙能对齐、门洞正好开在门上。
+grid_size: 3
+floor_y: 60
+random_rotation: true
+capture_entities: false
+start_room: start
+rooms:
+#  start:
+#    world: dungeon_template
+#    corner_1: "0,80,0"
+#    corner_2: "15,95,15"
+#  hall:
+#    world: dungeon_template
+#    corner_1: "30,80,0"
+#    corner_2: "45,95,15"

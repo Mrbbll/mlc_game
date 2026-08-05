@@ -35,6 +35,7 @@ public final class Mlcgames extends JavaPlugin {
     public static FileConfiguration fileConfiguration;
     public static FileConfiguration zombiedayConfiguration;
     public static FileConfiguration sandgameConfiguration;
+    public static FileConfiguration dungeonConfiguration;
     public static ConfigManager configManager;
 
     public static MiniMessage miniMessage;
@@ -61,6 +62,7 @@ public final class Mlcgames extends JavaPlugin {
 
         zombiedayConfiguration = configManager.loadConfig("zombieday.yml");
         sandgameConfiguration = configManager.loadConfig("sandgame.yml");
+        dungeonConfiguration = configManager.loadConfig("dungeongame.yml");
 
         //管理器初始化
         scoreboardManager = Bukkit.getScoreboardManager();

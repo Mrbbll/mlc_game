@@ -11,6 +11,8 @@ import com.mlc.mlcgames.bank.utils.Bankgameinit;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.menus.bankmenus;
 import com.mlc.mlcgames.commands.reload;
+import com.mlc.mlcgames.dungeongame.commands.DungeonGame;
+import com.mlc.mlcgames.dungeongame.gamephase.dungeongameinit;
 import com.mlc.mlcgames.sandgame.commands.SandGame;
 import com.mlc.mlcgames.sandgame.gamephase.sandgameinit;
 import com.mlc.mlcgames.sandgame.listener.Sand_Game_Teamselect_Listener;
@@ -45,10 +47,12 @@ public class Task {
         Objects.requireNonNull(instance.getCommand("bankgameend")).setExecutor(new bankgameend());
         Objects.requireNonNull(instance.getCommand("zombieday")).setExecutor(new Zombieday());
         Objects.requireNonNull(instance.getCommand("sandgame")).setExecutor(new SandGame());
+        Objects.requireNonNull(instance.getCommand("dungeongame")).setExecutor(new DungeonGame());
 
         Objects.requireNonNull(instance.getCommand("bankgameprepare")).setTabCompleter(new bankgameprepare());
         Objects.requireNonNull(instance.getCommand("zombieday")).setTabCompleter(new Zombieday());
         Objects.requireNonNull(instance.getCommand("sandgame")).setTabCompleter(new SandGame());
+        Objects.requireNonNull(instance.getCommand("dungeongame")).setTabCompleter(new DungeonGame());
         //物品初始化
         Bankgameitemmanager.inititem();
         Bankgameloottable.init();
@@ -62,5 +66,6 @@ public class Task {
         Bankgameinit.init();
         Init.init();
         sandgameinit.init();
+        dungeongameinit.init();
     }
 }

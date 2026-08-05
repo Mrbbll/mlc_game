@@ -4,13 +4,11 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.gamephase.end;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
@@ -28,7 +26,7 @@ public class Timer extends BukkitRunnable {
                 player.sendActionBar(miniMessage.deserialize("<green>金钱：<yellow><b>" + Sandgame.player_money.getOrDefault(player, 0)));
 
             }
-            sidebarmanager.updatesidebar();
+            Sidebarmanager.updatesidebar();
             // 设备 tick（生成器产出、防御塔攻击）
             DeviceManager.tick();
             if(Sandgame.countdown<=0){

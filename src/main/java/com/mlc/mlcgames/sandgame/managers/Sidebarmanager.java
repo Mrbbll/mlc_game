@@ -3,7 +3,6 @@ package com.mlc.mlcgames.sandgame.managers;
 import com.mlc.mlcgames.Gamesidebar;
 import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
-import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -14,7 +13,7 @@ import static com.mlc.mlcgames.Gamesidebar.setLine;
 import static com.mlc.mlcgames.Gamesidebar.sidebarscoreboard;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
-public class sidebarmanager {
+public class Sidebarmanager {
 
     static Scoreboard scoreboard = sidebarscoreboard;
     static Objective objective = Gamesidebar.objective;

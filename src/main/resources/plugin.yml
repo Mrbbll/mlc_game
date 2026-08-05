@@ -16,3 +16,5 @@ commands:
     description: 僵尸末日
   sandgame:
     description: 沙子游戏
+  dungeongame:
+    description: 地牢游戏

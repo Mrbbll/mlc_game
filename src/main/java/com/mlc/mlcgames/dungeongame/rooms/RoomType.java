@@ -7,5 +7,6 @@ public enum RoomType {
     Shop,
     Add,
     Start,
-    End
+    End,
+    Bridge
 }

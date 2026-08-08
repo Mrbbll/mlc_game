@@ -1,6 +1,7 @@
 package com.mlc.mlcgames.dungeongame.gamephase;
 
 import com.mlc.mlcgames.dungeongame.Dungeongame;
+import com.mlc.mlcgames.dungeongame.managers.Worldmanager;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
@@ -14,22 +15,8 @@ import java.util.List;
 public class dungeongameinit {
     public static void init(){
 
-        WorldCreator wc = WorldCreator.name("Dungeongame");
-        wc.generateStructures(false);
-        wc.bonusChest(false);
-        wc.hardcore(false);
-        wc.biomeProvider(new BiomeProvider() {
-            @Override
-            public @NotNull Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
-                return Biome.THE_VOID;
-            }
+        Worldmanager.createDungeonWorld();
 
-            @Override
-            public @NotNull List<Biome> getBiomes(@NotNull WorldInfo worldInfo) {
-                return List.of();
-            }
-        });
-        wc.environment(World.Environment.CUSTOM);
 
     }
 }

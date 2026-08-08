@@ -26,6 +26,7 @@ public class StealTimer extends BukkitRunnable {
         if(!Sandgame.isstart){
             this.cancel();
         }
+        Sidebarmanager.updatesidebar();
         for(Player player : Sandgame.team_1_sand_loc.getNearbyPlayers(1.5)){
             if(!Teammanager.isPlayerInTeam(player,Teammanager.sandgame_team_2)){
                 continue;
@@ -42,8 +43,9 @@ public class StealTimer extends BukkitRunnable {
                     instance.getServer().broadcast(Sandgame.team_1_sand_steal_msg);
                     if(Sandgame.team_1_sand_count==0){
                         end.endgame_with_winner(2);
+                        break;
                     }
-                    break;
+
                 }
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                 steal_time_map.put(player,remaintime_1);
@@ -70,8 +72,8 @@ public class StealTimer extends BukkitRunnable {
                     instance.getServer().broadcast(Sandgame.team_2_sand_steal_msg);
                     if(Sandgame.team_2_sand_count==0){
                         end.endgame_with_winner(1);
+                        break;
                     }
-                    break;
                 }
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2.0f);
                 steal_time_map.put(player,remaintime_2);

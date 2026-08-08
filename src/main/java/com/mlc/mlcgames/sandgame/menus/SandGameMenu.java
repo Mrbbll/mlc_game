@@ -10,8 +10,8 @@ import static com.mlc.mlcgames.Mlcgames.miniMessage;
 public class SandGameMenu {
     public static Inventory gamemenu;
     public static void init(){
-        gamemenu = instance.getServer().createInventory(null, InventoryType.DROPPER,miniMessage.deserialize("team selecter"));
-        gamemenu.setItem(2,itemmanager.team_1_wool);
-        gamemenu.setItem(4,itemmanager.team_2_wool);
+        gamemenu = instance.getServer().createInventory(null, InventoryType.HOPPER,miniMessage.deserialize("team selecter"));
+        gamemenu.setItem(1,itemmanager.team_1_wool);
+        gamemenu.setItem(3,itemmanager.team_2_wool);
     }
 }

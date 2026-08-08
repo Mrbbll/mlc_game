@@ -7,9 +7,11 @@ import com.mlc.mlcgames.sandgame.managers.StealTimer;
 import com.mlc.mlcgames.sandgame.managers.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.GameRules;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.mlc.mlcgames.Mlcgames.instance;
@@ -29,8 +31,11 @@ public class start {
         Sandgame.player_kill_count.clear();
         Sandgame.team_1_sand_count = 10;
         Sandgame.team_2_sand_count = 10;
+
+        Objects.requireNonNull(instance.getServer().getWorld("world")).setGameRule(GameRules.FALL_DAMAGE,false);
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_1)){
             initstate(player);
+            player.setRespawnLocation(Sandgame.team_1_loc,true);
             CompletableFuture<Boolean> completableFuture = player.teleportAsync(Sandgame.team_1_loc);
             completableFuture.thenAccept(aBoolean -> {
                 if(aBoolean){
@@ -40,6 +45,7 @@ public class start {
         }
         for(Player player: Teammanager.getteamplayer(Teammanager.sandgame_team_2)){
             initstate(player);
+            player.setRespawnLocation(Sandgame.team_2_loc,true);
             CompletableFuture<Boolean> completableFuture = player.teleportAsync(Sandgame.team_2_loc);
             completableFuture.thenAccept(aBoolean -> {
                 if(aBoolean){
@@ -55,6 +61,7 @@ public class start {
         player.getInventory().clear();
         player.setFoodLevel(20);
         player.setHealth(20);
+
         player.clearActivePotionEffects();
         player.playSound(player, Sound.ENTITY_ENDER_DRAGON_GROWL,1.0f,0.2f);
         player.setGameMode(GameMode.ADVENTURE);

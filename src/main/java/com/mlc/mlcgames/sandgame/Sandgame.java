@@ -6,12 +6,10 @@ import com.mlc.mlcgames.sandgame.managers.StealTimer;
 import com.mlc.mlcgames.sandgame.managers.Timer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Sandgame {
     public static boolean isstart;
@@ -28,7 +26,10 @@ public class Sandgame {
     public static Location item_spawn_loc_2;
     public static Location team_1_sand_loc;
     public static Location team_2_sand_loc;
-
+    public static Location money_spawn_loc_1;
+    public static Location money_spawn_loc_2;
+    public static Location money_spawn_loc_3;
+    public static Location money_spawn_loc_4;
 
     public static Map<Player,Integer> player_kill_count = new HashMap<>();
     public static Map<Player,Integer> player_money = new HashMap<>();
@@ -46,6 +47,8 @@ public class Sandgame {
     public static Component team_2_sand_steal_msg;
     public static Component team_1_sand_bring_msg;
     public static Component team_2_sand_bring_msg;
+
+    public static List<Block> player_placed_blocks = new ArrayList<>();
 
     public static Sand_Game_Listener sandGameListener = new Sand_Game_Listener();
 

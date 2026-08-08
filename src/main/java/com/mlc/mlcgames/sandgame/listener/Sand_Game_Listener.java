@@ -16,6 +16,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -74,6 +75,9 @@ public class Sand_Game_Listener implements Listener {
             @Override
             public void run() {
                 if(!Sandgame.isstart || !player.isOnline()){
+                    if(player.isOnline()){
+                        player.teleportAsync(Sandgame.ready_loc);
+                    }
                     this.cancel();
                     return;
                 }
@@ -135,11 +139,11 @@ public class Sand_Game_Listener implements Listener {
             if(clickeditem == null){
                 return;
             }
-            Integer price = shopmenuitem.prices.get(clickeditem.getType());
+            Integer price = shopmenuitem.prices.get(clickeditem);
             if(price == null){
                 return;
             }
-            ItemStack sellItem = shopmenuitem.sellables.get(clickeditem.getType());
+            ItemStack sellItem = shopmenuitem.sellables.get(clickeditem);
             if(sellItem == null){
                 return;
             }
@@ -158,6 +162,22 @@ public class Sand_Game_Listener implements Listener {
             player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,2.0f);
         }
     }
+    @EventHandler
+    public void onplayer_place_block(BlockPlaceEvent event){
+        if(!Sandgame.isstart){
+            return;
+        }
+        Player player = event.getPlayer();
+        if(!Sandgame.isSandgamePlayer(player)){
+            return;
+        }
+        Block block = event.getBlockPlaced();
+        if(block.getType().equals(Material.COBWEB)){
+            Sandgame.player_placed_blocks.add(block);
+        }
+    }
+
+
 
     @EventHandler
     public void onplayeropenshop(InventoryOpenEvent event){
@@ -185,9 +205,9 @@ public class Sand_Game_Listener implements Listener {
             if(Sandgame.isSandgamePlayer(player)){
                 ItemStack item = event.getItem().getItemStack();
                 if(item.getType().equals(Material.EMERALD)){
-                    event.setCancelled(true);
                     int amount = item.getAmount();
-                    item.setAmount(0);
+                    event.getItem().remove();
+                    event.setCancelled(true);
                     player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP,1.0f,2.0f);
                     Sandgame.player_money.put(player,Sandgame.player_money.getOrDefault(player,0)+amount*50);
                 }

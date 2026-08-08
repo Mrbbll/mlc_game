@@ -4,6 +4,7 @@ import com.mlc.mlcgames.Teammanager;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.sandgame.gamephase.end;
 import com.mlc.mlcgames.sandgame.items.itemmanager;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,13 +21,16 @@ public class Timer extends BukkitRunnable {
             Sandgame.countdown--;
             check_if_player_bring_sand_back();
             Bossbarmanager.updateBossBar();
-            //写回 Map，必须 replaceAll
-            Sandgame.player_money.replaceAll((player, money) -> money + 5);
-            for (Player player : Sandgame.getSandgamePlayer()) {
-                player.sendActionBar(miniMessage.deserialize("<green>金钱：<yellow><b>" + Sandgame.player_money.getOrDefault(player, 0)));
 
+            for (Player player : Sandgame.getSandgamePlayer()) {
+                if (player.getGameMode()== GameMode.ADVENTURE){
+                    player.sendActionBar(miniMessage.deserialize("<green>金钱：<yellow><b>" + Sandgame.player_money.getOrDefault(player, 0)));
+                }
+
+                //写回 Map，必须 replaceAll
+                Sandgame.player_money.put(player, Sandgame.player_money.getOrDefault(player, 0)+5);
             }
-            Sidebarmanager.updatesidebar();
+
             // 设备 tick（生成器产出、防御塔攻击）
             DeviceManager.tick();
             if(Sandgame.countdown<=0){
@@ -34,6 +38,10 @@ public class Timer extends BukkitRunnable {
                 itemmanager.spawnsand(Sandgame.sand_spawn_loc);
                 itemmanager.spawnitem(Sandgame.item_spawn_loc_1);
                 itemmanager.spawnitem(Sandgame.item_spawn_loc_2);
+                itemmanager.spawnmoney(Sandgame.money_spawn_loc_1);
+                itemmanager.spawnmoney(Sandgame.money_spawn_loc_2);
+                itemmanager.spawnmoney(Sandgame.money_spawn_loc_3);
+                itemmanager.spawnmoney(Sandgame.money_spawn_loc_4);
                 Sandgame.team_1_sand_count--;
                 Sandgame.team_2_sand_count--;
                 if(Sandgame.team_1_sand_count<=0&&Sandgame.team_2_sand_count<=0){

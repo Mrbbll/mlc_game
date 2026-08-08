@@ -45,7 +45,7 @@ public class Sand_Game_Teamselect_Listener implements Listener {
 
     @EventHandler
     public void onPlayerClickDropper(InventoryOpenEvent event){
-        if(!Sandgame.isstart){
+        if(Sandgame.isstart){
             return;
         }
         Player player = (Player) event.getPlayer();

@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
@@ -26,6 +27,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mlc.mlcgames.Mlcgames.instance;
 import static com.mlc.mlcgames.Mlcgames.miniMessage;
 
 public class DeviceManager {
@@ -62,7 +64,7 @@ public class DeviceManager {
             this.blockDisplay = blockDisplay;
             this.textDisplay = textDisplay;
             this.location = location;
-            this.spawnTimer = (type == DeviceType.SAND_GENERATOR) ? 30 : 3;
+            this.spawnTimer = (type == DeviceType.SAND_GENERATOR) ? 30 : 10;
         }
 
         public void despawn() {
@@ -75,6 +77,10 @@ public class DeviceManager {
     }
 
     public static final List<Device> devices = new ArrayList<>();
+    private static final float MAIN_SCALE = 0.9f;
+    private static final float UPGRADE_SCALE = 0.4f;
+    private static final float ROTATION_STEP = 1.5f; // 每 tick 旋转度数，1.5°/tick = 30°/秒
+    private static BukkitRunnable rotationTask;
 
     // 放置设备；空间不足返回 null
     public static Device placeDevice(DeviceType type, Player owner, Location loc) {
@@ -82,12 +88,12 @@ public class DeviceManager {
             return null;
         }
         World world = loc.getWorld();
-        // 主展示方块：离地面 2 格高处，绕 Y 轴水平旋转（插值动画）
+        // 主展示方块：离地面 2 格高处，绕 Y 轴水平旋转（每 tick 更新 + 1 tick 插值，客户端平滑过渡）
         BlockDisplay blockDisplay = world.spawn(loc.clone().add(0, 2, 0), BlockDisplay.class, e -> {
             e.setBlock(blockDataOf(type));
-            applyRotation(e, 0, 0.9f);
+            applyRotation(e, 0, MAIN_SCALE);
             e.setInterpolationDelay(0);
-            e.setInterpolationDuration(19);
+            e.setInterpolationDuration(1);
         });
         TextDisplay textDisplay = world.spawn(loc.clone().add(0, 3.2, 0), TextDisplay.class, e -> {
             e.text(nameOf(type, Teammanager.getPlayerTeam(owner)));
@@ -97,6 +103,7 @@ public class DeviceManager {
         });
         Device device = new Device(type, Teammanager.getPlayerTeam(owner), blockDisplay, textDisplay, loc);
         devices.add(device);
+        startRotationTask();
         return device;
     }
 
@@ -107,13 +114,6 @@ public class DeviceManager {
                 d.despawn();
                 devices.remove(d);
                 continue;
-            }
-            // 主展示方块 + 升级标记：绕 Y 轴水平旋转（插值动画）
-            d.rotation += 30;
-            applyRotation(d.blockDisplay, d.rotation, 0.9f);
-            d.upgrades.removeIf(u -> !u.isValid());
-            for (BlockDisplay u : d.upgrades) {
-                applyRotation(u, d.rotation, 0.4f);
             }
             switch (d.type) {
                 case COIN_GENERATOR -> {
@@ -187,27 +187,64 @@ public class DeviceManager {
         if (world == null) {
             return;
         }
-        Location a = from.clone().add(0, 0.5, 0);
+        Location a = from.clone().add(0, 1.5, 0);
         Location b = to.clone().add(0, 1, 0);
         Vector diff = b.clone().subtract(a).toVector();
         double distance = diff.length();
         if (distance <= 0) {
             return;
         }
-        double step = 0.5;
+        double step = 0.25;
         for (double t = 0; t <= distance; t += step) {
             Location point = a.clone().add(diff.clone().normalize().multiply(t));
             world.spawnParticle(Particle.FLAME, point, 1, 0, 0, 0, 0);
         }
     }
 
-    // 设置展示方块绕 Y 轴水平旋转（配合插值动画平滑过渡）
+    // 绕 Y 轴旋转，并用平移把旋转中心修正到方块中心
+    // BlockDisplay 的旋转轴默认在方块的一个角上，直接旋转会绕角偏心；平移量 = -R(θ)·(h, h, h)，h = scale*0.5
     private static void applyRotation(BlockDisplay display, float yaw, float scale) {
+        float rad = (float) Math.toRadians(yaw);
+        float h = scale * 0.5f;
+        float cos = (float) Math.cos(rad);
+        float sin = (float) Math.sin(rad);
         display.setTransformation(new Transformation(
-                new Vector3f(0, 0, 0),
-                new Quaternionf().rotationY((float) Math.toRadians(yaw)),
+                new Vector3f(-h * cos - h * sin, -h, h * sin - h * cos),
+                new Quaternionf().rotationY(rad),
                 new Vector3f(scale, scale, scale),
                 new Quaternionf()));
+    }
+
+    // 每 tick 平滑旋转：设备列表为空时自动停止
+    private static void startRotationTask() {
+        if (rotationTask != null && !rotationTask.isCancelled()) {
+            return;
+        }
+        rotationTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (devices.isEmpty()) {
+                    cancel();
+                    rotationTask = null;
+                    return;
+                }
+                for (Device d : devices) {
+                    if (!d.blockDisplay.isValid()) {
+                        continue;
+                    }
+                    d.rotation += ROTATION_STEP;
+                    if (d.rotation >= 360) {
+                        d.rotation -= 360;
+                    }
+                    applyRotation(d.blockDisplay, d.rotation, MAIN_SCALE);
+                    d.upgrades.removeIf(u -> !u.isValid());
+                    for (BlockDisplay u : d.upgrades) {
+                        applyRotation(u, d.rotation, UPGRADE_SCALE);
+                    }
+                }
+            }
+        };
+        rotationTask.runTaskTimer(instance, 0, 1);
     }
 
     // 升级特效：在主展示方块旁生成一个小的升级标记方块
@@ -218,9 +255,9 @@ public class DeviceManager {
         Location markerLoc = d.location.clone().add(offsetX, 2, offsetZ);
         BlockDisplay marker = d.location.getWorld().spawn(markerLoc, BlockDisplay.class, e -> {
             e.setBlock(material.createBlockData());
-            applyRotation(e, d.rotation, 0.4f);
+            applyRotation(e, d.rotation, UPGRADE_SCALE);
             e.setInterpolationDelay(0);
-            e.setInterpolationDuration(19);
+            e.setInterpolationDuration(1);
         });
         return marker;
     }

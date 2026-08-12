@@ -1,7 +1,9 @@
 package com.mlc.mlcgames;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.mlc.mlcgames.bank.utils.Bankgame;
 import com.mlc.mlcgames.utils.file.ConfigManager;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
@@ -43,10 +45,17 @@ public final class Mlcgames extends JavaPlugin {
 
 
     public static Bankgame bankgame = new Bankgame();
+    @Override
+    public void onLoad(){
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
+    }
 
 
     @Override
     public void onEnable() {
+
+        PacketEvents.getAPI().init();
 
         //minimessage初始化
         miniMessage = MiniMessage.miniMessage();
@@ -79,6 +88,7 @@ public final class Mlcgames extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        PacketEvents.getAPI().terminate();
         getLogger().info("\n\nmlcgame插件卸载成功\n\n");
     }
 

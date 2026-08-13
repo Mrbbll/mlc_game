@@ -1,5 +1,6 @@
 package com.mlc.mlcgames.sandgame.listener;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketListenerCommon;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -25,5 +26,9 @@ public class Packetlistener extends PacketListenerCommon implements PacketListen
             }
             return;
         }
+    }
+
+    public void onDisable(){
+        PacketEvents.getAPI().getEventManager().unregisterListener(this);
     }
 }

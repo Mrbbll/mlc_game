@@ -2,6 +2,7 @@ package com.mlc.mlcgames;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.mlc.mlcgames.bank.utils.Bankgame;
+import com.mlc.mlcgames.sandgame.listener.Packetlistener;
 import com.mlc.mlcgames.utils.file.ConfigManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.dialog.Dialog;
@@ -56,7 +57,7 @@ public final class Mlcgames extends JavaPlugin {
     public void onEnable() {
 
         PacketEvents.getAPI().init();
-
+        PacketEvents.getAPI().getEventManager().registerListener(new Packetlistener());
         //minimessage初始化
         miniMessage = MiniMessage.miniMessage();
         //配置文件初始化

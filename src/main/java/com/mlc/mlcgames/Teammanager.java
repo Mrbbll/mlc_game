@@ -31,6 +31,9 @@ public class Teammanager {
     public static Team sandgame_team_1;
     public static Team sandgame_team_2;
 
+    public static Team dungeongame_team;
+    public static Team dungeongame_prepareteam;
+
     public static Team team_1;
     public static Team team_2;
     public static Team team_3;
@@ -62,6 +65,9 @@ public class Teammanager {
         sandgame_prepareteam = createTeam("sandgame_prepareteam", NamedTextColor.YELLOW);
         sandgame_team_1 = createTeam("sandgame_team_1", NamedTextColor.RED);
         sandgame_team_2 = createTeam("sandgame_team_2", NamedTextColor.BLUE);
+
+        dungeongame_team = createTeam("dungeongame_team", NamedTextColor.GREEN);
+        dungeongame_prepareteam = createTeam("dungeongame_prepareteam", NamedTextColor.GRAY);
 
         team_1 = createTeam("AQUA", NamedTextColor.AQUA);
         team_1.displayName(Component.text("青队"));

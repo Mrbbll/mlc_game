@@ -10,6 +10,7 @@ import org.bukkit.structure.Structure;
  * 加载房间 = 用 Structure#place 把房间贴到目标世界任意坐标，可带随机旋转。
  */
 public class Room {
+    private final RoomType type;
     private final String name;
     private final World sourceWorld;
     private final int minX;
@@ -24,7 +25,8 @@ public class Room {
     private Structure structure;
     private final int id;
 
-    public Room(String name, World sourceWorld, Location corner1, Location corner2, int id) {
+    public Room(RoomType type, String name, World sourceWorld, Location corner1, Location corner2, int id) {
+        this.type = type;
         this.name = name;
         this.sourceWorld = sourceWorld;
         this.minX = Math.min(corner1.getBlockX(), corner2.getBlockX());

@@ -19,6 +19,7 @@ repositories {
     }
     maven { url = "https://repo.codemc.io/repository/maven-releases/" }
     maven { url = "https://repo.codemc.io/repository/maven-snapshots/" }
+    maven { url 'https://repo.momirealms.net/releases/' }
 }
 
 dependencies {
@@ -26,6 +27,9 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly 'me.clip:placeholderapi:2.11.7'
     implementation 'net.kyori:adventure-text-minimessage:4.13.0'
+    compileOnly 'net.momirealms:craft-engine-core:26.8.2' // 将 "{version}" 替换为插件稳定版本
+    compileOnly 'net.momirealms:craft-engine-bukkit:26.8.2' // 例如 0.0.60
+
 }
 
 

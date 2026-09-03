@@ -11,6 +11,14 @@ import com.mlc.mlcgames.bank.utils.Bankgameinit;
 import com.mlc.mlcgames.bank.items.Bankgameitemmanager;
 import com.mlc.mlcgames.bank.menus.bankmenus;
 import com.mlc.mlcgames.commands.reload;
+import com.mlc.mlcgames.combat.command.MlcCommand;
+import com.mlc.mlcgames.combat.CombatService;
+import com.mlc.mlcgames.combat.TypeEffectivenessService;
+import com.mlc.mlcgames.combat.config.CombatConfig;
+import com.mlc.mlcgames.combat.config.WeaponConfig;
+import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineHook;
+import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineAttributeBridge;
+import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineItemResolver;
 import com.mlc.mlcgames.dungeongame.commands.DungeonGame;
 import com.mlc.mlcgames.dungeongame.gamephase.dungeongameinit;
 import com.mlc.mlcgames.sandgame.commands.SandGame;
@@ -22,6 +30,10 @@ import com.mlc.mlcgames.zombieday.gamephase.Init;
 import com.mlc.mlcgames.zombieday.listener.EntityListener;
 import com.mlc.mlcgames.zombieday.listener.Gunuse;
 import com.mlc.mlcgames.zombieday.listener.throwitem;
+import com.mlc.mlcgames.combat.entity.ArmorTypeService;
+import com.mlc.mlcgames.combat.listener.CombatListener;
+import com.mlc.mlcgames.combat.listener.ProjectileCombatListener;
+import com.mlc.mlcgames.combat.weapon.AttackTypeService;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;
@@ -32,6 +44,15 @@ import static com.mlc.mlcgames.Mlcgames.instance;
 public class Task {
     public static void runtask() throws IOException {
 
+        CombatConfig combatConfig = new CombatConfig(instance);
+        WeaponConfig weaponConfig = new WeaponConfig(instance);
+        ArmorTypeService armorTypeService = new ArmorTypeService(instance, combatConfig.defaultArmorType());
+        CraftEngineHook craftEngineHook = new CraftEngineHook();
+        AttackTypeService attackTypeService = new AttackTypeService(instance, weaponConfig, combatConfig.defaultAttackType(),
+                new CraftEngineItemResolver(instance, craftEngineHook));
+        CombatService combatService = new CombatService(combatConfig, armorTypeService, attackTypeService,
+                new TypeEffectivenessService(combatConfig), new CraftEngineAttributeBridge(instance, craftEngineHook));
+
         //事件注册
         Bukkit.getPluginManager().registerEvents(new Bankgamelistener() ,instance);
         Bukkit.getPluginManager().registerEvents(new gamelistener(),instance);
@@ -40,6 +61,8 @@ public class Task {
         Bukkit.getPluginManager().registerEvents(new EntityListener(),instance);
         Bukkit.getPluginManager().registerEvents(new GunHitListener(),instance);
         Bukkit.getPluginManager().registerEvents(new Sand_Game_Teamselect_Listener(),instance);
+        Bukkit.getPluginManager().registerEvents(new CombatListener(combatService), instance);
+        Bukkit.getPluginManager().registerEvents(new ProjectileCombatListener(combatService), instance);
         //命令注册
         Objects.requireNonNull(instance.getCommand("reload")).setExecutor(new reload());
         Objects.requireNonNull(instance.getCommand("bankgameprepare")).setExecutor(new bankgameprepare());
@@ -48,6 +71,9 @@ public class Task {
         Objects.requireNonNull(instance.getCommand("zombieday")).setExecutor(new Zombieday());
         Objects.requireNonNull(instance.getCommand("sandgame")).setExecutor(new SandGame());
         Objects.requireNonNull(instance.getCommand("dungeongame")).setExecutor(new DungeonGame());
+        MlcCommand mlcCommand = new MlcCommand(armorTypeService, attackTypeService, combatService);
+        Objects.requireNonNull(instance.getCommand("mlc")).setExecutor(mlcCommand);
+        Objects.requireNonNull(instance.getCommand("mlc")).setTabCompleter(mlcCommand);
 
         Objects.requireNonNull(instance.getCommand("bankgameprepare")).setTabCompleter(new bankgameprepare());
         Objects.requireNonNull(instance.getCommand("zombieday")).setTabCompleter(new Zombieday());

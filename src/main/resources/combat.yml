@@ -1,0 +1,31 @@
+# Blank defaults preserve ordinary Minecraft combat unless both sides have BA attributes.
+enabled: true
+defaults:
+  attack-type: ''
+  armor-type: ''
+multipliers:
+  WEAK: 2.0
+  EFFECTIVE: 1.5
+  NORMAL: 1.0
+  RESIST: 0.5
+affinity:
+  EXPLOSIVE:
+    LIGHT: WEAK
+    HEAVY: NORMAL
+    SPECIAL: RESIST
+    ELASTIC: RESIST
+  PIERCING:
+    LIGHT: RESIST
+    HEAVY: WEAK
+    SPECIAL: NORMAL
+    ELASTIC: NORMAL
+  MYSTIC:
+    LIGHT: NORMAL
+    HEAVY: RESIST
+    SPECIAL: WEAK
+    ELASTIC: NORMAL
+  SONIC:
+    LIGHT: NORMAL
+    HEAVY: RESIST
+    SPECIAL: EFFECTIVE
+    ELASTIC: WEAK

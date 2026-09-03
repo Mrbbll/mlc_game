@@ -1,0 +1,9 @@
+# Map CraftEngine custom item IDs directly to attack types. Example:
+# weapons:
+#   ba:shiroko_rifle:
+#     attack-type: EXPLOSIVE
+#
+# CraftEngine IDs are resolved through CraftEngineItems.getCustomItemId(ItemStack).
+# Direct mlcgames:attack_type data still takes precedence and is useful for testing.
+# Non-CraftEngine items may use the fallback mlcgames:item_id PDC value.
+weapons: {}

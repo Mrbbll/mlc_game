@@ -44,10 +44,9 @@ public class RoomSpawner {
         roomList.add(Roommanager.getRoomEndroomlist(floortype));
 
         generateStep_1();
-
-
-
     }
+
+
     //generate normal room first
     public static void generateStep_1(){
         int start = 1;
@@ -69,7 +68,7 @@ public class RoomSpawner {
         generateStep_2();
     }
 
-    //put start room in corner near the first room
+    //put start room in a corner near the first room
     public static void generateStep_2(){
         Locpoint locpoint = roompointMap.get(roomList.get(1));
         Locpoint near_free = getnearfree(locpoint);
@@ -80,7 +79,7 @@ public class RoomSpawner {
         generateStep_3();
     }
 
-    //put special room near radom normalroom
+    //put a special room near radom normalroom
     private static void generateStep_3() {
         for(int i = 0;i <specialroomcount;){
 
@@ -144,7 +143,7 @@ public class RoomSpawner {
         int trycount = 0;
 
         Locpoint locpoint = roompointMap.get(roomList.get(i));
-        //find next close space in roomMap in random direction,but not at x=0,y=0, if no space,find next space in next direction
+        //find next close space in roomMap in random direction, but not at x=0,y=0, if no space,find next space in next direction
         int num = new Random().nextInt(0,4);
 
         int x = locpoint.x;

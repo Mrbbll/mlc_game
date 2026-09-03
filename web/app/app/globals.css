@@ -1,0 +1,372 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(0.958 0.014 96);
+  --foreground: oklch(0.255 0.026 74);
+  --card: oklch(0.987 0.009 96);
+  --card-foreground: oklch(0.255 0.026 74);
+  --popover: oklch(0.987 0.009 96);
+  --popover-foreground: oklch(0.255 0.026 74);
+  --primary: oklch(0.472 0.112 145);
+  --primary-foreground: oklch(0.985 0.012 108);
+  --secondary: oklch(0.902 0.028 91);
+  --secondary-foreground: oklch(0.29 0.035 75);
+  --muted: oklch(0.922 0.019 92);
+  --muted-foreground: oklch(0.49 0.031 74);
+  --accent: oklch(0.874 0.049 145);
+  --accent-foreground: oklch(0.31 0.073 145);
+  --destructive: oklch(0.59 0.19 28);
+  --border: oklch(0.817 0.027 86);
+  --input: oklch(0.817 0.027 86);
+  --ring: oklch(0.57 0.105 145);
+  --chart-1: oklch(0.69 0.15 145);
+  --chart-2: oklch(0.64 0.11 230);
+  --chart-3: oklch(0.65 0.16 310);
+  --chart-4: oklch(0.76 0.15 85);
+  --chart-5: oklch(0.59 0.19 28);
+  --radius: 0.72rem;
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+  --map-surface: oklch(0.275 0.027 72);
+  --map-grid: oklch(0.5 0.032 76 / 38%);
+  --map-label: oklch(0.205 0.025 72);
+  --room-start: oklch(0.69 0.15 145);
+  --room-normal: oklch(0.67 0.105 230);
+  --room-exit: oklch(0.79 0.145 86);
+  --room-special: oklch(0.62 0.165 310);
+  --room-boss: oklch(0.56 0.2 28);
+  --corridor: oklch(0.73 0.037 81);
+}
+
+.dark {
+  --background: oklch(0.205 0.018 70);
+  --foreground: oklch(0.94 0.018 91);
+  --card: oklch(0.245 0.022 72);
+  --card-foreground: oklch(0.94 0.018 91);
+  --popover: oklch(0.245 0.022 72);
+  --popover-foreground: oklch(0.94 0.018 91);
+  --primary: oklch(0.67 0.13 145);
+  --primary-foreground: oklch(0.18 0.025 145);
+  --secondary: oklch(0.31 0.025 75);
+  --secondary-foreground: oklch(0.92 0.018 91);
+  --muted: oklch(0.3 0.022 74);
+  --muted-foreground: oklch(0.72 0.025 88);
+  --accent: oklch(0.36 0.055 145);
+  --accent-foreground: oklch(0.91 0.035 145);
+  --destructive: oklch(0.67 0.18 26);
+  --border: oklch(0.42 0.025 76);
+  --input: oklch(0.39 0.025 76);
+  --ring: oklch(0.67 0.13 145);
+  --map-surface: oklch(0.16 0.016 70);
+  --map-grid: oklch(0.42 0.025 76 / 45%);
+  --map-label: oklch(0.17 0.02 72);
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    min-width: 320px;
+    background-image:
+      radial-gradient(circle at 10% 0%, color-mix(in oklab, var(--accent) 46%, transparent), transparent 27rem),
+      linear-gradient(135deg, transparent 0 48%, color-mix(in oklab, var(--border) 24%, transparent) 48% 52%, transparent 52%);
+    background-size: auto, 32px 32px;
+  }
+}
+
+.control-panel,
+.map-panel,
+.algorithm-panel,
+.rule-card {
+  background: color-mix(in oklab, var(--card) 94%, transparent);
+  box-shadow: 0 16px 45px color-mix(in oklab, var(--foreground) 8%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.eyebrow {
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.target-summary {
+  background: color-mix(in oklab, var(--secondary) 72%, transparent);
+}
+
+.step-chip {
+  border-radius: 999px;
+  background: var(--secondary);
+  padding: 0.4rem 0.75rem;
+  color: var(--secondary-foreground);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.step-chip.is-valid {
+  background: color-mix(in oklab, var(--room-start) 23%, var(--secondary));
+}
+
+.map-viewport {
+  display: flex;
+  min-height: 480px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--map-surface);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--corridor) 14%, transparent);
+}
+
+.dungeon-map {
+  display: block;
+  width: 100%;
+  height: clamp(460px, 58vh, 650px);
+}
+
+.grid-line {
+  stroke: var(--map-grid);
+  stroke-width: 1;
+}
+
+.corridor-cell {
+  fill: var(--corridor);
+  stroke: color-mix(in oklab, var(--map-label) 38%, transparent);
+  stroke-width: 1.5;
+}
+
+.room {
+  stroke: color-mix(in oklab, var(--map-label) 55%, transparent);
+  stroke-width: 2;
+  transition: filter 160ms ease, stroke-width 160ms ease;
+}
+
+.room.is-highlighted {
+  stroke: var(--primary-foreground);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 7px color-mix(in oklab, var(--primary-foreground) 50%, transparent));
+}
+
+.room-start { fill: var(--room-start); }
+.room-normal { fill: var(--room-normal); }
+.room-exit { fill: var(--room-exit); }
+.room-special { fill: var(--room-special); }
+.room-boss { fill: var(--room-boss); }
+
+.room-seam {
+  stroke: color-mix(in oklab, var(--map-label) 32%, transparent);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.room-label,
+.room-size-label {
+  fill: var(--map-label);
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.room-label { font-size: 11px; }
+.room-size-label { font-size: 9px; opacity: 0.72; }
+.room-label-light { fill: oklch(0.97 0.01 90); }
+
+.map-piece-enter {
+  animation: piece-enter 220ms ease-out both;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes piece-enter {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.9rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--foreground) 22%, transparent);
+}
+
+.legend-start { background: var(--room-start); }
+.legend-normal { background: var(--room-normal); }
+.legend-special { background: var(--room-special); }
+.legend-exit { background: var(--room-exit); }
+.legend-boss { background: var(--room-boss); }
+.legend-corridor { background: var(--corridor); }
+
+.current-action {
+  min-height: 116px;
+  border-left: 3px solid var(--primary);
+  padding: 0.75rem 0 0.75rem 0.9rem;
+}
+
+.current-action.is-backtrack {
+  border-left-color: var(--destructive);
+}
+
+.stage-row {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  align-items: center;
+  gap: 0.65rem;
+  border-radius: 10px;
+  padding: 0.55rem;
+  color: var(--muted-foreground);
+}
+
+.stage-row[data-state='active'] {
+  background: color-mix(in oklab, var(--accent) 70%, transparent);
+  color: var(--accent-foreground);
+}
+
+.stage-row[data-state='complete'] {
+  color: var(--foreground);
+}
+
+.stage-icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--secondary);
+}
+
+.stage-icon svg { width: 1rem; height: 1rem; }
+.stage-row strong { display: block; font-size: 0.82rem; font-weight: 650; }
+.stage-row small { display: block; margin-top: 0.1rem; font-size: 0.7rem; }
+
+.result-stat {
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--secondary) 64%, transparent);
+  padding: 0.65rem;
+}
+
+.result-stat dt {
+  color: var(--muted-foreground);
+  font-size: 0.68rem;
+}
+
+.result-stat dd {
+  margin-top: 0.1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-stat .status-text { font-size: 0.88rem; line-height: 1.8rem; }
+
+.rule-card {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  column-gap: 0.65rem;
+}
+
+.rule-card > span {
+  grid-row: 1 / span 2;
+  color: var(--primary);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.rule-card h2 { font-size: 0.88rem; font-weight: 700; }
+.rule-card p { margin-top: 0.2rem; color: var(--muted-foreground); font-size: 0.78rem; line-height: 1.45; }
+
+@media (max-width: 640px) {
+  .map-viewport { min-height: 390px; }
+  .dungeon-map { height: 390px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-piece-enter { animation: none; }
+}

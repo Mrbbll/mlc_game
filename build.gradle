@@ -19,7 +19,11 @@ repositories {
     }
     maven { url = "https://repo.codemc.io/repository/maven-releases/" }
     maven { url = "https://repo.codemc.io/repository/maven-snapshots/" }
+    //ce
     maven { url 'https://repo.momirealms.net/releases/' }
+    //fasw
+    maven { url = "https://repo.papermc.io/repository/maven-public/" }
+    maven { url = "https://maven.enginehub.org/repo/" }
 }
 
 dependencies {
@@ -27,9 +31,15 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly 'me.clip:placeholderapi:2.11.7'
     implementation 'net.kyori:adventure-text-minimessage:4.13.0'
+    //ce
     compileOnly 'net.momirealms:craft-engine-core:26.8.2' // 将 "{version}" 替换为插件稳定版本
     compileOnly 'net.momirealms:craft-engine-bukkit:26.8.2' // 例如 0.0.60
-
+    //fasw
+    compileOnly(platform("com.intellectualsites.bom:bom-newest:1.56"))
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") {
+        transitive = false
+    }
 }
 
 

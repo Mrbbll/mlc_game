@@ -1,0 +1,30 @@
+# 伤害浮字配置：由 MLCGame 在相性倍率结算完成后显示，和 CraftEngine 的伤害指示器互不依赖。
+# 若不希望出现两套伤害数字，请在 CraftEngine/config.yml 中将 damage-indicator.enable 设为 false。
+enabled: true
+
+# 只有距离受击实体不超过此距离的玩家能看到浮字。
+view-distance: 32.0
+
+# 浮字生成在目标头顶附近；horizontal-spread 用于让连续命中时文字稍微错开。
+position:
+  height-offset: 0.55
+  horizontal-spread: 0.35
+
+# MiniMessage 文本；<damage> 会替换为本次事件最终实际造成的伤害。
+# 当 CraftEngine 的命中检定将本次伤害归零时，显示 miss-format 而不会显示相性与数值。
+miss-format: '<white><bold>MISS</bold>'
+formats:
+  WEAK: '<red><bold>WEAK!</bold> <white><damage></white>'
+  EFFECTIVE: '<gold><bold>EFFECTIVE!</bold> <white><damage></white>'
+  NORMAL: '<gray>NORMAL <white><damage></white>'
+  RESIST: '<blue><bold>RESIST</bold> <white><damage></white>'
+
+# 缩放动画的每个阶段均以 tick 为单位；20 tick = 1 秒。
+animation:
+  spawn-scale: 0.10
+  pop-scale: 1.25
+  settle-scale: 1.00
+  pop-delay: 1
+  settle-delay: 5
+  shrink-delay: 16
+  remove-delay: 19

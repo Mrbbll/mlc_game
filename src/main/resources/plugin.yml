@@ -33,3 +33,4 @@ softdepend:
   - ViaRewind
   - Geyser-Spigot
   - CraftEngine
+  - FastAsyncWorldEdit

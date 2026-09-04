@@ -1,13 +1,13 @@
 /**
  * 文件说明：战斗模块的主伤害管线。
  * 它解析攻击来源、武器类型和目标防御类型，计算相性倍率后修改 Bukkit 伤害事件；
- * CraftEngine 只负责数值属性，本类不重复实现 CraftEngine 的伤害公式。
+ * CraftEngine 可先处理命中、暴击和增伤等数值公式；本类随后只叠加攻击类型 × 防御类型相性倍率。
  */
 package com.mlc.mlcgames.combat;
 
 import com.mlc.mlcgames.combat.config.CombatConfig;
+import com.mlc.mlcgames.combat.damageindicator.DamageIndicatorService;
 import com.mlc.mlcgames.combat.entity.ArmorTypeService;
-import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineAttributeBridge;
 import com.mlc.mlcgames.combat.weapon.AttackTypeService;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -26,16 +26,16 @@ public final class CombatService {
     private final ArmorTypeService armorTypeService;
     private final AttackTypeService attackTypeService;
     private final TypeEffectivenessService effectivenessService;
-    private final CraftEngineAttributeBridge craftEngineAttributeBridge;
+    private final DamageIndicatorService damageIndicatorService;
     private final Set<UUID> debugPlayers = new HashSet<>();
 
     public CombatService(CombatConfig config, ArmorTypeService armorTypeService, AttackTypeService attackTypeService,
-                         TypeEffectivenessService effectivenessService, CraftEngineAttributeBridge craftEngineAttributeBridge) {
+                         TypeEffectivenessService effectivenessService, DamageIndicatorService damageIndicatorService) {
         this.config = config;
         this.armorTypeService = armorTypeService;
         this.attackTypeService = attackTypeService;
         this.effectivenessService = effectivenessService;
-        this.craftEngineAttributeBridge = craftEngineAttributeBridge;
+        this.damageIndicatorService = damageIndicatorService;
     }
 
     public void handle(EntityDamageByEntityEvent event) {
@@ -46,6 +46,7 @@ public final class CombatService {
         double originalDamage = event.getDamage();
         double multiplier = effectivenessService.multiplier(affinity);
         event.setDamage(originalDamage * multiplier);
+        damageIndicatorService.displayAfterDamage(event, victim, affinity);
         sendDebug(event.getDamager(), victim, attackType, armorType, affinity, multiplier, originalDamage);
     }
 
@@ -82,19 +83,9 @@ public final class CombatService {
                            DamageAffinity affinity, double multiplier, double originalDamage) {
         Entity attacker = damager instanceof Projectile projectile && projectile.getShooter() instanceof Entity shooter ? shooter : damager;
         if (attacker instanceof Player player && debugPlayers.contains(player.getUniqueId())) {
-            String ceValues = "";
-            if (attacker instanceof LivingEntity livingAttacker) {
-                var attack = craftEngineAttributeBridge.getEntityValue(livingAttacker, CombatAttribute.ATTACK);
-                var defense = craftEngineAttributeBridge.getEntityValue(victim, CombatAttribute.DEFENSE);
-                if (attack.isPresent() || defense.isPresent()) {
-                    ceValues = ", ceAttack=" + (attack.isPresent() ? attack.getAsDouble() : "unset")
-                            + ", ceDefense=" + (defense.isPresent() ? defense.getAsDouble() : "unset");
-                }
-            }
             player.sendMessage("[MLC Combat] attacker=" + attacker.getName() + ", victim=" + victim.getName()
                     + ", attackType=" + attackType + ", armorType=" + armorType + ", affinity=" + affinity
-                    + ", multiplier=" + multiplier + ", original=" + originalDamage + ", final=" + (originalDamage * multiplier)
-                    + ceValues);
+                    + ", multiplier=" + multiplier + ", original=" + originalDamage + ", final=" + (originalDamage * multiplier));
         }
     }
 }

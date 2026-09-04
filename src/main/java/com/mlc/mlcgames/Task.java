@@ -15,8 +15,8 @@ import com.mlc.mlcgames.combat.command.MlcCommand;
 import com.mlc.mlcgames.combat.CombatService;
 import com.mlc.mlcgames.combat.TypeEffectivenessService;
 import com.mlc.mlcgames.combat.config.CombatConfig;
-import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineHook;
-import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineAttributeBridge;
+import com.mlc.mlcgames.combat.damageindicator.DamageIndicatorConfig;
+import com.mlc.mlcgames.combat.damageindicator.DamageIndicatorService;
 import com.mlc.mlcgames.dungeongame.commands.DungeonGame;
 import com.mlc.mlcgames.dungeongame.gamephase.dungeongameinit;
 import com.mlc.mlcgames.sandgame.commands.SandGame;
@@ -43,11 +43,11 @@ public class Task {
     public static void runtask() throws IOException {
 
         CombatConfig combatConfig = new CombatConfig(instance);
+        DamageIndicatorConfig damageIndicatorConfig = new DamageIndicatorConfig(instance);
         ArmorTypeService armorTypeService = new ArmorTypeService(instance);
-        CraftEngineHook craftEngineHook = new CraftEngineHook();
         AttackTypeService attackTypeService = new AttackTypeService(instance, combatConfig.defaultAttackType());
         CombatService combatService = new CombatService(combatConfig, armorTypeService, attackTypeService,
-                new TypeEffectivenessService(combatConfig), new CraftEngineAttributeBridge(instance, craftEngineHook));
+                new TypeEffectivenessService(combatConfig), new DamageIndicatorService(instance, damageIndicatorConfig));
 
         //事件注册
         Bukkit.getPluginManager().registerEvents(new Bankgamelistener() ,instance);

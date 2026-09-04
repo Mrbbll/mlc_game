@@ -1,3 +1,7 @@
+/**
+ * 文件说明：投射物发射监听器。
+ * 发射时把当前武器的攻击类型写入投射物 PDC，保证玩家之后切换武器也不会改变该投射物属性。
+ */
 package com.mlc.mlcgames.combat.listener;
 
 import com.mlc.mlcgames.combat.CombatService;

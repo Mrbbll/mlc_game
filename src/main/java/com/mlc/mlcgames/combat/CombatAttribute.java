@@ -1,3 +1,7 @@
+/**
+ * 文件说明：集中声明 MLCGame 将使用的 CraftEngine 数值属性 ID。
+ * 攻击力、防御力、暴击和穿透等连续数值在此统一命名；攻击/防御类型仍由 PDC 标签管理。
+ */
 package com.mlc.mlcgames.combat;
 
 /**

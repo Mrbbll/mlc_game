@@ -1,3 +1,7 @@
+/**
+ * 文件说明：CraftEngine 实验性数值属性 API 的唯一访问边界。
+ * 目前用于读取和调试攻击/防御等数值；未来伤害公式接入也应只经由此类，避免 CE API 散落在核心逻辑中。
+ */
 package com.mlc.mlcgames.combat.integration.craftengine;
 
 import com.mlc.mlcgames.combat.CombatAttribute;

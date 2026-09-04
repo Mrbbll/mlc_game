@@ -1,8 +1,9 @@
-# Blank defaults preserve ordinary Minecraft combat unless both sides have BA attributes.
+# 战斗相性主配置：控制系统开关、默认攻击/防御类型、相性结果与倍率。
+# 无法读取攻击类型时使用 NONE；未佩戴头盔或头盔未标注防御类型时也使用 NONE。
+# NONE 与任何类型的相性均为 NORMAL，因此普通原版战斗不会受到额外倍率影响。
 enabled: true
 defaults:
-  attack-type: ''
-  armor-type: ''
+  attack-type: NONE
 multipliers:
   WEAK: 2.0
   EFFECTIVE: 1.5

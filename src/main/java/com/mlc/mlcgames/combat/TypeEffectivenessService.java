@@ -1,3 +1,7 @@
+/**
+ * 文件说明：维护攻击类型 × 防御类型的集中相性矩阵，并从 combat.yml 读取覆盖值和倍率。
+ * 监听器不直接编写克制判断，避免相性规则分散在多个事件处理器中。
+ */
 package com.mlc.mlcgames.combat;
 
 import com.mlc.mlcgames.combat.config.CombatConfig;
@@ -31,6 +35,9 @@ public final class TypeEffectivenessService {
     }
 
     public DamageAffinity resolve(AttackType attackType, ArmorType armorType) {
+        if (attackType == AttackType.NONE || armorType == ArmorType.NONE) {
+            return DamageAffinity.NORMAL;
+        }
         return config.configuredAffinity(attackType, armorType).orElse(defaults.get(attackType).get(armorType));
     }
     public double multiplier(DamageAffinity affinity) { return config.multiplier(affinity); }

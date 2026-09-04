@@ -1,3 +1,7 @@
+/**
+ * 文件说明：提供 /mlc 测试与管理命令。
+ * 可为准星目标设置/清除防御类型、为手持物品设置攻击类型，并切换战斗调试输出。
+ */
 package com.mlc.mlcgames.combat.command;
 
 import com.mlc.mlcgames.combat.ArmorType;
@@ -49,12 +53,18 @@ public final class MlcCommand implements CommandExecutor, TabCompleter {
         if (target == null) { player.sendMessage("Look at a living entity within 10 blocks first."); return true; }
         if (args.length < 2) { player.sendMessage("Usage: /mlc armor <get|set|clear>"); return true; }
         switch (args[1].toLowerCase(Locale.ROOT)) {
-            case "get" -> player.sendMessage("Armor type: " + armorTypeService.getArmorType(target).map(Enum::name).orElse("none"));
+            case "get" -> player.sendMessage("Armor type: " + armorTypeService.getArmorType(target).name());
             case "set" -> {
-                if (args.length < 3) { player.sendMessage("Usage: /mlc armor set <light|heavy|special|elastic>"); return true; }
-                ArmorType.parse(args[2]).ifPresentOrElse(type -> { armorTypeService.setArmorType(target, type); player.sendMessage("Set " + target.getName() + " armor type to " + type + "."); }, () -> player.sendMessage("Unknown armor type."));
+                if (args.length < 3) { player.sendMessage("Usage: /mlc armor set <none|light|heavy|special|elastic>"); return true; }
+                ArmorType.parse(args[2]).ifPresentOrElse(type -> {
+                    if (armorTypeService.setArmorType(target, type)) player.sendMessage("Set " + target.getName() + " helmet armor type to " + type + ".");
+                    else player.sendMessage("The target must wear a helmet; no helmet always means NONE.");
+                }, () -> player.sendMessage("Unknown armor type."));
             }
-            case "clear" -> { armorTypeService.clearArmorType(target); player.sendMessage("Cleared " + target.getName() + " armor type."); }
+            case "clear" -> {
+                if (armorTypeService.clearArmorType(target)) player.sendMessage("Cleared " + target.getName() + " helmet armor type.");
+                else player.sendMessage("The target has no helmet and is already NONE.");
+            }
             default -> player.sendMessage("Usage: /mlc armor <get|set|clear>");
         }
         return true;
@@ -65,9 +75,9 @@ public final class MlcCommand implements CommandExecutor, TabCompleter {
         if (item.getType().isAir()) { player.sendMessage("Hold an item first."); return true; }
         if (args.length < 2) { player.sendMessage("Usage: /mlc attacktype <get|set|clear>"); return true; }
         switch (args[1].toLowerCase(Locale.ROOT)) {
-            case "get" -> player.sendMessage("Attack type: " + attackTypeService.getAttackType(item).map(Enum::name).orElse("none"));
+            case "get" -> player.sendMessage("Attack type: " + attackTypeService.getAttackType(item).name());
             case "set" -> {
-                if (args.length < 3) { player.sendMessage("Usage: /mlc attacktype set <explosive|piercing|mystic|sonic>"); return true; }
+                if (args.length < 3) { player.sendMessage("Usage: /mlc attacktype set <none|explosive|piercing|mystic|sonic>"); return true; }
                 AttackType.parse(args[2]).ifPresentOrElse(type -> { attackTypeService.setAttackType(item, type); player.sendMessage("Set held item attack type to " + type + "."); }, () -> player.sendMessage("Unknown attack type."));
             }
             case "clear" -> { attackTypeService.clearAttackType(item); player.sendMessage("Cleared held item attack type."); }
@@ -92,8 +102,8 @@ public final class MlcCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) return List.of("armor", "attacktype", "combat");
         if (args.length == 2 && (args[0].equalsIgnoreCase("armor") || args[0].equalsIgnoreCase("attacktype"))) return List.of("get", "set", "clear");
         if (args.length == 2 && args[0].equalsIgnoreCase("combat")) return List.of("debug");
-        if (args.length == 3 && args[0].equalsIgnoreCase("armor") && args[1].equalsIgnoreCase("set")) return List.of("light", "heavy", "special", "elastic");
-        if (args.length == 3 && args[0].equalsIgnoreCase("attacktype") && args[1].equalsIgnoreCase("set")) return List.of("explosive", "piercing", "mystic", "sonic");
+        if (args.length == 3 && args[0].equalsIgnoreCase("armor") && args[1].equalsIgnoreCase("set")) return List.of("none", "light", "heavy", "special", "elastic");
+        if (args.length == 3 && args[0].equalsIgnoreCase("attacktype") && args[1].equalsIgnoreCase("set")) return List.of("none", "explosive", "piercing", "mystic", "sonic");
         return List.of();
     }
 }

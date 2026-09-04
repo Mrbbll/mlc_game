@@ -1,3 +1,7 @@
+/**
+ * 文件说明：Bukkit 伤害事件的薄适配器。
+ * 它只在较高优先级将事件交给 CombatService，具体类型解析和倍率计算都不放在监听器中。
+ */
 package com.mlc.mlcgames.combat.listener;
 
 import com.mlc.mlcgames.combat.CombatService;

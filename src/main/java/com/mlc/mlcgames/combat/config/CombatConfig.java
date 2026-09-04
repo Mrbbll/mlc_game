@@ -1,3 +1,7 @@
+/**
+ * 文件说明：读取 combat.yml 中的系统开关、默认类型、相性矩阵和倍率配置。
+ * 它将 Bukkit 的 YAML 访问集中封装，避免核心战斗服务到处依赖配置路径。
+ */
 package com.mlc.mlcgames.combat.config;
 
 import com.mlc.mlcgames.combat.ArmorType;
@@ -24,8 +28,7 @@ public final class CombatConfig {
     }
 
     public boolean enabled() { return configuration.getBoolean("enabled", true); }
-    public Optional<AttackType> defaultAttackType() { return AttackType.parse(configuration.getString("defaults.attack-type")); }
-    public Optional<ArmorType> defaultArmorType() { return ArmorType.parse(configuration.getString("defaults.armor-type")); }
+    public AttackType defaultAttackType() { return AttackType.parse(configuration.getString("defaults.attack-type")).orElse(AttackType.NONE); }
     public double multiplier(DamageAffinity affinity) { return configuration.getDouble("multipliers." + affinity.name(), affinity.multiplier()); }
 
     public Optional<DamageAffinity> configuredAffinity(AttackType attackType, ArmorType armorType) {

@@ -15,10 +15,8 @@ import com.mlc.mlcgames.combat.command.MlcCommand;
 import com.mlc.mlcgames.combat.CombatService;
 import com.mlc.mlcgames.combat.TypeEffectivenessService;
 import com.mlc.mlcgames.combat.config.CombatConfig;
-import com.mlc.mlcgames.combat.config.WeaponConfig;
 import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineHook;
 import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineAttributeBridge;
-import com.mlc.mlcgames.combat.integration.craftengine.CraftEngineItemResolver;
 import com.mlc.mlcgames.dungeongame.commands.DungeonGame;
 import com.mlc.mlcgames.dungeongame.gamephase.dungeongameinit;
 import com.mlc.mlcgames.sandgame.commands.SandGame;
@@ -45,11 +43,9 @@ public class Task {
     public static void runtask() throws IOException {
 
         CombatConfig combatConfig = new CombatConfig(instance);
-        WeaponConfig weaponConfig = new WeaponConfig(instance);
-        ArmorTypeService armorTypeService = new ArmorTypeService(instance, combatConfig.defaultArmorType());
+        ArmorTypeService armorTypeService = new ArmorTypeService(instance);
         CraftEngineHook craftEngineHook = new CraftEngineHook();
-        AttackTypeService attackTypeService = new AttackTypeService(instance, weaponConfig, combatConfig.defaultAttackType(),
-                new CraftEngineItemResolver(instance, craftEngineHook));
+        AttackTypeService attackTypeService = new AttackTypeService(instance, combatConfig.defaultAttackType());
         CombatService combatService = new CombatService(combatConfig, armorTypeService, attackTypeService,
                 new TypeEffectivenessService(combatConfig), new CraftEngineAttributeBridge(instance, craftEngineHook));
 

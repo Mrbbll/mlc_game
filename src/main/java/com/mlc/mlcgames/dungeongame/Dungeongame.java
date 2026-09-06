@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 /** 地牢游戏全局状态（模仿 sandgame 的 Sandgame 类）。 */
+//schem文件保存命名规范：floor_set_type_num.schem
+//例如第一层，第一类型地牢，特殊房间Shop，第一个变体：1_1_shop_1
+//com.mlc.mlcgames.dungeongame.rooms.RoomType
 public class Dungeongame {
     public static boolean isstart;
     public static List<NormalRoom> NormaRoom_List;

@@ -25,6 +25,8 @@ permissions:
   mlcgames.combat.admin:
     description: Manage MLCGame combat attributes
     default: op
+depend:
+  - FastAsyncWorldEdit
 softdepend:
   - ProtocolLib
   - ProtocolSupport
@@ -33,4 +35,3 @@ softdepend:
   - ViaRewind
   - Geyser-Spigot
   - CraftEngine
-  - FastAsyncWorldEdit

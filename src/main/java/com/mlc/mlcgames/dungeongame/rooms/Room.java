@@ -2,7 +2,14 @@ package com.mlc.mlcgames.dungeongame.rooms;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.Bukkit;
 import org.bukkit.structure.Structure;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 单个房间。
@@ -19,10 +26,12 @@ public class Room {
     private final int maxX;
     private final int maxY;
     private final int maxZ;
-    private final int sizeX;
-    private final int sizeY;
-    private final int sizeZ;
+    private int sizeX;
+    private int sizeY;
+    private int sizeZ;
     private Structure structure;
+    private final File schematicFile;
+    private Clipboard clipboard;
     private final int id;
 
     public Room(RoomType type, String name, World sourceWorld, Location corner1, Location corner2, int id) {
@@ -39,6 +48,71 @@ public class Room {
         this.sizeY = maxY - minY + 1;
         this.sizeZ = maxZ - minZ + 1;
         this.id = id;
+        this.schematicFile = null;
     }
 
+    /** A room template stored as a FAWE/WorldEdit .schem file. */
+    public Room(RoomType type, String name, File schematicFile, int id) {
+        this.type = type;
+        this.name = name;
+        this.sourceWorld = null;
+        this.minX = this.minY = this.minZ = 0;
+        this.maxX = this.maxY = this.maxZ = 0;
+        this.id = id;
+        this.schematicFile = schematicFile;
+        loadClipboard(); // Validate the file and obtain its actual dimensions at startup.
+    }
+
+    /** Creates an independent placement of this room template. */
+    public Room createInstance(int instanceId) {
+        if (schematicFile != null) {
+            return new Room(type, name, schematicFile, instanceId);
+        }
+        return new Room(type, name, sourceWorld,
+                new Location(sourceWorld, minX, minY, minZ),
+                new Location(sourceWorld, maxX, maxY, maxZ), instanceId);
+    }
+
+    /** Lazily snapshots the selected cuboid as a Bukkit structure. */
+    public Structure getStructure() {
+        if (schematicFile != null) {
+            throw new IllegalStateException("Schematic rooms must be pasted through FAWE");
+        }
+        if (structure == null) {
+            structure = Bukkit.getStructureManager().createStructure();
+            structure.fill(new Location(sourceWorld, minX, minY, minZ),
+                    new Location(sourceWorld, maxX, maxY, maxZ), true);
+        }
+        return structure;
+    }
+
+    public RoomType getType() { return type; }
+    public String getName() { return name; }
+    public World getSourceWorld() { return sourceWorld; }
+    public int getMinX() { return minX; }
+    public int getMinY() { return minY; }
+    public int getMinZ() { return minZ; }
+    public int getSizeX() { return sizeX; }
+    public int getSizeY() { return sizeY; }
+    public int getSizeZ() { return sizeZ; }
+    public int getId() { return id; }
+    public boolean isSchematic() { return schematicFile != null; }
+    public Clipboard getClipboard() { return loadClipboard(); }
+
+    private Clipboard loadClipboard() {
+        if (clipboard != null) return clipboard;
+        ClipboardFormat format = ClipboardFormats.findByFile(schematicFile);
+        if (format == null) {
+            throw new IllegalArgumentException("Unsupported schematic format: " + schematicFile.getName());
+        }
+        try {
+            clipboard = format.load(schematicFile);
+            sizeX = clipboard.getDimensions().x();
+            sizeY = clipboard.getDimensions().y();
+            sizeZ = clipboard.getDimensions().z();
+            return clipboard;
+        } catch (IOException exception) {
+            throw new IllegalArgumentException("Unable to read schematic " + schematicFile.getName(), exception);
+        }
+    }
 }

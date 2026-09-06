@@ -1,15 +1,28 @@
-# 地牢游戏配置
-# rooms: 每个房间 = 模板世界(如 dungeon_template)里框选的一块区域
-#   world: 模板世界名
-#   corner_1 / corner_2: 区域两个对角坐标 "x,y,z"
+# Dungeon generation configuration.
+layout:
+  origin:
+    x: 0
+    y: 80
+    z: 0
+  # A schematic cannot be wider/deeper than this value.
+  cell-size: 64
+
+generation:
+  # The second number in floor_set_type_variant.schem.
+  set: 1
+  normal-rooms: 7
+  special-chance: 65
+
+# Templates are read directly from FastAsyncWorldEdit/schematics, not from
+# this file. File name format: floor_set_type_variant.schem
 #
-# 用 /dungeongame pos1 <名> 和 pos2 <名> 即可将所在区块端点加入房间一角
-rooms:
-#  start:
-#    world: world
-#    corner_1: "0,80,0"
-#    corner_2: "15,95,15"
-#  hall:
-#    world: dungeon_template
-#    corner_1: "30,80,0"
-#    corner_2: "45,95,15"
+# Examples:
+#   1_1_start_1.schem
+#   1_1_normal_1.schem
+#   1_1_shop_1.schem
+#   1_1_end_1.schem
+#   5_1_boss_1.schem
+#
+# Valid types: start, normal, end, boss, elit, shop, add.
+# elit/shop/add are special side-room variants. The configured set is selected
+# automatically; multiple matching variants are selected randomly.

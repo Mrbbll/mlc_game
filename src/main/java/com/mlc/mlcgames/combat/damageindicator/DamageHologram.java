@@ -35,7 +35,7 @@ final class DamageHologram {
     private static final byte TEXT_FLAGS = 0x03; // shadow + see-through
     private static final float SHRINK_SCALE = 0.01f;
 
-    /* Minecraft 1.20.2+ TextDisplay tracked-data indices; this plugin targets Paper 1.21.11. */
+    /* Minecraft 1.20.2+ TextDisplay tracked-data indices; this plugin targets Paper 1.21.11+. */
     private static final int TRANSFORMATION_INTERPOLATION_DELAY = 8;
     private static final int TRANSFORMATION_INTERPOLATION_DURATION = 9;
     private static final int POSITION_ROTATION_INTERPOLATION_DURATION = 10;

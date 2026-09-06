@@ -36,19 +36,21 @@ public final class DamageIndicatorService {
     /** Schedules display after every listener has had a chance to adjust or cancel the damage event. */
     public void displayAfterDamage(EntityDamageByEntityEvent event, LivingEntity victim, DamageAffinity affinity) {
         if (!config.enabled()) return;
+        // A lethal hit can remove the victim before the next tick. Capture its last
+        // valid position now, but defer reading final damage until all listeners finish.
+        Location location = createLocation(victim);
         plugin.getServer().getScheduler().runTask(plugin, () -> {
-            if (event.isCancelled() || !victim.isValid()) return;
+            if (event.isCancelled()) return;
             double finalDamage = event.getFinalDamage();
             if (finalDamage <= 0.0d) {
-                showMiss(victim);
+                showMiss(location);
                 return;
             }
-            show(victim, affinity, finalDamage);
+            show(location, affinity, finalDamage);
         });
     }
 
-    private void show(LivingEntity victim, DamageAffinity affinity, double finalDamage) {
-        Location location = createLocation(victim);
+    private void show(Location location, DamageAffinity affinity, double finalDamage) {
         List<Player> viewers = nearbyPlayers(location);
         if (viewers.isEmpty()) return;
 
@@ -57,8 +59,7 @@ public final class DamageIndicatorService {
         new DamageHologram(plugin, config, location, text, viewers).start();
     }
 
-    private void showMiss(LivingEntity victim) {
-        Location location = createLocation(victim);
+    private void showMiss(Location location) {
         List<Player> viewers = nearbyPlayers(location);
         if (viewers.isEmpty()) return;
 

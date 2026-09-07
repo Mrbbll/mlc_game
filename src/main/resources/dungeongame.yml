@@ -11,7 +11,7 @@ generation:
   # The second number in floor_set_type_variant.schem.
   set: 1
   normal-rooms: 7
-  special-chance: 65
+  special-chance: 70
 
 # Templates are read directly from FastAsyncWorldEdit/schematics, not from
 # this file. File name format: floor_set_type_variant.schem

@@ -114,13 +114,63 @@ public class Roommanager {
 
     /**
      * Reads FAWE's schematic directory using floor_set_type_variant.schem.
-     * Example: 1_1_shop_1.schem is a floor-one, set-one Shop variant.
+     * floor is the dungeon level (1-3), set is an environment preset, and the
+     * last number is a room variant.
      */
     public static int loadSchematicTemplates(int dungeonSet) {
         return loadSchematicTemplates(WorldEdit.getInstance().getSchematicsFolderPath().toFile(), dungeonSet);
     }
 
     static int loadSchematicTemplates(File directory, int dungeonSet) {
+        return loadSchematicTemplates(directory, null, dungeonSet);
+    }
+
+    /** Loads one environment preset for one of the three dungeon levels. */
+    public static int loadSchematicTemplates(int dungeonFloor, int environmentSet) {
+        return loadSchematicTemplates(WorldEdit.getInstance().getSchematicsFolderPath().toFile(),
+                dungeonFloor, environmentSet);
+    }
+
+    /** Returns every environment-set number that has at least one schematic for the requested level. */
+    public static List<Integer> getAvailableEnvironmentSets(int dungeonFloor) {
+        File directory = WorldEdit.getInstance().getSchematicsFolderPath().toFile();
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException("FAWE schematic directory does not exist: " + directory);
+        }
+        Set<Integer> sets = new TreeSet<>();
+        try (var files = Files.list(directory.toPath())) {
+            files.filter(Files::isRegularFile).forEach(path -> {
+                String fileName = path.getFileName().toString();
+                Matcher bridgeMatcher = BRIDGE_SCHEMATIC_NAME.matcher(fileName);
+                if (bridgeMatcher.matches() && Integer.parseInt(bridgeMatcher.group(1)) == dungeonFloor) {
+                    sets.add(Integer.parseInt(bridgeMatcher.group(2)));
+                    return;
+                }
+                Matcher roomMatcher = SCHEMATIC_NAME.matcher(fileName);
+                if (roomMatcher.matches() && Integer.parseInt(roomMatcher.group(1)) == dungeonFloor) {
+                    sets.add(Integer.parseInt(roomMatcher.group(2)));
+                }
+            });
+        } catch (IOException exception) {
+            throw new IllegalArgumentException("Unable to list FAWE schematic directory: " + directory, exception);
+        }
+        return List.copyOf(sets);
+    }
+
+    /** Checks the template pools required to build all five layers of one level. */
+    public static List<String> getMissingRequiredTemplates(int dungeonFloor) {
+        List<String> missing = new ArrayList<>();
+        if (StartroomMap.getOrDefault(dungeonFloor, List.of()).isEmpty()) missing.add("start");
+        if (NormanlroomMap.getOrDefault(dungeonFloor, List.of()).isEmpty()) missing.add("normal");
+        if (SpecialroomMap.getOrDefault(dungeonFloor, List.of()).isEmpty()) missing.add("special(elit/shop/add)");
+        if (EndroomMap.getOrDefault(dungeonFloor, List.of()).isEmpty()) missing.add("end");
+        if (BossroomMap.getOrDefault(dungeonFloor, List.of()).isEmpty()) missing.add("boss");
+        if (BridgeXroomMap.getOrDefault(dungeonFloor, List.of()).isEmpty()) missing.add("bridge_x");
+        if (BridgeZroomMap.getOrDefault(dungeonFloor, List.of()).isEmpty()) missing.add("bridge_z");
+        return List.copyOf(missing);
+    }
+
+    private static int loadSchematicTemplates(File directory, Integer dungeonFloor, int dungeonSet) {
         clearTemplates();
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException("FAWE schematic directory does not exist: " + directory);
@@ -134,7 +184,7 @@ public class Roommanager {
                 if (bridgeMatcher.matches()) {
                     int floor = Integer.parseInt(bridgeMatcher.group(1));
                     int fileSet = Integer.parseInt(bridgeMatcher.group(2));
-                    if (fileSet != dungeonSet) return;
+                    if (fileSet != dungeonSet || dungeonFloor != null && floor != dungeonFloor) return;
                     BridgeAxis axis = BridgeAxis.valueOf(bridgeMatcher.group(3).toUpperCase(Locale.ROOT));
                     Room bridge = new Room(RoomType.Bridge, fileName, path.toFile(), loaded[0] + 1);
                     (axis == BridgeAxis.X ? BridgeXroomMap : BridgeZroomMap)
@@ -148,7 +198,7 @@ public class Roommanager {
 
                 int floor = Integer.parseInt(matcher.group(1));
                 int fileSet = Integer.parseInt(matcher.group(2));
-                if (fileSet != dungeonSet) return;
+                if (fileSet != dungeonSet || dungeonFloor != null && floor != dungeonFloor) return;
 
                 RoomType type = parseType(matcher.group(3), fileName);
                 if (type == RoomType.Bridge) {

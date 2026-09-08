@@ -98,7 +98,7 @@ public class Worldmanager {
         File worldFolder = existing != null ? existing.getWorldFolder()
                 : new File(Bukkit.getWorldContainer(), "Dungeongame");
         if (!worldFolder.exists()) return;
-        verifyDungeonWorldFolder(worldFolder);
+        verifyDungeonWorldFolder(worldFolder, existing);
         if (existing != null && !Bukkit.unloadWorld(existing, false)) {
             throw new IllegalStateException("Unable to unload the current dungeon world");
         }
@@ -187,8 +187,8 @@ public class Worldmanager {
         RoomSpawner.Locpoint targetPort = new RoomSpawner.Locpoint(
                 lastBridge.x + connection.directionX(), lastBridge.y + connection.directionZ());
 
-        carveDoor(connection.from(), sourcePort, connection.directionX(), connection.directionZ());
-        carveDoor(connection.to(), targetPort, -connection.directionX(), -connection.directionZ());
+        fillDoor(connection.from(), sourcePort, connection.directionX(), connection.directionZ(), Material.AIR);
+        fillDoor(connection.to(), targetPort, -connection.directionX(), -connection.directionZ(), Material.AIR);
     }
 
     public static void validatePassageConfig() {
@@ -199,7 +199,41 @@ public class Worldmanager {
         if (passageBottomOffset < 0) throw new IllegalArgumentException("passage.bottom-offset cannot be negative");
     }
 
-    private static void carveDoor(Room room, RoomSpawner.Locpoint portCell, int outwardX, int outwardZ) {
+    public static void setRoomDoors(Room room, Material material) {
+        setRoomDoors(getRoomDoors(room), material);
+    }
+
+    /** Captures absolute door cuboids so a room remains usable after another layout replaces the static plan. */
+    public static List<DoorBounds> getRoomDoors(Room room) {
+        List<DoorBounds> doors = new java.util.ArrayList<>();
+        for (RoomSpawner.Connection connection : RoomSpawner.connections) {
+            if (connection.from() == room) {
+                RoomSpawner.Locpoint first = connection.corridor().getFirst();
+                doors.add(getDoorBounds(room,
+                        new RoomSpawner.Locpoint(first.x - connection.directionX(), first.y - connection.directionZ()),
+                        connection.directionX(), connection.directionZ()));
+            } else if (connection.to() == room) {
+                RoomSpawner.Locpoint last = connection.corridor().getLast();
+                doors.add(getDoorBounds(room,
+                        new RoomSpawner.Locpoint(last.x + connection.directionX(), last.y + connection.directionZ()),
+                        -connection.directionX(), -connection.directionZ()));
+            }
+        }
+        return List.copyOf(doors);
+    }
+
+    public static void setRoomDoors(List<DoorBounds> doors, Material material) {
+        for (DoorBounds door : doors) {
+            fillCuboid(door.minX(), door.minY(), door.minZ(), door.maxX(), door.maxY(), door.maxZ(), material);
+        }
+    }
+
+    private static void fillDoor(Room room, RoomSpawner.Locpoint portCell, int outwardX, int outwardZ, Material material) {
+        DoorBounds door = getDoorBounds(room, portCell, outwardX, outwardZ);
+        fillCuboid(door.minX(), door.minY(), door.minZ(), door.maxX(), door.maxY(), door.maxZ(), material);
+    }
+
+    private static DoorBounds getDoorBounds(Room room, RoomSpawner.Locpoint portCell, int outwardX, int outwardZ) {
         RoomSpawner.Locpoint roomPoint = RoomSpawner.roompointMap.get(room);
         RoomSpawner.Footprint footprint = RoomSpawner.roomSizeMap.get(room);
         if (roomPoint == null || footprint == null) throw new IllegalArgumentException("Room is not part of the current layout");
@@ -212,21 +246,21 @@ public class Worldmanager {
                     ? roomOriginX(roomPoint) + footprint.width() * layoutCellSize - 1
                     : roomOriginX(roomPoint);
             int minZ = layoutOriginZ + portCell.y * layoutCellSize + horizontalOffset;
-            clearCuboid(wallX, minY, minZ, wallX, maxY, minZ + passageWidth - 1);
+            return new DoorBounds(wallX, minY, minZ, wallX, maxY, minZ + passageWidth - 1);
         } else {
             int wallZ = outwardZ > 0
                     ? roomOriginZ(roomPoint) + footprint.depth() * layoutCellSize - 1
                     : roomOriginZ(roomPoint);
             int minX = layoutOriginX + portCell.x * layoutCellSize + horizontalOffset;
-            clearCuboid(minX, minY, wallZ, minX + passageWidth - 1, maxY, wallZ);
+            return new DoorBounds(minX, minY, wallZ, minX + passageWidth - 1, maxY, wallZ);
         }
     }
 
-    private static void clearCuboid(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+    private static void fillCuboid(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Material material) {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
-                    dungeonWorld.getBlockAt(x, y, z).setType(Material.AIR, false);
+                    dungeonWorld.getBlockAt(x, y, z).setType(material, false);
                 }
             }
         }
@@ -244,6 +278,28 @@ public class Worldmanager {
         double x = roomOriginX(point) + room.getSizeX() / 2.0;
         double z = roomOriginZ(point) + room.getSizeZ() / 2.0;
         return new org.bukkit.Location(dungeonWorld, x, layoutOriginY + 1, z, 0.0F, 0.0F);
+    }
+
+    public record RoomBounds(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        public boolean contains(org.bukkit.Location location) {
+            return location.getWorld() == dungeonWorld && location.getX() >= minX && location.getX() < maxX
+                    && location.getZ() >= minZ && location.getZ() < maxZ
+                    && location.getY() >= minY && location.getY() <= maxY;
+        }
+    }
+
+    public record DoorBounds(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) { }
+
+    public static RoomBounds getRoomBounds(Room room) {
+        RoomSpawner.Locpoint point = RoomSpawner.roompointMap.get(room);
+        RoomSpawner.Footprint footprint = RoomSpawner.roomSizeMap.get(room);
+        if (point == null || footprint == null) throw new IllegalArgumentException("Room is not part of the current layout");
+        int minX = roomOriginX(point);
+        int minZ = roomOriginZ(point);
+        return new RoomBounds(minX, layoutOriginY, minZ,
+                minX + footprint.width() * layoutCellSize,
+                layoutOriginY + Math.max(room.getSizeY(), passageHeight + passageBottomOffset + 2),
+                minZ + footprint.depth() * layoutCellSize);
     }
 
     private static int roomOriginX(RoomSpawner.Locpoint point) {
@@ -264,10 +320,15 @@ public class Worldmanager {
         }
     }
 
-    private static void verifyDungeonWorldFolder(File folder) {
+    private static void verifyDungeonWorldFolder(File folder, World loadedWorld) {
         Path root = Bukkit.getWorldContainer().toPath().toAbsolutePath().normalize();
         Path target = folder.toPath().toAbsolutePath().normalize();
-        if (!target.startsWith(root) || !"Dungeongame".equals(target.getFileName().toString())) {
+        boolean namedDungeon = target.getFileName() != null
+                && "Dungeongame".equalsIgnoreCase(target.getFileName().toString());
+        boolean exactLoadedWorldFolder = loadedWorld != null
+                && target.equals(loadedWorld.getWorldFolder().toPath().toAbsolutePath().normalize());
+        boolean insideWorldContainer = target.startsWith(root) && !target.equals(root);
+        if (!namedDungeon || (!exactLoadedWorldFolder && !insideWorldContainer)) {
             throw new IllegalArgumentException("Refusing to delete a world folder outside the named dungeon target: " + target);
         }
     }

@@ -2,8 +2,11 @@ package com.mlc.mlcgames.dungeongame.commands;
 
 import com.mlc.mlcgames.Mlcgames;
 import com.mlc.mlcgames.dungeongame.gamephase.dungeongameinit;
+import com.mlc.mlcgames.dungeongame.managers.DungeonGameManager;
+import com.mlc.mlcgames.dungeongame.managers.Roommanager;
 import com.mlc.mlcgames.dungeongame.managers.RoomSpawner;
 import com.mlc.mlcgames.dungeongame.managers.Worldmanager;
+import com.mlc.mlcgames.dungeongame.menus.SettingMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -20,31 +23,45 @@ public class DungeonGame implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if (args.length == 0) {
-            sender.sendMessage("Usage: /dungeongame generate [floor] [normal rooms] [seed] | enter | reload | info");
+            openMenu(sender);
             return true;
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
+            case "menu" -> openMenu(sender);
+            case "start" -> start(sender);
+            case "end" -> end(sender);
             case "generate" -> generate(sender, args);
             case "enter" -> enter(sender);
             case "reload" -> reload(sender);
-            case "info" -> sender.sendMessage("Dungeon layout: " + RoomSpawner.roomList.size()
-                    + " rooms, " + RoomSpawner.specialroomcount + " special branches, "
-                    + RoomSpawner.connections.size() + " connections.");
-            default -> sender.sendMessage("Usage: /dungeongame generate [floor] [normal rooms] [seed] | enter | reload | info");
+            case "info" -> sender.sendMessage("Dungeon: " + DungeonGameManager.get().status());
+            default -> usage(sender);
         }
         return true;
     }
 
     private void generate(CommandSender sender, String[] args) {
+        if (DungeonGameManager.get().isRunningOrGenerating()) {
+            sender.sendMessage("Stop the active dungeon before using the layout debug command.");
+            return;
+        }
         try {
-            int floor = args.length >= 2 ? Integer.parseInt(args[1]) : 1;
-            int normalRooms = args.length >= 3 ? Integer.parseInt(args[2])
+            int dungeonLevel = args.length >= 2 ? Integer.parseInt(args[1]) : 1;
+            int layer = args.length >= 3 ? Integer.parseInt(args[2]) : 1;
+            int normalRooms = args.length >= 4 ? Integer.parseInt(args[3])
                     : Mlcgames.dungeonConfiguration.getInt("generation.normal-rooms", 7);
             int specialChance = Mlcgames.dungeonConfiguration.getInt("generation.special-chance", 65);
-            Random random = args.length >= 4 ? new Random(Long.parseLong(args[3])) : new Random();
-            if (floor < 1 || floor > 5) throw new IllegalArgumentException("floor must be from 1 to 5");
-            RoomSpawner.generateRooms(normalRooms, floor, specialChance, random);
-            sender.sendMessage("Generated floor " + floor + ": " + RoomSpawner.roomList.size() + " rooms, "
+            int dungeonSet = Mlcgames.dungeonConfiguration.getInt("generation.set", 1);
+            Random random = args.length >= 5 ? new Random(Long.parseLong(args[4])) : new Random();
+            if (dungeonLevel < 1 || dungeonLevel > 3) throw new IllegalArgumentException("level must be from 1 to 3");
+            if (layer < 1 || layer > 5) throw new IllegalArgumentException("layer must be from 1 to 5");
+            Roommanager.loadSchematicTemplates(dungeonLevel, dungeonSet);
+            Worldmanager.layoutOriginX = Mlcgames.dungeonConfiguration.getInt("layout.origin.x", 0);
+            Worldmanager.layoutOriginY = Mlcgames.dungeonConfiguration.getInt("layout.origin.y", 80);
+            Worldmanager.layoutOriginZ = Mlcgames.dungeonConfiguration.getInt("layout.origin.z", 0);
+            Worldmanager.createDungeonWorld();
+            RoomSpawner.generateRooms(normalRooms, dungeonLevel, layer, specialChance, random);
+            sender.sendMessage("Generated level " + dungeonLevel + " layer " + layer + ": "
+                    + RoomSpawner.roomList.size() + " rooms, "
                     + RoomSpawner.specialroomcount + " special branches.");
         } catch (IllegalArgumentException | IllegalStateException exception) {
             sender.sendMessage("Dungeon generation failed: " + exception.getMessage());
@@ -66,16 +83,43 @@ public class DungeonGame implements TabExecutor {
             sender.sendMessage("Only a player can enter the dungeon.");
             return;
         }
-        RoomSpawner.getGeneratedStartRoom().ifPresentOrElse(start -> {
-            player.teleport(Worldmanager.getRoomSpawn(start));
-            player.sendMessage("Entered the dungeon.");
-        }, () -> sender.sendMessage("Generate a dungeon first: /dungeongame generate"));
+        DungeonGameManager.get().enter(player);
+    }
+
+    private void openMenu(CommandSender sender) {
+        if (!(sender instanceof Player player)) {
+            usage(sender);
+            return;
+        }
+        new SettingMenu().open(player);
+    }
+
+    private void start(CommandSender sender) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("Only a player can start the dungeon.");
+            return;
+        }
+        DungeonGameManager.get().startGame(player);
+    }
+
+    private void end(CommandSender sender) {
+        if (!DungeonGameManager.get().isRunningOrGenerating()) {
+            sender.sendMessage("There is no active dungeon game.");
+            return;
+        }
+        DungeonGameManager.get().endGame();
+        sender.sendMessage("Dungeon game ended.");
+    }
+
+    private void usage(CommandSender sender) {
+        sender.sendMessage("Usage: /dungeongame [menu|start|end|enter|generate|reload|info]");
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
-        if (args.length == 1) return List.of("generate", "enter", "reload", "info");
-        if (args.length == 2 && args[0].equalsIgnoreCase("generate")) return List.of("1", "2", "3", "4", "5");
+        if (args.length == 1) return List.of("menu", "start", "end", "enter", "generate", "reload", "info");
+        if (args.length == 2 && args[0].equalsIgnoreCase("generate")) return List.of("1", "2", "3");
+        if (args.length == 3 && args[0].equalsIgnoreCase("generate")) return List.of("1", "2", "3", "4", "5");
         return List.of();
     }
 }

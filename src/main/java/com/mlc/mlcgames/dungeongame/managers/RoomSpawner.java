@@ -68,26 +68,41 @@ public final class RoomSpawner {
     private RoomSpawner() { }
 
     public static void generateRooms(int normalRoomCount, int floorType) {
-        generateRooms(normalRoomCount, floorType, 65, ThreadLocalRandom.current());
+        generateRooms(normalRoomCount, floorType, 1, 65, ThreadLocalRandom.current());
     }
 
     public static void generateRooms(int normalRoomCount, int floorType, int specialChance, Random random) {
+        generateRoomsInternal(normalRoomCount, floorType, false, specialChance, random);
+    }
+
+    /**
+     * Generates one of the five layers inside a dungeon level. The template floor
+     * (1-3 in floor_set_type_variant) is independent from the layer (1-5).
+     */
+    public static void generateRooms(int normalRoomCount, int templateFloor, int layer,
+                                     int specialChance, Random random) {
+        if (layer < 1 || layer > 5) throw new IllegalArgumentException("layer must be from 1 to 5");
+        generateRoomsInternal(normalRoomCount, templateFloor, layer == 5, specialChance, random);
+    }
+
+    private static void generateRoomsInternal(int normalRoomCount, int templateFloor, boolean bossLayer,
+                                              int specialChance, Random random) {
         if (normalRoomCount < 4) throw new IllegalArgumentException("A dungeon needs at least four normal rooms");
         if (specialChance < 0 || specialChance > 100) throw new IllegalArgumentException("specialChance must be between 0 and 100");
         Objects.requireNonNull(random, "random");
 
-        floortype = floorType;
+        floortype = templateFloor;
         mapsize = normalRoomCount;
         nextRoomId = 1;
         LayoutRoom start = new LayoutRoom(Kind.START, -1, -1, 2, 2);
         Plan initial = new Plan(List.of(start), List.of(), List.of());
 
-        Plan plan = buildMainRoute(initial, start, normalRoomCount, floorType == 5, 0, 2, random);
-        if (plan == null) plan = buildMainRoute(initial, start, normalRoomCount, floorType == 5, 0, 3, random);
+        Plan plan = buildMainRoute(initial, start, normalRoomCount, bossLayer, 0, 2, random);
+        if (plan == null) plan = buildMainRoute(initial, start, normalRoomCount, bossLayer, 0, 3, random);
         if (plan == null) throw new IllegalStateException("Unable to generate the dungeon main route");
 
         List<LayoutRoom> normalRooms = plan.rooms().stream().filter(room -> room.kind() == Kind.NORMAL).toList();
-        if (floorType < 5) {
+        if (!bossLayer) {
             Plan mainPlan = plan;
             plan = attachExit(mainPlan, normalRooms, 2, random);
             if (plan == null) plan = attachExit(mainPlan, normalRooms, 3, random);
@@ -111,7 +126,7 @@ public final class RoomSpawner {
         }
         if (withSpecials == null) throw new IllegalStateException("Unable to place the two required special rooms");
         specialroomcount = actualSpecials;
-        materialize(withSpecials, floorType, random);
+        materialize(withSpecials, templateFloor, random);
     }
 
     private static Plan buildMainRoute(Plan plan, LayoutRoom current, int normalCount, boolean bossFloor,

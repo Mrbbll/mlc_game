@@ -7,6 +7,7 @@ import org.bukkit.structure.Structure;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.math.BlockVector3;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,10 @@ public class Room {
     private Structure structure;
     private final File schematicFile;
     private Clipboard clipboard;
+    /** Lowest non-air block measured relative to the schematic origin. */
+    private int lowestSolidRelativeY;
+    private int minimumRelativeX;
+    private int minimumRelativeZ;
     private final int id;
 
     public Room(RoomType type, String name, World sourceWorld, Location corner1, Location corner2, int id) {
@@ -49,6 +54,9 @@ public class Room {
         this.sizeZ = maxZ - minZ + 1;
         this.id = id;
         this.schematicFile = null;
+        this.lowestSolidRelativeY = 0;
+        this.minimumRelativeX = 0;
+        this.minimumRelativeZ = 0;
     }
 
     /** A room template stored as a FAWE/WorldEdit .schem file. */
@@ -98,6 +106,9 @@ public class Room {
     public int getId() { return id; }
     public boolean isSchematic() { return schematicFile != null; }
     public Clipboard getClipboard() { return loadClipboard(); }
+    public int getLowestSolidRelativeY() { return lowestSolidRelativeY; }
+    public int getMinimumRelativeX() { return minimumRelativeX; }
+    public int getMinimumRelativeZ() { return minimumRelativeZ; }
 
     private Clipboard loadClipboard() {
         if (clipboard != null) return clipboard;
@@ -110,6 +121,19 @@ public class Room {
             sizeX = clipboard.getDimensions().x();
             sizeY = clipboard.getDimensions().y();
             sizeZ = clipboard.getDimensions().z();
+            BlockVector3 minimum = clipboard.getRegion().getMinimumPoint();
+            minimumRelativeX = minimum.x() - clipboard.getOrigin().x();
+            minimumRelativeZ = minimum.z() - clipboard.getOrigin().z();
+            int lowestSolidY = Integer.MAX_VALUE;
+            for (BlockVector3 position : clipboard) {
+                if (!clipboard.getBlock(position).isAir()) {
+                    lowestSolidY = Math.min(lowestSolidY, position.y());
+                }
+            }
+            if (lowestSolidY == Integer.MAX_VALUE) {
+                throw new IllegalArgumentException("Schematic contains no non-air blocks: " + schematicFile.getName());
+            }
+            lowestSolidRelativeY = lowestSolidY - clipboard.getOrigin().y();
             return clipboard;
         } catch (IOException exception) {
             throw new IllegalArgumentException("Unable to read schematic " + schematicFile.getName(), exception);

@@ -2,10 +2,17 @@
 layout:
   origin:
     x: 0
+    # The lowest non-air block in every pasted schematic is aligned to this Y.
     y: 80
     z: 0
-  # A schematic cannot be wider/deeper than this value.
-  cell-size: 64
+
+# A bridge occupies one 16x16 chunk. Its usable road and the openings cut into
+# both connected room walls are centred within that chunk.
+passage:
+  width: 8
+  height: 8
+  # Keep one floor block above the schematic's automatically aligned bottom.
+  bottom-offset: 1
 
 generation:
   # The second number in floor_set_type_variant.schem.
@@ -22,7 +29,14 @@ generation:
 #   1_1_shop_1.schem
 #   1_1_end_1.schem
 #   5_1_boss_1.schem
+#   1_1_bridge_x_1.schem
+#   1_1_bridge_z_1.schem
 #
 # Valid types: start, normal, end, boss, elit, shop, add.
 # elit/shop/add are special side-room variants. The configured set is selected
 # automatically; multiple matching variants are selected randomly.
+# Grid dimensions match the web prototype and use Minecraft chunks:
+#   start/normal/special/end: 2x2 chunks = 32x32 blocks
+#   boss:                     3x3 chunks = 48x48 blocks
+#   bridge_x / bridge_z:      1x1 chunk  = 16x16 blocks
+# Room and bridge heights are unrestricted; their lowest non-air layers align.

@@ -19,11 +19,14 @@ import java.util.regex.Pattern;
 
 public class Roommanager {
     private static final Pattern SCHEMATIC_NAME = Pattern.compile("^(\\d+)_(\\d+)_([a-zA-Z]+)_(\\d+)\\.schem$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern BRIDGE_SCHEMATIC_NAME = Pattern.compile("^(\\d+)_(\\d+)_bridge_([xz])_(\\d+)\\.schem$", Pattern.CASE_INSENSITIVE);
     public static final Map<Integer, List<Room>> NormanlroomMap = new HashMap<>();
     public static final Map<Integer, List<Room>> SpecialroomMap = new HashMap<>();
     public static final Map<Integer, List<Room>> EndroomMap = new HashMap<>();
     public static final Map<Integer, List<Room>> StartroomMap = new HashMap<>();
     public static final Map<Integer, List<Room>> BossroomMap = new HashMap<>();
+    public static final Map<Integer, List<Room>> BridgeXroomMap = new HashMap<>();
+    public static final Map<Integer, List<Room>> BridgeZroomMap = new HashMap<>();
 
     public static Room getRoomNalmanroomlist(int floortype){
         return getNormalRoom(floortype, new Random());
@@ -50,6 +53,9 @@ public class Roommanager {
     public static Room getEndRoom(int floorType, Random random) { return pick(EndroomMap, floorType, random, "end"); }
     public static Room getStartRoom(int floorType, Random random) { return pick(StartroomMap, floorType, random, "start"); }
     public static Room getBossRoom(int floorType, Random random) { return pick(BossroomMap, floorType, random, "boss"); }
+    public static Room getBridgeRoom(int floorType, BridgeAxis axis, Random random) {
+        return pick(axis == BridgeAxis.X ? BridgeXroomMap : BridgeZroomMap, floorType, random, "bridge_" + axis.name().toLowerCase(Locale.ROOT));
+    }
 
     private static Room pick(Map<Integer, List<Room>> rooms, int floorType, Random random, String kind) {
         List<Room> choices = rooms.get(floorType);
@@ -102,6 +108,8 @@ public class Roommanager {
         EndroomMap.clear();
         StartroomMap.clear();
         BossroomMap.clear();
+        BridgeXroomMap.clear();
+        BridgeZroomMap.clear();
     }
 
     /**
@@ -121,16 +129,32 @@ public class Roommanager {
         int[] loaded = {0};
         try (var files = Files.list(directory.toPath())) {
             files.filter(Files::isRegularFile).forEach(path -> {
-                Matcher matcher = SCHEMATIC_NAME.matcher(path.getFileName().toString());
+                String fileName = path.getFileName().toString();
+                Matcher bridgeMatcher = BRIDGE_SCHEMATIC_NAME.matcher(fileName);
+                if (bridgeMatcher.matches()) {
+                    int floor = Integer.parseInt(bridgeMatcher.group(1));
+                    int fileSet = Integer.parseInt(bridgeMatcher.group(2));
+                    if (fileSet != dungeonSet) return;
+                    BridgeAxis axis = BridgeAxis.valueOf(bridgeMatcher.group(3).toUpperCase(Locale.ROOT));
+                    Room bridge = new Room(RoomType.Bridge, fileName, path.toFile(), loaded[0] + 1);
+                    (axis == BridgeAxis.X ? BridgeXroomMap : BridgeZroomMap)
+                            .computeIfAbsent(floor, ignored -> new ArrayList<>()).add(bridge);
+                    loaded[0]++;
+                    return;
+                }
+
+                Matcher matcher = SCHEMATIC_NAME.matcher(fileName);
                 if (!matcher.matches()) return;
 
                 int floor = Integer.parseInt(matcher.group(1));
                 int fileSet = Integer.parseInt(matcher.group(2));
                 if (fileSet != dungeonSet) return;
 
-                RoomType type = parseType(matcher.group(3), path.getFileName().toString());
-                if (type == RoomType.Bridge) return; // Bridge placement is not part of the room graph yet.
-                Room room = new Room(type, path.getFileName().toString(), path.toFile(), loaded[0] + 1);
+                RoomType type = parseType(matcher.group(3), fileName);
+                if (type == RoomType.Bridge) {
+                    throw new IllegalArgumentException("Bridge schematic '" + fileName + "' must include _x_ or _z_");
+                }
+                Room room = new Room(type, fileName, path.toFile(), loaded[0] + 1);
                 poolFor(type).computeIfAbsent(floor, ignored -> new ArrayList<>()).add(room);
                 loaded[0]++;
             });
@@ -150,6 +174,8 @@ public class Roommanager {
             case Bridge -> throw new IllegalArgumentException("Bridge templates are not room templates yet");
         };
     }
+
+    public enum BridgeAxis { X, Z }
 
     private static RoomType parseType(String rawType, String fileName) {
         String normalized = rawType.substring(0, 1).toUpperCase(Locale.ROOT)

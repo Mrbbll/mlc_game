@@ -4,6 +4,7 @@ import com.mlc.mlcgames.dungeongame.rooms.Room;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
@@ -33,15 +34,14 @@ public class Worldmanager {
     public static int layoutOriginX = 0;
     public static int layoutOriginY = 80;
     public static int layoutOriginZ = 0;
-    /** Every room template must fit inside this slot. */
-    public static int layoutCellSize = 64;
+    /** One logical grid cell is exactly one Minecraft chunk. */
+    public static final int layoutCellSize = 16;
+    public static int passageWidth = 8;
+    public static int passageHeight = 8;
+    public static int passageBottomOffset = 1;
 
     public static void createDungeonWorld() {
-        World existing = Bukkit.getWorld("Dungeongame");
-        if (existing != null) {
-            dungeonWorld = existing;
-            return;
-        }
+        deleteDungeonWorld();
         WorldCreator wc = WorldCreator.name("Dungeongame");
         wc.generateStructures(false);
         wc.bonusChest(false);
@@ -94,13 +94,32 @@ public class Worldmanager {
     }
 
     public static void deleteDungeonWorld() {
-        Bukkit.unloadWorld(dungeonWorld,false);
-        File worldFolder = dungeonWorld.getWorldFolder();
-        boolean isSuccess = worldFolder.delete();
-        if(isSuccess){
-            System.out.println("Dungeon World deleted successfully.");
-        }else {
-            System.out.println("Dungeon World delete failed.");
+        World existing = Bukkit.getWorld("Dungeongame");
+        File worldFolder = existing != null ? existing.getWorldFolder()
+                : new File(Bukkit.getWorldContainer(), "Dungeongame");
+        if (!worldFolder.exists()) return;
+        verifyDungeonWorldFolder(worldFolder);
+        if (existing != null && !Bukkit.unloadWorld(existing, false)) {
+            throw new IllegalStateException("Unable to unload the current dungeon world");
+        }
+        try {
+            Files.walkFileTree(worldFolder.toPath(), new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path directory, IOException exception) throws IOException {
+                    if (exception != null) throw exception;
+                    Files.delete(directory);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+            dungeonWorld = null;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to delete the previous dungeon world", exception);
         }
     }
 
@@ -108,21 +127,148 @@ public class Worldmanager {
         if (dungeonWorld == null) {
             throw new IllegalStateException("Dungeon world has not been created");
         }
-        if (room.getSizeX() > layoutCellSize || room.getSizeZ() > layoutCellSize) {
-            throw new IllegalArgumentException("Room '" + room.getName() + "' is larger than layout.cell-size " + layoutCellSize);
-        }
-        int x = layoutOriginX + locpoint.x * layoutCellSize;
-        int z = layoutOriginZ + locpoint.y * layoutCellSize;
+        validateRoomTemplate(room);
+        int x = roomOriginX(locpoint);
+        int z = roomOriginZ(locpoint);
         if (room.isSchematic()) {
-            try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(dungeonWorld))) {
-                Operations.complete(new ClipboardHolder(room.getClipboard()).createPaste(editSession)
-                        .to(BlockVector3.at(x, layoutOriginY, z)).ignoreAirBlocks(false).build());
-            } catch (Exception exception) {
-                throw new IllegalStateException("Unable to paste schematic room '" + room.getName() + "'", exception);
-            }
+            pasteSchematic(room, x, layoutOriginY, z);
             return;
         }
         room.getStructure().place(new org.bukkit.Location(dungeonWorld, x, layoutOriginY, z),
                 true, StructureRotation.NONE, Mirror.NONE, -1, 1.0F, new Random());
+    }
+
+    public static Roommanager.BridgeAxis getBridgeAxis(RoomSpawner.Connection connection) {
+        if (connection.corridor().isEmpty()) throw new IllegalArgumentException("A connection must contain at least one bridge cell");
+        return connection.axis();
+    }
+
+    /** Pastes one bridge from the lower X/Z room edge towards the higher edge. */
+    public static void putBridgeInWorld(Room bridge, RoomSpawner.Connection connection) {
+        validateBridgeTemplate(bridge, connection);
+        getBridgeAxis(connection);
+        for (RoomSpawner.Locpoint cell : connection.corridor()) {
+            pasteSchematic(bridge, roomOriginX(cell), layoutOriginY, roomOriginZ(cell));
+        }
+    }
+
+    public static void validateRoomTemplate(Room room) {
+        RoomSpawner.Footprint footprint = RoomSpawner.roomSizeMap.get(room);
+        if (footprint == null) throw new IllegalArgumentException("Room is not part of the current layout");
+        int expectedX = footprint.width() * layoutCellSize;
+        int expectedZ = footprint.depth() * layoutCellSize;
+        if (room.getSizeX() != expectedX || room.getSizeZ() != expectedZ) {
+            throw new IllegalArgumentException("Room '" + room.getName() + "' must be " + expectedX + " x " + expectedZ
+                    + " blocks in X/Z for its " + footprint.width() + "x" + footprint.depth() + " chunk footprint");
+        }
+    }
+
+    public static void validateBridgeTemplate(Room bridge, RoomSpawner.Connection connection) {
+        if (!bridge.isSchematic()) {
+            throw new IllegalArgumentException("Bridge templates must be FAWE .schem files");
+        }
+        getBridgeAxis(connection);
+        if (bridge.getSizeX() != layoutCellSize || bridge.getSizeZ() != layoutCellSize) {
+            throw new IllegalArgumentException("Bridge '" + bridge.getName() + "' must occupy exactly one chunk (16 x 16 blocks)");
+        }
+    }
+
+    /** Opens both room walls touched by a straight bridge connection. */
+    public static void openConnection(RoomSpawner.Connection connection) {
+        validatePassageConfig();
+        if (connection.directionX() == 0 && connection.directionZ() == 0) {
+            throw new IllegalArgumentException("Connection direction is missing");
+        }
+
+        RoomSpawner.Locpoint firstBridge = connection.corridor().getFirst();
+        RoomSpawner.Locpoint lastBridge = connection.corridor().getLast();
+        RoomSpawner.Locpoint sourcePort = new RoomSpawner.Locpoint(
+                firstBridge.x - connection.directionX(), firstBridge.y - connection.directionZ());
+        RoomSpawner.Locpoint targetPort = new RoomSpawner.Locpoint(
+                lastBridge.x + connection.directionX(), lastBridge.y + connection.directionZ());
+
+        carveDoor(connection.from(), sourcePort, connection.directionX(), connection.directionZ());
+        carveDoor(connection.to(), targetPort, -connection.directionX(), -connection.directionZ());
+    }
+
+    public static void validatePassageConfig() {
+        if (passageWidth < 1 || passageWidth > layoutCellSize) {
+            throw new IllegalArgumentException("passage.width must be between 1 and 16");
+        }
+        if (passageHeight < 1) throw new IllegalArgumentException("passage.height must be at least 1");
+        if (passageBottomOffset < 0) throw new IllegalArgumentException("passage.bottom-offset cannot be negative");
+    }
+
+    private static void carveDoor(Room room, RoomSpawner.Locpoint portCell, int outwardX, int outwardZ) {
+        RoomSpawner.Locpoint roomPoint = RoomSpawner.roompointMap.get(room);
+        RoomSpawner.Footprint footprint = RoomSpawner.roomSizeMap.get(room);
+        if (roomPoint == null || footprint == null) throw new IllegalArgumentException("Room is not part of the current layout");
+
+        int horizontalOffset = (layoutCellSize - passageWidth) / 2;
+        int minY = layoutOriginY + passageBottomOffset;
+        int maxY = minY + passageHeight - 1;
+        if (outwardX != 0) {
+            int wallX = outwardX > 0
+                    ? roomOriginX(roomPoint) + footprint.width() * layoutCellSize - 1
+                    : roomOriginX(roomPoint);
+            int minZ = layoutOriginZ + portCell.y * layoutCellSize + horizontalOffset;
+            clearCuboid(wallX, minY, minZ, wallX, maxY, minZ + passageWidth - 1);
+        } else {
+            int wallZ = outwardZ > 0
+                    ? roomOriginZ(roomPoint) + footprint.depth() * layoutCellSize - 1
+                    : roomOriginZ(roomPoint);
+            int minX = layoutOriginX + portCell.x * layoutCellSize + horizontalOffset;
+            clearCuboid(minX, minY, wallZ, minX + passageWidth - 1, maxY, wallZ);
+        }
+    }
+
+    private static void clearCuboid(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    dungeonWorld.getBlockAt(x, y, z).setType(Material.AIR, false);
+                }
+            }
+        }
+    }
+
+    /** Returns a practical initial teleport point near the centre of a room. */
+    public static org.bukkit.Location getRoomSpawn(Room room) {
+        if (dungeonWorld == null) {
+            throw new IllegalStateException("Dungeon world has not been created");
+        }
+        RoomSpawner.Locpoint point = RoomSpawner.roompointMap.get(room);
+        if (point == null) {
+            throw new IllegalArgumentException("Room is not part of the current dungeon layout");
+        }
+        double x = roomOriginX(point) + room.getSizeX() / 2.0;
+        double z = roomOriginZ(point) + room.getSizeZ() / 2.0;
+        return new org.bukkit.Location(dungeonWorld, x, layoutOriginY + 1, z, 0.0F, 0.0F);
+    }
+
+    private static int roomOriginX(RoomSpawner.Locpoint point) {
+        return layoutOriginX + point.x * layoutCellSize;
+    }
+
+    private static int roomOriginZ(RoomSpawner.Locpoint point) {
+        return layoutOriginZ + point.y * layoutCellSize;
+    }
+
+    private static void pasteSchematic(Room room, int x, int y, int z) {
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(dungeonWorld))) {
+            Operations.complete(new ClipboardHolder(room.getClipboard()).createPaste(editSession)
+                    .to(BlockVector3.at(x - room.getMinimumRelativeX(), y - room.getLowestSolidRelativeY(),
+                            z - room.getMinimumRelativeZ())).ignoreAirBlocks(false).build());
+        } catch (Exception exception) {
+            throw new IllegalStateException("Unable to paste schematic room '" + room.getName() + "'", exception);
+        }
+    }
+
+    private static void verifyDungeonWorldFolder(File folder) {
+        Path root = Bukkit.getWorldContainer().toPath().toAbsolutePath().normalize();
+        Path target = folder.toPath().toAbsolutePath().normalize();
+        if (!target.startsWith(root) || !"Dungeongame".equals(target.getFileName().toString())) {
+            throw new IllegalArgumentException("Refusing to delete a world folder outside the named dungeon target: " + target);
+        }
     }
 }

@@ -11,6 +11,8 @@ import java.util.Map;
 //schem文件保存命名规范：floor_set_type_num.schem
 //例如第一层，第一类型地牢，特殊房间Shop，第一个变体：1_1_shop_1
 //com.mlc.mlcgames.dungeongame.rooms.RoomType
+//1_1_bridge_x_1.schem  # 东西方向
+//1_1_bridge_z_1.schem  # 南北方向
 public class Dungeongame {
     public static boolean isstart;
     public static List<NormalRoom> NormaRoom_List;

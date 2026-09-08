@@ -3,9 +3,11 @@ package com.mlc.mlcgames.dungeongame.commands;
 import com.mlc.mlcgames.Mlcgames;
 import com.mlc.mlcgames.dungeongame.gamephase.dungeongameinit;
 import com.mlc.mlcgames.dungeongame.managers.RoomSpawner;
+import com.mlc.mlcgames.dungeongame.managers.Worldmanager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,16 +20,17 @@ public class DungeonGame implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         if (args.length == 0) {
-            sender.sendMessage("Usage: /dungeongame generate [floor] [normal rooms] [seed] | reload | info");
+            sender.sendMessage("Usage: /dungeongame generate [floor] [normal rooms] [seed] | enter | reload | info");
             return true;
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "generate" -> generate(sender, args);
+            case "enter" -> enter(sender);
             case "reload" -> reload(sender);
             case "info" -> sender.sendMessage("Dungeon layout: " + RoomSpawner.roomList.size()
                     + " rooms, " + RoomSpawner.specialroomcount + " special branches, "
                     + RoomSpawner.connections.size() + " connections.");
-            default -> sender.sendMessage("Usage: /dungeongame generate [floor] [normal rooms] [seed] | reload | info");
+            default -> sender.sendMessage("Usage: /dungeongame generate [floor] [normal rooms] [seed] | enter | reload | info");
         }
         return true;
     }
@@ -58,9 +61,20 @@ public class DungeonGame implements TabExecutor {
         }
     }
 
+    private void enter(CommandSender sender) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("Only a player can enter the dungeon.");
+            return;
+        }
+        RoomSpawner.getGeneratedStartRoom().ifPresentOrElse(start -> {
+            player.teleport(Worldmanager.getRoomSpawn(start));
+            player.sendMessage("Entered the dungeon.");
+        }, () -> sender.sendMessage("Generate a dungeon first: /dungeongame generate"));
+    }
+
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
-        if (args.length == 1) return List.of("generate", "reload", "info");
+        if (args.length == 1) return List.of("generate", "enter", "reload", "info");
         if (args.length == 2 && args[0].equalsIgnoreCase("generate")) return List.of("1", "2", "3", "4", "5");
         return List.of();
     }

@@ -17,7 +17,9 @@ public class dungeongameinit {
         Worldmanager.layoutOriginX = Mlcgames.dungeonConfiguration.getInt("layout.origin.x", 0);
         Worldmanager.layoutOriginY = Mlcgames.dungeonConfiguration.getInt("layout.origin.y", 80);
         Worldmanager.layoutOriginZ = Mlcgames.dungeonConfiguration.getInt("layout.origin.z", 0);
-        Worldmanager.layoutCellSize = Math.max(16, Mlcgames.dungeonConfiguration.getInt("layout.cell-size", 64));
+        Worldmanager.passageWidth = Mlcgames.dungeonConfiguration.getInt("passage.width", 8);
+        Worldmanager.passageHeight = Mlcgames.dungeonConfiguration.getInt("passage.height", 8);
+        Worldmanager.passageBottomOffset = Mlcgames.dungeonConfiguration.getInt("passage.bottom-offset", 1);
         if (templateCount == 0) {
             Mlcgames.instance.getLogger().warning("No matching FAWE room schematics found for dungeon set " + dungeonSet);
         }

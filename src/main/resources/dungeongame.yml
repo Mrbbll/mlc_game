@@ -36,50 +36,61 @@ markers:
 encounters:
   # Every 8x8 opening belonging to an active room is sealed until it is clear.
   closed-door-block: BARRIER
+  # After the current wave is completely defeated, wait this long before the
+  # next wave appears. Easy/normal/hard contain 2/3/4 waves respectively.
+  next-wave-delay-ticks: 40
 
 progression:
-  # A safe visible marker controlled by the plugin; walking within 2.25 blocks
+  # Put exactly one respawn anchor in every End and Boss schematic. It is
+  # scanned as the exact portal position and hidden until progression unlocks.
+  marker-block: RESPAWN_ANCHOR
+  inactive-block: AIR
+  # Block restored at that marker position. Walking within 2.25 blocks
   # teleports the player. Avoid END_PORTAL because vanilla handles it itself.
   portal-block: RESPAWN_ANCHOR
   # Cumulative monster health/damage increase per dungeon level:
   # level 1 = x1.0, level 2 = x1.5, level 3 = x2.25.
   level-stat-multiplier: 1.5
 
-# Health/damage multipliers and difficulty-specific CraftEngine equipment.
-# Put the real CraftEngine namespaced item IDs in helmet/chestplate. Their
-# custom attributes are defined by CraftEngine, so each difficulty may point
-# at a different pair of item definitions. Empty IDs deliberately equip none.
+# CraftEngine pixel armour is discovered from loaded item IDs matching
+# mlcgame:pixel_<set>_<helmet|chestplate|leggings|boots>. Only complete
+# four-piece sets are eligible, and each mob receives one coherent random set.
+dungeon-equipment:
+  pixel-armor:
+    namespace: mlcgame
+    item-prefix: pixel_
+    # Fallback visual-set -> combat armour-type mapping, used only if the CE
+    # helmet has no mlcgames:armor_type PDC. Values below are valid examples:
+    # LIGHT, HEAVY, SPECIAL, ELASTIC. Unmapped sets use the random pool.
+    armor-type-by-set: {}
+  armor-types: [LIGHT, HEAVY, SPECIAL, ELASTIC]
+
+# Health/damage multipliers plus additive armour attributes on every equipped
+# pixel-armour piece. A complete set applies the per-piece bonus four times.
 difficulty:
   easy:
     health-multiplier: 0.75
     damage-multiplier: 0.75
     armor:
-      helmet: ""
-      chestplate: ""
+      attribute-bonus-per-piece: 0.0
+      toughness-bonus-per-piece: 0.0
   normal:
     health-multiplier: 1.0
     damage-multiplier: 1.0
     armor:
-      helmet: ""
-      chestplate: ""
+      attribute-bonus-per-piece: 0.5
+      toughness-bonus-per-piece: 0.25
   hard:
     health-multiplier: 1.5
     damage-multiplier: 1.35
     armor:
-      helmet: ""
-      chestplate: ""
+      attribute-bonus-per-piece: 1.0
+      toughness-bonus-per-piece: 0.5
 
-# Marker mapping:
-#   SPAWNER         -> normal
-#   TRIAL_SPAWNER   -> elite
-#   CREAKING_HEART  -> boss
-# Override priority:
-# mobs.level-2.floor-3.normal -> mobs.floor-3.normal -> mobs.default.normal.
-mobs:
-  default:
-    normal: [ZOMBIE, SKELETON, SPIDER]
-    elite: [WITHER_SKELETON, HUSK]
-    boss: [RAVAGER]
+# Mob definitions are loaded from plugins/mlcgames/dungeongame/mobs/
+# using <dungeon-level>_<environment-set>.yml, for example 1_1.yml.
+# Marker mapping remains SPAWNER -> normal, TRIAL_SPAWNER -> elite and
+# CREAKING_HEART -> boss. Each marker is reused once per encounter wave.
 
 # Templates are read directly from FastAsyncWorldEdit/schematics, not from
 # this file. File name format: floor_set_type_variant.schem

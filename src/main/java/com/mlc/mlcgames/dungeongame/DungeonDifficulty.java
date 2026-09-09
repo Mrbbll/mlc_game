@@ -20,6 +20,8 @@ public enum DungeonDifficulty {
     public String displayName() { return displayName; }
     public double healthMultiplier() { return healthMultiplier; }
     public double damageMultiplier() { return damageMultiplier; }
+    /** 简单 2 波、普通 3 波、困难 4 波；枚举每提升一级增加一波。 */
+    public int waveCount() { return ordinal() + 2; }
     public DungeonDifficulty next() { return values()[(ordinal() + 1) % values().length]; }
     public DungeonDifficulty previous() { return values()[(ordinal() + values().length - 1) % values().length]; }
 

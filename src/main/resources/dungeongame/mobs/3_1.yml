@@ -1,0 +1,76 @@
+# Dungeon level 3, environment set 1.
+mobs:
+  abyss_guard:
+    category: normal
+    entity-type: ZOMBIFIED_PIGLIN
+    weight: 60
+    name: "<dark_purple>深渊守卫"
+    attributes:
+      max-health: 28.0
+      armor: 5.0
+      attack-damage: 5.0
+      movement-speed: 0.25
+      knockback-resistance: 0.15
+    equipment:
+      helmet: IRON_HELMET
+      chestplate: IRON_CHESTPLATE
+      main-hand: GOLDEN_SWORD
+      drop-chance: 0.0
+
+  abyss_archer:
+    category: normal
+    entity-type: SKELETON
+    weight: 40
+    name: "<light_purple>深渊射手"
+    attributes:
+      max-health: 24.0
+      armor: 4.0
+      attack-damage: 4.0
+      movement-speed: 0.28
+      knockback-resistance: 0.10
+    equipment:
+      helmet: IRON_HELMET
+      chestplate: CHAINMAIL_CHESTPLATE
+      main-hand: BOW
+      drop-chance: 0.0
+
+  abyss_elite:
+    category: elite
+    entity-type: WITHER_SKELETON
+    weight: 1
+    name: "<dark_purple><bold>深渊精英"
+    attributes:
+      max-health: 58.0
+      armor: 13.0
+      armor-toughness: 4.0
+      attack-damage: 9.0
+      movement-speed: 0.28
+      knockback-resistance: 0.45
+    equipment:
+      helmet: DIAMOND_HELMET
+      chestplate: IRON_CHESTPLATE
+      leggings: DIAMOND_LEGGINGS
+      boots: IRON_BOOTS
+      main-hand: NETHERITE_SWORD
+      drop-chance: 0.0
+
+  abyss_boss:
+    category: boss
+    entity-type: PIGLIN_BRUTE
+    weight: 1
+    name: "<dark_red><bold>深渊霸主"
+    attributes:
+      max-health: 200.0
+      armor: 18.0
+      armor-toughness: 8.0
+      attack-damage: 15.0
+      movement-speed: 0.29
+      knockback-resistance: 0.80
+      follow-range: 48.0
+    equipment:
+      helmet: NETHERITE_HELMET
+      chestplate: DIAMOND_CHESTPLATE
+      leggings: NETHERITE_LEGGINGS
+      boots: DIAMOND_BOOTS
+      main-hand: NETHERITE_AXE
+      drop-chance: 0.0

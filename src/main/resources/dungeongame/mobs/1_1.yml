@@ -1,0 +1,83 @@
+# Dungeon level 1, environment set 1.
+# category selects the schematic marker pool; entity-type is Bukkit EntityType.
+# Item IDs accept vanilla Material names or CraftEngine IDs such as
+# mlcgame:pixel_iron_helmet. Weight is relative within the same category.
+mobs:
+  crypt_zombie:
+    category: normal
+    entity-type: ZOMBIE
+    weight: 60
+    name: "<green>地穴守卫"
+    name-visible: true
+    scale-with-difficulty: true
+    attributes:
+      max-health: 24.0
+      armor: 3.0
+      attack-damage: 4.0
+      movement-speed: 0.23
+      knockback-resistance: 0.10
+    equipment:
+      helmet: IRON_HELMET
+      chestplate: LEATHER_CHESTPLATE
+      leggings: ""
+      boots: LEATHER_BOOTS
+      main-hand: IRON_SWORD
+      off-hand: ""
+      drop-chance: 0.0
+
+  crypt_archer:
+    category: normal
+    entity-type: SKELETON
+    weight: 40
+    name: "<gray>地穴射手"
+    attributes:
+      max-health: 20.0
+      armor: 2.0
+      attack-damage: 3.0
+      movement-speed: 0.26
+      knockback-resistance: 0.05
+    equipment:
+      helmet: CHAINMAIL_HELMET
+      main-hand: BOW
+      drop-chance: 0.0
+
+  crypt_elite:
+    category: elite
+    entity-type: HUSK
+    weight: 1
+    name: "<gold>地穴精英"
+    attributes:
+      max-health: 48.0
+      armor: 9.0
+      armor-toughness: 2.0
+      attack-damage: 7.0
+      movement-speed: 0.25
+      knockback-resistance: 0.35
+    equipment:
+      helmet: IRON_HELMET
+      chestplate: IRON_CHESTPLATE
+      leggings: CHAINMAIL_LEGGINGS
+      boots: IRON_BOOTS
+      main-hand: IRON_AXE
+      drop-chance: 0.0
+
+  crypt_boss:
+    category: boss
+    entity-type: PIGLIN_BRUTE
+    weight: 1
+    name: "<red><bold>地穴领主"
+    attributes:
+      max-health: 150.0
+      armor: 14.0
+      armor-toughness: 5.0
+      attack-damage: 12.0
+      movement-speed: 0.27
+      knockback-resistance: 0.65
+      follow-range: 40.0
+    equipment:
+      helmet: DIAMOND_HELMET
+      chestplate: IRON_CHESTPLATE
+      leggings: IRON_LEGGINGS
+      boots: DIAMOND_BOOTS
+      main-hand: DIAMOND_AXE
+      drop-chance: 0.0

@@ -1,0 +1,75 @@
+# Dungeon level 2, environment set 1.
+mobs:
+  scorched_guard:
+    category: normal
+    entity-type: HUSK
+    weight: 65
+    name: "<yellow>焦土守卫"
+    attributes:
+      max-health: 26.0
+      armor: 4.0
+      attack-damage: 4.5
+      movement-speed: 0.24
+      knockback-resistance: 0.12
+    equipment:
+      helmet: CHAINMAIL_HELMET
+      chestplate: CHAINMAIL_CHESTPLATE
+      main-hand: STONE_SWORD
+      drop-chance: 0.0
+
+  scorched_archer:
+    category: normal
+    entity-type: STRAY
+    weight: 35
+    name: "<aqua>焦土猎手"
+    attributes:
+      max-health: 22.0
+      armor: 3.0
+      attack-damage: 3.5
+      movement-speed: 0.27
+      knockback-resistance: 0.08
+    equipment:
+      helmet: CHAINMAIL_HELMET
+      main-hand: BOW
+      drop-chance: 0.0
+
+  scorched_elite:
+    category: elite
+    entity-type: WITHER_SKELETON
+    weight: 1
+    name: "<dark_red>焦土行刑者"
+    attributes:
+      max-health: 52.0
+      armor: 11.0
+      armor-toughness: 3.0
+      attack-damage: 8.0
+      movement-speed: 0.27
+      knockback-resistance: 0.40
+    equipment:
+      helmet: IRON_HELMET
+      chestplate: IRON_CHESTPLATE
+      leggings: IRON_LEGGINGS
+      boots: IRON_BOOTS
+      main-hand: DIAMOND_SWORD
+      drop-chance: 0.0
+
+  scorched_boss:
+    category: boss
+    entity-type: PIGLIN_BRUTE
+    weight: 1
+    name: "<red><bold>焦土督军"
+    attributes:
+      max-health: 170.0
+      armor: 16.0
+      armor-toughness: 6.0
+      attack-damage: 13.0
+      movement-speed: 0.28
+      knockback-resistance: 0.70
+      follow-range: 44.0
+    equipment:
+      helmet: DIAMOND_HELMET
+      chestplate: DIAMOND_CHESTPLATE
+      leggings: IRON_LEGGINGS
+      boots: DIAMOND_BOOTS
+      main-hand: DIAMOND_AXE
+      drop-chance: 0.0

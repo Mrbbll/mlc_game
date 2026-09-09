@@ -38,6 +38,7 @@ public final class ArmorTypeService {
         var meta = helmet.getItemMeta();
         meta.getPersistentDataContainer().set(armorTypeKey, PersistentDataType.STRING, armorType.name());
         helmet.setItemMeta(meta);
+        ((LivingEntity) entity).getEquipment().setHelmet(helmet);
         return true;
     }
     public boolean clearArmorType(Entity entity) {
@@ -46,6 +47,7 @@ public final class ArmorTypeService {
         var meta = helmet.getItemMeta();
         meta.getPersistentDataContainer().remove(armorTypeKey);
         helmet.setItemMeta(meta);
+        ((LivingEntity) entity).getEquipment().setHelmet(helmet);
         return true;
     }
 

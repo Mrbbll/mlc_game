@@ -72,7 +72,10 @@ public class DungeonGame implements TabExecutor {
         Mlcgames.configManager.reloadConfig("dungeongame.yml");
         Mlcgames.dungeonConfiguration = Mlcgames.configManager.getConfig("dungeongame.yml");
         try {
-            sender.sendMessage("Loaded " + dungeongameinit.reloadTemplates() + " dungeon room templates.");
+            int templates = dungeongameinit.reloadTemplates();
+            int mobPacks = DungeonGameManager.get().reloadMobDefinitions();
+            sender.sendMessage("Loaded " + templates + " dungeon room templates and "
+                    + mobPacks + " mob environment packs.");
         } catch (IllegalArgumentException exception) {
             sender.sendMessage("Dungeon configuration error: " + exception.getMessage());
         }

@@ -2,6 +2,7 @@ package com.mlc.mlcgames;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.mlc.mlcgames.bank.utils.Bankgame;
+import com.mlc.mlcgames.dungeongame.managers.DungeonGameManager;
 import com.mlc.mlcgames.sandgame.listener.Packetlistener;
 import com.mlc.mlcgames.utils.file.ConfigManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
@@ -89,6 +90,7 @@ public final class Mlcgames extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        DungeonGameManager.shutdownIfInitialized();
         PacketEvents.getAPI().terminate();
         getLogger().info("\n\nmlcgame插件卸载成功\n\n");
     }

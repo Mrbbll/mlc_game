@@ -19,7 +19,6 @@ import com.mlc.mlcgames.combat.damageindicator.DamageIndicatorConfig;
 import com.mlc.mlcgames.combat.damageindicator.DamageIndicatorService;
 import com.mlc.mlcgames.dungeongame.commands.DungeonGame;
 import com.mlc.mlcgames.dungeongame.gamephase.dungeongameinit;
-import com.mlc.mlcgames.dungeongame.listener.DungeonRoomListener;
 import com.mlc.mlcgames.dungeongame.managers.DungeonGameManager;
 import com.mlc.mlcgames.dungeongame.menus.SettingMenu;
 import com.mlc.mlcgames.sandgame.commands.SandGame;
@@ -62,8 +61,8 @@ public class Task {
         Bukkit.getPluginManager().registerEvents(new Sand_Game_Teamselect_Listener(),instance);
         Bukkit.getPluginManager().registerEvents(new CombatListener(combatService), instance);
         Bukkit.getPluginManager().registerEvents(new ProjectileCombatListener(combatService), instance);
-        DungeonGameManager dungeonGameManager = DungeonGameManager.initialize(instance);
-        Bukkit.getPluginManager().registerEvents(new DungeonRoomListener(dungeonGameManager), instance);
+        // 地牢运行监听器由 DungeonGameManager 在每局开始/结束时动态注册和注销。
+        DungeonGameManager.initialize(instance);
         Bukkit.getPluginManager().registerEvents(new SettingMenu(), instance);
         //命令注册
         Objects.requireNonNull(instance.getCommand("reload")).setExecutor(new reload());

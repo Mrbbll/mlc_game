@@ -176,11 +176,12 @@ final class DungeonGenerationService {
             if (room == terminalRoom) terminalEncounter = encounter;
         }
 
-        if (floor == DungeonSession.FLOORS_PER_LEVEL && (terminalEncounter == null
-                || terminalEncounter.markers.stream()
-                .noneMatch(marker -> marker.kind() == DungeonSession.MarkerKind.BOSS))) {
+        long bossMarkers = terminalEncounter == null ? 0 : terminalEncounter.markers.stream()
+                .filter(marker -> marker.kind() == DungeonSession.MarkerKind.BOSS)
+                .count();
+        if (floor == DungeonSession.FLOORS_PER_LEVEL && bossMarkers != 1) {
             throw new IllegalStateException("Boss schematic '" + terminalRoom.getName()
-                    + "' must contain at least one CREAKING_HEART marker");
+                    + "' must contain exactly one CREAKING_HEART marker, found " + bossMarkers);
         }
 
         Worldmanager.RoomBounds terminalBounds = Worldmanager.getRoomBounds(terminalRoom);

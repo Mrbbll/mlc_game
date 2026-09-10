@@ -1,10 +1,15 @@
 package com.mlc.mlcgames.dungeongame.managers;
 
 import com.mlc.mlcgames.dungeongame.Dungeongame;
+import com.mlc.mlcgames.dungeongame.listener.DungeonRoomListener;
 import com.mlc.mlcgames.dungeongame.mobs.CraftEngineMobEquipment;
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -29,17 +34,27 @@ public final class DungeonGameManager {
     private final DungeonProgressionService progression;
     private final DungeonEncounterService encounters;
     private final DungeonMobRegistry mobRegistry;
+    private final DungeonPartyService party;
+    private final DungeonPlayerLifeService lives;
+    private DungeonRoomListener runtimeListener;
 
     private DungeonGameManager(JavaPlugin plugin) {
         this.plugin = plugin;
         Random random = new Random();
         session = new DungeonSession();
+        party = new DungeonPartyService();
+        lives = new DungeonPlayerLifeService(plugin, party, this::endGame);
 
         progression = new DungeonProgressionService(session, new DungeonProgressionService.Listener() {
             @Override
             public void onStageEntered(Player player) {
+                // “进入下一层”是统一复活边界：所有等待中的在线队员和触发者一起接受位置检测。
+                var revived = lives.reviveAtNextStage(player.getLocation());
                 // 传送完成后的下一 tick 再检测，确保 Bukkit 已更新玩家所在区块与坐标。
                 Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(player));
+                for (Player revivedPlayer : revived) {
+                    Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(revivedPlayer));
+                }
             }
 
             @Override
@@ -50,10 +65,12 @@ public final class DungeonGameManager {
 
         CraftEngineMobEquipment equipment = new CraftEngineMobEquipment(plugin);
         mobRegistry = new DungeonMobRegistry(plugin);
-        DungeonMobService mobs = new DungeonMobService(plugin, random, session, equipment);
+        DungeonItemResolver itemResolver = new DungeonItemResolver(plugin);
+        DungeonMobService mobs = new DungeonMobService(plugin, random, session, equipment, itemResolver);
+        DungeonMobDropService drops = new DungeonMobDropService(itemResolver);
         DungeonWaveService waves = new DungeonWaveService(plugin, session, mobs);
         DungeonLootChestService loot = new DungeonLootChestService(plugin, random);
-        encounters = new DungeonEncounterService(session, waves, loot, progression);
+        encounters = new DungeonEncounterService(session, waves, loot, progression, drops, party);
         generation = new DungeonGenerationService(plugin, session, random, mobRegistry);
     }
 
@@ -94,21 +111,33 @@ public final class DungeonGameManager {
         return mobRegistry.reload();
     }
 
+    /** 菜单只向准备队和正式地牢队开放。 */
+    public boolean canOpenMenu(Player player) {
+        return party.canAccessLobby(player);
+    }
+
     /** 创建干净世界并开始分批生成全部十五层。 */
     public void startGame(Player owner) {
         if (isRunningOrGenerating()) {
             owner.sendMessage("§c地牢游戏已经开始或正在生成。");
             return;
         }
+        if (!party.canAccessLobby(owner)) {
+            owner.sendMessage("§c只有 dungeongame_prepareteam 或 dungeongame_team 的玩家才能开始地牢。");
+            return;
+        }
 
         try {
+            int promoted = party.promotePreparedPlayers();
+            enableRuntimeListener();
             clearRuntimeState();
             Dungeongame.lastGameWon = false;
             Dungeongame.lastWinner = null;
             Dungeongame.currentLevel = 1;
             Dungeongame.currentFloor = 1;
             Worldmanager.createDungeonWorld();
-            owner.sendMessage("§e开始生成 3 关 × 每关 5 层地牢，请稍候……");
+            owner.sendMessage("§e已将 " + promoted + " 名准备队玩家加入地牢队伍；"
+                    + "开始生成 3 关 × 每关 5 层地牢，请稍候……");
             generation.start(owner, new DungeonGenerationService.Listener() {
                 @Override
                 public void onCompleted(Player completedOwner) {
@@ -129,7 +158,10 @@ public final class DungeonGameManager {
      * 结束生成或运行中的游戏。此方法是幂等的，可由菜单、命令、胜利流程或异常清理调用。
      */
     public void endGame() {
+        // 先停止接收地牢事件，避免撤离传送或清理实体时重新推进房间状态。
+        disableRuntimeListener();
         generation.cancel();
+        lives.cleanup();
         encounters.cleanup();
 
         // 必须先把玩家送离地牢世界，之后该世界才可能在下一局安全卸载和删除。
@@ -147,7 +179,7 @@ public final class DungeonGameManager {
         Dungeongame.isstart = false;
     }
 
-    /** 将玩家加入当前局并送到第一关第一层。 */
+    /** 将一名在线地牢队员补进当前局并送到第一关第一层。 */
     public void enter(Player player) {
         if (!Dungeongame.isstart || session.stages.isEmpty()) {
             player.sendMessage(generation.isGenerating()
@@ -155,10 +187,17 @@ public final class DungeonGameManager {
             return;
         }
 
-        Dungeongame.participants.add(player);
+        if (!party.isMember(player)) {
+            player.sendMessage("§c你不在 dungeongame_team 队伍中，无法进入当前地牢。");
+            return;
+        }
+
         Dungeongame.currentLevel = 1;
         Dungeongame.currentFloor = 1;
-        player.teleport(session.stages.getFirst().start);
+        if (!party.enterMember(player, session.stages.getFirst().start)) {
+            player.sendMessage("§c进入地牢失败，请稍后重试。");
+            return;
+        }
         player.sendMessage("§a进入地牢第 1 关，第 1 层。");
         Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(player));
     }
@@ -166,11 +205,32 @@ public final class DungeonGameManager {
     /** 玩家跨方块移动时的统一入口：传送门优先于房间激活，避免一次事件执行两条流程。 */
     public void handlePlayerPosition(Player player) {
         if (!Dungeongame.isstart || player.getWorld() != Worldmanager.dungeonWorld) return;
+        // 非队员即使因管理员传送等原因进入地牢世界，也不能推进关卡或触发刷怪。
+        if (!party.isMember(player)) return;
+        // 阵亡旁观者只能等待跨层复活，不能通过飞行替队伍触发传送点或新遭遇。
+        if (lives.isAwaitingRevival(player)) return;
+        Dungeongame.participants.add(player);
         if (progression.handlePlayerPosition(player)) return;
         encounters.handlePlayerPosition(player);
     }
 
     /** 实体死亡监听器入口；归属判断与清房结算由遭遇服务完成。 */
+    public void handleMonsterDeath(EntityDeathEvent event) {
+        encounters.handleMonsterDeath(event);
+    }
+
+    /** 玩家死亡监听入口；旁观、复活和团灭延时均由生命服务管理。 */
+    public void handlePlayerDeath(PlayerDeathEvent event) {
+        lives.handleDeath(event);
+    }
+
+    /** 自动重生时修正位置，并在事件结束后的下一 tick 应用旁观模式。 */
+    public void handlePlayerRespawn(PlayerRespawnEvent event) {
+        lives.handleRespawn(event);
+    }
+
+    /** @deprecated Bukkit 监听器应传入完整死亡事件，才能应用地牢专属掉落规则。 */
+    @Deprecated(forRemoval = false)
     public void handleMonsterDeath(UUID uuid) {
         encounters.handleMonsterDeath(uuid);
     }
@@ -178,18 +238,25 @@ public final class DungeonGameManager {
     private void finishGeneration(Player owner) {
         progression.initializePortals();
         Dungeongame.isstart = true;
+        var entered = party.enterOnlineTeam(session.stages.getFirst().start);
+        for (Player player : entered) {
+            Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(player));
+        }
+
         if (owner.isOnline()) {
-            enter(owner);
             owner.sendMessage("§a已在同一世界生成全部 15 个地牢，共 "
-                    + session.generatedRoomCount + " 个房间。");
-        } else {
-            Bukkit.broadcastMessage("§a全部 15 个地牢已生成，可以使用 /dungeongame enter 加入。");
+                    + session.generatedRoomCount + " 个房间；已传送 " + entered.size() + " 名在线队员。");
+        }
+        if (entered.isEmpty()) {
+            Bukkit.broadcastMessage("§a全部 15 个地牢已生成，在线队员可使用 /dungeongame enter 加入。");
         }
     }
 
     private void abortGeneration(Player owner, RuntimeException exception) {
+        disableRuntimeListener();
         generation.cancel();
         Dungeongame.isstart = false;
+        lives.cleanup();
         encounters.cleanup();
         clearRuntimeState();
         plugin.getLogger().severe("Dungeon generation failed: " + exception.getMessage());
@@ -208,5 +275,18 @@ public final class DungeonGameManager {
     private void clearRuntimeState() {
         session.clear();
         Dungeongame.participants.clear();
+    }
+
+    /** 除菜单外的地牢事件只在一局开始后存在，结束或失败时立即注销。 */
+    private void enableRuntimeListener() {
+        if (runtimeListener != null) return;
+        runtimeListener = new DungeonRoomListener(this);
+        Bukkit.getPluginManager().registerEvents(runtimeListener, plugin);
+    }
+
+    private void disableRuntimeListener() {
+        if (runtimeListener == null) return;
+        HandlerList.unregisterAll(runtimeListener);
+        runtimeListener = null;
     }
 }

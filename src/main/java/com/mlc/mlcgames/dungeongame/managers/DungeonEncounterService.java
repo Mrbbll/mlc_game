@@ -1,10 +1,12 @@
 package com.mlc.mlcgames.dungeongame.managers;
 
 import com.mlc.mlcgames.dungeongame.Dungeongame;
+import com.mlc.mlcgames.dungeongame.rooms.RoomType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -18,13 +20,18 @@ final class DungeonEncounterService {
     private final DungeonWaveService waves;
     private final DungeonLootChestService loot;
     private final DungeonProgressionService progression;
+    private final DungeonMobDropService drops;
+    private final DungeonPartyService party;
 
     DungeonEncounterService(DungeonSession session, DungeonWaveService waves,
-                            DungeonLootChestService loot, DungeonProgressionService progression) {
+                            DungeonLootChestService loot, DungeonProgressionService progression,
+                            DungeonMobDropService drops, DungeonPartyService party) {
         this.session = session;
         this.waves = waves;
         this.loot = loot;
         this.progression = progression;
+        this.drops = drops;
+        this.party = party;
     }
 
     /** 检查玩家所在房间；一次移动事件最多激活一场遭遇。 */
@@ -32,13 +39,23 @@ final class DungeonEncounterService {
         for (DungeonSession.Encounter encounter : session.encounters) {
             if (encounter.state == DungeonSession.EncounterState.WAITING
                     && encounter.bounds.contains(player.getLocation())) {
-                activate(encounter);
+                activate(encounter, player);
                 return;
             }
         }
     }
 
-    /** 只处理本服务登记过的怪物，普通世界中的实体死亡不会影响地牢状态。 */
+    /** 只接管本服务登记过的怪物；普通世界实体的掉落与经验完全不受影响。 */
+    void handleMonsterDeath(EntityDeathEvent event) {
+        UUID uuid = event.getEntity().getUniqueId();
+        DungeonSession.Encounter encounter = session.monsterOwners.remove(uuid);
+        if (encounter == null) return;
+        drops.replaceDrops(event);
+        encounter.monsters.remove(uuid);
+        if (encounter.monsters.isEmpty()) waves.onCurrentWaveCleared(encounter, this::clear);
+    }
+
+    /** 兼容旧 API 的无事件入口；只能推进归属状态，无法改写 Bukkit 掉落列表。 */
     void handleMonsterDeath(UUID uuid) {
         DungeonSession.Encounter encounter = session.monsterOwners.remove(uuid);
         if (encounter == null) return;
@@ -66,12 +83,20 @@ final class DungeonEncounterService {
         }
     }
 
-    private void activate(DungeonSession.Encounter encounter) {
+    private void activate(DungeonSession.Encounter encounter, Player trigger) {
+        // 必须先切换状态：PlayerTeleportEvent 继承移动事件，集结传送可能同步回到本方法；
+        // 提前标记 ACTIVE 可以保证同一个 WAITING 房间只激活一次。
         encounter.state = DungeonSession.EncounterState.ACTIVE;
+        // 在关门和刷怪前集结队友，这样慢一步的成员不会被屏障留在房间外。
+        party.rallyForEncounter(trigger, encounter.bounds);
         Worldmanager.setRoomDoors(encounter.doors,
                 DungeonConfiguration.material("encounters.closed-door-block", Material.BARRIER));
 
-        waves.start(encounter, Dungeongame.difficulty.waveCount(), this::clear);
+        // Boss 房是一次性决战，不参与难度波次；普通/特殊房才使用 2/3/4 波规则。
+        int totalWaves = encounter.roomType == RoomType.Boss
+                ? 1
+                : Dungeongame.difficulty.waveCount();
+        waves.start(encounter, totalWaves, this::clear);
     }
 
     private void clear(DungeonSession.Encounter encounter) {

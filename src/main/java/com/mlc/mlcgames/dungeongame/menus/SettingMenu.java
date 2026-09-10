@@ -28,6 +28,10 @@ public final class SettingMenu implements Listener {
     private static final int MAX_SIZE = 30;
 
     public void open(Player player) {
+        if (!DungeonGameManager.get().canOpenMenu(player)) {
+            player.sendMessage("§c只有地牢准备队或地牢正式队的玩家才能打开此菜单。");
+            return;
+        }
         SettingsHolder holder = new SettingsHolder();
         holder.inventory = Bukkit.createInventory(holder, 27, Component.text("地牢游戏设置"));
         render(holder.inventory);
@@ -61,6 +65,12 @@ public final class SettingMenu implements Listener {
         if (!(event.getInventory().getHolder() instanceof SettingsHolder)) return;
         event.setCancelled(true);
         if (!(event.getWhoClicked() instanceof Player player) || event.getClickedInventory() != event.getInventory()) return;
+        // 玩家打开菜单后可能被移出队伍，因此点击时再次校验，不能只依赖 open()。
+        if (!DungeonGameManager.get().canOpenMenu(player)) {
+            player.closeInventory();
+            player.sendMessage("§c你已不在地牢准备队或正式队中，菜单操作已取消。");
+            return;
+        }
 
         int slot = event.getRawSlot();
         if (slot == START_SLOT) {

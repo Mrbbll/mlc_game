@@ -15,7 +15,6 @@ mobs:
       helmet: CHAINMAIL_HELMET
       chestplate: CHAINMAIL_CHESTPLATE
       main-hand: STONE_SWORD
-      drop-chance: 0.0
 
   scorched_archer:
     category: normal
@@ -31,7 +30,6 @@ mobs:
     equipment:
       helmet: CHAINMAIL_HELMET
       main-hand: BOW
-      drop-chance: 0.0
 
   scorched_elite:
     category: elite
@@ -51,7 +49,6 @@ mobs:
       leggings: IRON_LEGGINGS
       boots: IRON_BOOTS
       main-hand: DIAMOND_SWORD
-      drop-chance: 0.0
 
   scorched_boss:
     category: boss
@@ -72,4 +69,3 @@ mobs:
       leggings: IRON_LEGGINGS
       boots: DIAMOND_BOOTS
       main-hand: DIAMOND_AXE
-      drop-chance: 0.0

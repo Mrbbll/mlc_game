@@ -27,8 +27,7 @@ record DungeonMobDefinition(
             String boots,
             String mainHand,
             String offHand,
-            boolean autoPixelArmor,
-            float dropChance
+            boolean autoPixelArmor
     ) { }
 }
 

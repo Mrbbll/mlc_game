@@ -193,11 +193,7 @@ final class DungeonMobRegistry {
             File file, String id, ConfigurationSection section) {
         if (section == null) {
             // 没有 equipment 段时延续旧行为：自动选择完整 CraftEngine 像素护甲套装。
-            return new DungeonMobDefinition.Equipment("", "", "", "", "", "", true, 0.0F);
-        }
-        double dropChance = section.getDouble("drop-chance", 0.0);
-        if (!Double.isFinite(dropChance) || dropChance < 0.0 || dropChance > 1.0) {
-            throw invalid(file, id, "equipment.drop-chance must be between 0 and 1");
+            return new DungeonMobDefinition.Equipment("", "", "", "", "", "", true);
         }
         return new DungeonMobDefinition.Equipment(
                 section.getString("helmet", ""),
@@ -206,8 +202,7 @@ final class DungeonMobRegistry {
                 section.getString("boots", ""),
                 section.getString("main-hand", ""),
                 section.getString("off-hand", ""),
-                section.getBoolean("auto-pixel-armor", false),
-                (float) dropChance);
+                section.getBoolean("auto-pixel-armor", false));
     }
 
     private static String requiredString(File file, String id, ConfigurationSection section, String key) {

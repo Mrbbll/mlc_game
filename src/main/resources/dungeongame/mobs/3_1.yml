@@ -15,7 +15,6 @@ mobs:
       helmet: IRON_HELMET
       chestplate: IRON_CHESTPLATE
       main-hand: GOLDEN_SWORD
-      drop-chance: 0.0
 
   abyss_archer:
     category: normal
@@ -32,7 +31,6 @@ mobs:
       helmet: IRON_HELMET
       chestplate: CHAINMAIL_CHESTPLATE
       main-hand: BOW
-      drop-chance: 0.0
 
   abyss_elite:
     category: elite
@@ -52,7 +50,6 @@ mobs:
       leggings: DIAMOND_LEGGINGS
       boots: IRON_BOOTS
       main-hand: NETHERITE_SWORD
-      drop-chance: 0.0
 
   abyss_boss:
     category: boss
@@ -73,4 +70,3 @@ mobs:
       leggings: NETHERITE_LEGGINGS
       boots: DIAMOND_BOOTS
       main-hand: NETHERITE_AXE
-      drop-chance: 0.0

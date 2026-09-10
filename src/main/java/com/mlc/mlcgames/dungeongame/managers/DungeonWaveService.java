@@ -82,6 +82,8 @@ final class DungeonWaveService {
     }
 
     private static void announce(DungeonSession.Encounter encounter) {
+        // 单次遭遇（Boss 房）没有“波次”概念，也不显示没有意义的 1/1 提示。
+        if (encounter.totalWaves <= 1) return;
         String message = "§e第 " + encounter.currentWave + "/" + encounter.totalWaves + " 波";
         for (Player player : Dungeongame.participants) {
             if (player.isOnline() && encounter.bounds.contains(player.getLocation())) {

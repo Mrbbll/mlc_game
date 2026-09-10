@@ -32,12 +32,12 @@ final class DungeonMobService {
     private final Set<String> warnedDefinitions = new HashSet<>();
 
     DungeonMobService(JavaPlugin plugin, Random random, DungeonSession session,
-                      CraftEngineMobEquipment automaticPixelArmor) {
+                      CraftEngineMobEquipment automaticPixelArmor, DungeonItemResolver itemResolver) {
         this.plugin = plugin;
         this.random = random;
         this.session = session;
         this.automaticPixelArmor = automaticPixelArmor;
-        itemResolver = new DungeonItemResolver(plugin);
+        this.itemResolver = itemResolver;
         sessionIdKey = new NamespacedKey(plugin, "dungeon_session_id");
         encounterIdKey = new NamespacedKey(plugin, "dungeon_encounter_id");
         definitionIdKey = new NamespacedKey(plugin, "dungeon_mob_id");
@@ -119,13 +119,13 @@ final class DungeonMobService {
             equipment.setItemInOffHand(itemResolver.resolve(configured.offHand()));
         }
 
-        float dropChance = configured.dropChance();
-        equipment.setHelmetDropChance(dropChance);
-        equipment.setChestplateDropChance(dropChance);
-        equipment.setLeggingsDropChance(dropChance);
-        equipment.setBootsDropChance(dropChance);
-        equipment.setItemInMainHandDropChance(dropChance);
-        equipment.setItemInOffHandDropChance(dropChance);
+        // 地牢怪物的装备永不掉落；死亡事件还会清空原版掉落并只加入 CE 金币。
+        equipment.setHelmetDropChance(0.0F);
+        equipment.setChestplateDropChance(0.0F);
+        equipment.setLeggingsDropChance(0.0F);
+        equipment.setBootsDropChance(0.0F);
+        equipment.setItemInMainHandDropChance(0.0F);
+        equipment.setItemInOffHandDropChance(0.0F);
     }
 
     private void setIfConfigured(String id, java.util.function.Consumer<ItemStack> setter) {

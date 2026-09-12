@@ -107,7 +107,7 @@ Purpur 新版可能把该世界存储为主世界下的 `dimensions/minecraft/du
 
 普通与特殊房可以放多个标记；每个标记在每一波复用一次，因此 3 个标记、普通难度会依次生成 3 波、总计 9 只怪物。扫描后标记会替换为 `markers.replacement`。当前波全部受控怪物死亡前不会生成下一波，全部波次结束前不会开门或结算奖励。下一波等待时间由主配置 `encounters.next-wave-delay-ticks` 控制，默认 40 tick。
 
-波次数量由难度枚举固定推导：简单 2 波、普通 3 波、困难 4 波，即难度每提高一级增加一波。此规则只用于非 Boss 房。Boss 房固定执行一次生成且不显示 `1/1 波` 提示；原理图只能放一个 `CREAKING_HEART`，所以整场只会生成一个 Boss。Boss 房如果额外放置普通或精英标记，它们会作为同一次决战的随从生成，不会开启后续波次。
+波次数量由难度枚举固定推导：简单 2 波、普通 3 波、困难 4 波，即难度每提高一级增加一波。此规则只用于非 Boss 房。Boss 房固定执行一次生成且不显示 `1/1 波` 提示；原理图必须且只能放一个 `CREAKING_HEART`，运行时也只处理该 Boss 标记。即使 Boss 原理图误留普通或精英标记，也不会生成或追踪随从，因此唯一 Boss 死亡后会立即清房并解锁出口。
 
 房门封闭使用 `encounters.closed-door-block`。封闭范围与生成时开的孔完全一致，即区块中心对称的 8 格宽、8 格高开口；具体宽高仍由 `passage` 配置控制。
 
@@ -119,7 +119,9 @@ Purpur 新版可能把该世界存储为主世界下的 `dimensions/minecraft/du
 
 生成完成时会查询一次全部在线队员并传送到第一层。此后每次 `WAITING` 状态的战斗房首次被任一队员触发时，会重新实时查询队伍，因此开局后才上线或才加入队伍的玩家也能在下一场新遭遇时被拉入。离线成员保留队伍资格但无法传送；可在上线后使用 `/dungeongame enter` 补进当前局。
 
-集结顺序严格为：`房间状态切换为 ACTIVE → 传送队员 → 关门 → 生成第一波`。先切换状态用于阻止 `PlayerTeleportEvent` 再次激活同一房间；先传送再关门则避免队员被屏障留在门外。已在目标房间内的队员保持原位，其他在线队员优先分散到触发者附近的安全方块；没有可用偏移位置时回退到触发者坐标。所有实际进入过本局的玩家都会保留在 `Dungeongame.participants`，即使中途离队，结束游戏时仍会被安全送出即将卸载的地牢世界。
+只有队员实际跨方块移动、走进 `WAITING` 状态的战斗房时才会激活遭遇并集结全队。`PlayerTeleportEvent` 虽然继承 `PlayerMoveEvent`，监听器会明确排除它；任意插件传送、层级传送、`/dungeongame enter`、开局入场、复活传送和集结传送都只同步参与者及侧边栏，不执行房间或推进检测。玩家被直接传送进未激活房间时，需要落地后实际跨过一个方块才会触发刷怪与集结。
+
+集结顺序严格为：`房间状态切换为 ACTIVE → 传送队员 → 关门 → 生成第一波`。先切换状态保证同一房间不会被同 tick 内其他玩家的移动事件重复激活；先传送再关门则避免队员被屏障留在门外。已在目标房间内的队员保持原位，其他在线队员优先分散到触发者附近的安全方块；没有可用偏移位置时回退到触发者坐标。所有实际进入过本局的玩家都会保留在 `Dungeongame.participants`，即使中途离队，结束游戏时仍会被安全送出即将卸载的地牢世界。
 
 ## 玩家死亡、旁观与跨层复活
 
@@ -127,11 +129,29 @@ Purpur 新版可能把该世界存储为主世界下的 `dimensions/minecraft/du
 
 死亡发生时立即把玩家加入等待复活集合，并在下一 tick 自动执行 Bukkit 重生。重生位置固定为死亡位置，重生事件结束后切换为自由 `SPECTATOR`，不会自动选择或锁定任何队友作为旁观目标。等待复活的旁观者可以自由飞行观察，但不能触发房间、层级传送点或胜利。“存活队友”只用于判断等待复活还是团灭，必须同时满足：在线、正式队成员、已进入本局、仍在地牢世界、未死亡、未等待复活且不是旁观模式。
 
-当任一存活队员使用层级传送点进入下一层，推进回调会恢复全部在线等待者为 `SURVIVAL`，传送到新层起点，并在下一 tick 继续执行房间检测。若复活传送被其他插件取消，该玩家继续保持旁观等待状态。最后一名可战斗成员死亡时启动固定 100 tick（5 秒）的团灭任务；到期后恢复旁观者、把全体参与者送出地牢并结束本局。手动结束、生成失败或插件关闭都会取消尚未执行的团灭任务。
+当任一存活队员使用层级传送点进入下一层，推进回调会恢复全部在线等待者为 `SURVIVAL` 并传送到新层起点；这些复活传送不会触发房间检测。若复活传送被其他插件取消，该玩家继续保持旁观等待状态。最后一名可战斗成员死亡时启动固定 100 tick（5 秒）的团灭任务；到期后恢复旁观者、把全体参与者送出地牢并结束本局。手动结束、生成失败或插件关闭都会取消尚未执行的团灭任务。
 
 ## 地牢监听器生命周期
 
-`SettingMenu` 是唯一在插件启动时常驻注册的地牢监听器，用来处理菜单点击和拖动。移动检测、怪物死亡、玩家死亡与玩家重生统一由 `DungeonRoomListener` 处理；它只在合法玩家执行地牢开始后由 `DungeonGameManager` 动态注册，并在手动结束、团灭、胜利、生成失败或插件关闭时立即通过 `HandlerList.unregisterAll` 注销。撤离传送和怪物清理发生在注销之后，不会意外再次触发推进逻辑。
+`SettingMenu` 是唯一在插件启动时常驻注册的地牢监听器，用来处理菜单点击和拖动。物理移动、传送状态同步、怪物死亡、玩家死亡与玩家重生统一由 `DungeonRoomListener` 处理；它只在合法玩家执行地牢开始后由 `DungeonGameManager` 动态注册，并在手动结束、团灭、胜利、生成失败或插件关闭时立即通过 `HandlerList.unregisterAll` 注销。物理移动入口负责推进与遭遇检测，传送入口则延迟一 tick 后只同步参与者和侧边栏，两条路径不会互相调用。
+
+## 每玩家独立地牢侧边栏
+
+玩家实际进入 `Dungeongame` 世界后，`Sidebarmanager` 会为其创建独立 Bukkit `Scoreboard`。`Player#setScoreboard(...)` 由服务端向该玩家定向发送计分板数据，因此不需要维护版本相关的 PacketEvents 计分板包，并且甲玩家的属性刷新不会覆盖乙玩家。阵亡后的自由旁观仍保留侧边栏；玩家传送离开地牢、游戏结束或刷新任务停止时，调用 `Gamesidebar.showsidebar(player)` 恢复默认 MLC Games 显示。
+
+侧边栏默认每 10 tick 刷新，显示玩家名、当前全局关卡/层数及 `combat_formula.yml` 实际注册的七项 CraftEngine 战斗属性：命中值、闪避值、暴击率、暴击抗性、暴击倍率、伤害倍率和伤害减免。每项显示值为玩家常驻 `scope: entity` 最终值加上当前主手物品的 `scope: weapon` 增量，并在合并后应用属性约束；因此武器值高于或低于基础值都能显示。切换快捷栏后最迟在一个刷新周期内变化。读取统一经过 `CraftEngineAttributeBridge`；CraftEngine 不可用或属性 ID 未注册时显示 `--`，不会伪装成数值 0。
+
+配置位于 `dungeongame.yml/sidebar`：
+
+- `refresh-ticks`：刷新周期，强制限制为 5-200 tick。
+- `title`：MiniMessage 格式标题。
+- `attributes`：最多 12 行；每行包含 MiniMessage `label`、CraftEngine `id` 和 `format`。
+- `format: number`：直接显示原始值。
+- `format: percent`：显示 `原始值 × 100%`。
+- `format: multiplier`：显示 `x原始值`。
+- `format: bonus-multiplier`：把加成值显示为 `x(1 + 原始值)`；默认用于 `mlcgame:damage_bonus`。
+
+属性 ID 已与测试服 `CraftEngine/resources/mlcgame/configuration/combat_formula.yml` 对齐：`accuracy` 与 `evasion` 是用于命中公式比较的原始数值，并非直接百分比；`critical_chance`、`critical_resistance`、`damage_reduction` 按比例转成百分比；`critical_multiplier` 是完整暴击倍率；`damage_bonus` 按公式 `1 + bonus` 显示最终伤害倍率。插件不会在运行时读取测试服绝对路径，该文件只作为契约来源；若以后 ID 改名，修改侧边栏配置即可。`/dungeongame reload` 会立即重建当前玩家的私人侧边栏，并应用新的属性行和刷新周期；最多显示 15 行，其中 3 行保留给玩家名、进度和空行。
 
 ## 环境怪物文件
 
@@ -245,6 +265,7 @@ mobs:
 | `DungeonGameManager` | 对外 API、开始/结束/进入、生命周期编排 | 模板扫描、刷怪细节、奖励箱坐标搜索 |
 | `DungeonPartyService` | 准备队迁移、正式队准入、参与者同步与新房间整队集结 | 房间状态、刷怪或关卡生成 |
 | `DungeonPlayerLifeService` | 玩家死亡、自动旁观、跨层复活和 5 秒团灭任务 | 怪物死亡、房间结算或队伍配置 |
+| `Sidebarmanager` | 创建每玩家私人计分板、读取 CE 属性、定时刷新与恢复默认显示 | 修改 CraftEngine 属性或决定地牢参与资格 |
 | `DungeonSession` | 保存关卡、遭遇、传送门、怪物归属等运行时快照 | 调度任务或修改世界 |
 | `DungeonGenerationService` | 分 tick 生成 15 层，选择完整环境，扫描并替换模板标记 | 开始游戏状态、传送玩家、生成怪物 |
 | `DungeonProgressionService` | 串联 15 层、解锁精确传送点、切层与胜利回调 | 判断清房条件 |
@@ -271,6 +292,7 @@ mobs:
 - `DungeonGameManager.java`：稳定的对外门面与一局游戏生命周期编排。
 - `DungeonPartyService.java`：地牢队伍准入、在线成员查询、参与者登记和房间集结传送。
 - `DungeonPlayerLifeService.java`：玩家死亡等待、自动旁观、下一层复活和团灭延时结束。
+- `Sidebarmanager.java`：每玩家独立地牢侧边栏、CraftEngine 属性显示和默认侧边栏恢复。
 - `DungeonSession.java`：关卡、遭遇、传送门及怪物归属的运行时数据模型。
 - `DungeonGenerationService.java`：15 层分批生成、环境选择、绝对坐标快照和原理图标记扫描。
 - `DungeonProgressionService.java`：层级推进、精确传送点激活和胜利回调。
@@ -291,7 +313,7 @@ mobs:
 - `DungeonTemplatePlacement.java`：模板尺寸校验、普通房/桥的 FAWE 粘贴。
 - `DungeonRoomGeometry.java`：开孔、门洞绝对坐标、房间边界和出生点计算。
 - `Roommanager.java`：FAWE 文件发现、命名解析和模板分类。
-- `dungeongame.yml`：运行参数、波次间隔、像素护甲发现规则和难度倍率。
+- `dungeongame.yml`：运行参数、私人侧边栏属性行、波次间隔、像素护甲发现规则和难度倍率。
 - `dungeongame/mobs/<关卡>_<环境>.yml`：对应原理图环境的小怪、精英、Boss、权重、属性和装备。
 
 ## 后续待接内容
@@ -322,7 +344,7 @@ mobs:
 ### 2026-09-10：Boss 单次遭遇
 
 - Boss 房不再使用难度波数，始终只执行一次怪物生成，也不显示 `1/1 波` ActionBar。
-- Boss 原理图从“至少一个”收紧为“恰好一个” `CREAKING_HEART`，保证整场只生成一个 boss 池实体；其他普通/精英标记如存在，仅作为同场随从生成一次。
+- Boss 原理图从“至少一个”收紧为“恰好一个” `CREAKING_HEART`，保证整场只生成一个 boss 池实体。
 
 ### 2026-09-10：统一怪物金币掉落
 
@@ -356,3 +378,34 @@ mobs:
 
 - 删除阵亡后自动选择队友并调用 `setSpectatorTarget(...)` 的镜头锁定逻辑，也不再把重生点改到队友身边。
 - 阵亡者在死亡位置进入普通自由旁观模式；等待复活标记仍会阻止其触发怪物房、层级传送点和最终胜利，跨层复活及团灭规则不变。
+
+### 2026-09-11：每玩家独立属性侧边栏
+
+- 启用原先保留为空兼容类型的 `Sidebarmanager`，改为每位地牢玩家创建独立 Bukkit 计分板；Bukkit 定向发送内容，不直接依赖 PacketEvents 协议类。
+- 侧边栏仅在玩家位于地牢世界时显示，旁观期间保留；离开世界、手动结束、胜利、团灭或插件关闭时恢复 `Gamesidebar` 默认显示，并取消刷新任务。
+- 通过 `CraftEngineAttributeBridge` 周期读取玩家最终属性；未注册属性显示 `--`。
+- 新增 `sidebar.refresh-ticks/title/attributes` 配置契约，支持 `number/percent/multiplier/bonus-multiplier` 四种显示换算和最多 12 个自定义属性 ID。
+- `/dungeongame reload` 现在会即时重建私人侧边栏并更新刷新周期。
+
+### 2026-09-11：侧边栏属性契约对齐 CraftEngine
+
+- 以测试服 `combat_formula.yml` 为准，删除此前猜测但并未注册的 attack、defense、critical_damage、dodge_chance、armor_penetration 和 healing_bonus 默认显示项。
+- 默认侧边栏和 `CombatAttribute` 统一改为实际七项 ID：accuracy、evasion、critical_chance、critical_resistance、critical_multiplier、damage_bonus、damage_reduction。
+- 命中和闪避显示公式使用的原始数值；暴击率、暴击抗性与减伤显示百分比；暴击倍率直接显示 `xN`；伤害加成按照 CE 公式显示为 `x(1 + bonus)`。
+
+### 2026-09-11：传送与房间触发解耦
+
+- `DungeonRoomListener` 明确从 `PlayerMoveEvent` 路径排除其子类 `PlayerTeleportEvent`；只有玩家实际跨方块移动才允许检查层级传送点和未激活房间。
+- 新增独立传送入口 `handlePlayerTeleport`，在传送落地后的下一 tick 只同步参与者记录与私人侧边栏，不触发推进、刷怪或全队集结。
+- 删除开局入场、`/dungeongame enter` 和跨层复活传送后的主动房间检测；直接传送进新怪物房的玩家必须落地后移动至少一个方块，才会激活遭遇。
+
+### 2026-09-11：主手武器属性显示与 Boss 清房修复
+
+- 侧边栏不再只读取 CE 实体常驻属性；现在复用 CraftEngine 的攻击者合成规则，把玩家 `scope: entity` 最终值与当前主手物品的 `scope: weapon` 值相加，并提供 ITEM/ENTITY/PLAYER 上下文支持随机物品参数和条件修饰符。
+- Boss 房运行时只生成唯一 `CREAKING_HEART` 对应的 boss 池实体；误留的普通或精英标记不会生成、不会进入存活集合，避免 Boss 已死但出口仍等待随从。
+- 怪物死亡结算使用 `finally` 推进存活集合和清房状态；即使 CraftEngine 金币构造等附加掉落逻辑异常，也不会阻止房门开启与推进传送门解锁。
+
+### 2026-09-11：低于基础值的武器属性修正
+
+- 修正直接调用 CE 26.8.2 `getWeaponAttributeValue` 时负武器增量被属性最小约束提前截为 0 的问题。例如实体基础命中 1000、武器目标命中 500 所产生的 `-500` 增量，现在正确显示为 500。
+- `CraftEngineAttributeBridge` 按 CE 的属性 operation 顺序计算未裁剪武器增量，再与实体最终值合并，最后只对合计值应用一次 `Attribute.limit`；正增量、负增量、随机参数及条件修饰符走同一条路径。

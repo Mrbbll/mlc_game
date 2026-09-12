@@ -36,6 +36,7 @@ public final class DungeonGameManager {
     private final DungeonMobRegistry mobRegistry;
     private final DungeonPartyService party;
     private final DungeonPlayerLifeService lives;
+    private final Sidebarmanager sidebar;
     private DungeonRoomListener runtimeListener;
 
     private DungeonGameManager(JavaPlugin plugin) {
@@ -44,17 +45,14 @@ public final class DungeonGameManager {
         session = new DungeonSession();
         party = new DungeonPartyService();
         lives = new DungeonPlayerLifeService(plugin, party, this::endGame);
+        sidebar = new Sidebarmanager(plugin);
 
         progression = new DungeonProgressionService(session, new DungeonProgressionService.Listener() {
             @Override
             public void onStageEntered(Player player) {
-                // “进入下一层”是统一复活边界：所有等待中的在线队员和触发者一起接受位置检测。
-                var revived = lives.reviveAtNextStage(player.getLocation());
-                // 传送完成后的下一 tick 再检测，确保 Bukkit 已更新玩家所在区块与坐标。
-                Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(player));
-                for (Player revivedPlayer : revived) {
-                    Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(revivedPlayer));
-                }
+                // “进入下一层”是统一复活边界。复活传送本身不触发新房间；玩家必须在
+                // 落地后实际跨方块走入尚未激活的房间，才会启动遭遇并集结队友。
+                lives.reviveAtNextStage(player.getLocation());
             }
 
             @Override
@@ -108,6 +106,7 @@ public final class DungeonGameManager {
 
     /** 事务式重载环境怪物文件；已经生成的房间继续使用开局时保存的配置快照。 */
     public int reloadMobDefinitions() {
+        sidebar.reloadConfiguration();
         return mobRegistry.reload();
     }
 
@@ -161,6 +160,7 @@ public final class DungeonGameManager {
         // 先停止接收地牢事件，避免撤离传送或清理实体时重新推进房间状态。
         disableRuntimeListener();
         generation.cancel();
+        sidebar.stopAndRestore();
         lives.cleanup();
         encounters.cleanup();
 
@@ -198,20 +198,47 @@ public final class DungeonGameManager {
             player.sendMessage("§c进入地牢失败，请稍后重试。");
             return;
         }
+        sidebar.show(player);
         player.sendMessage("§a进入地牢第 1 关，第 1 层。");
-        Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(player));
     }
 
-    /** 玩家跨方块移动时的统一入口：传送门优先于房间激活，避免一次事件执行两条流程。 */
+    /**
+     * 玩家主动跨方块移动时的统一入口：传送门优先于房间激活，避免一次事件执行两条流程。
+     * 此方法不得由 PlayerTeleportEvent 或传送完成回调调用，否则任意传送都会被误判成进房。
+     */
     public void handlePlayerPosition(Player player) {
-        if (!Dungeongame.isstart || player.getWorld() != Worldmanager.dungeonWorld) return;
+        if (!Dungeongame.isstart) return;
+        if (player.getWorld() != Worldmanager.dungeonWorld) {
+            sidebar.hide(player);
+            return;
+        }
         // 非队员即使因管理员传送等原因进入地牢世界，也不能推进关卡或触发刷怪。
-        if (!party.isMember(player)) return;
+        if (!party.isMember(player)) {
+            sidebar.hide(player);
+            return;
+        }
+        sidebar.show(player);
         // 阵亡旁观者只能等待跨层复活，不能通过飞行替队伍触发传送点或新遭遇。
         if (lives.isAwaitingRevival(player)) return;
         Dungeongame.participants.add(player);
         if (progression.handlePlayerPosition(player)) return;
         encounters.handlePlayerPosition(player);
+    }
+
+    /**
+     * 传送完成后只同步参与者与私人侧边栏，不执行层级推进和房间遭遇检测。
+     * 延迟一 tick 是为了读取 Bukkit 已经提交的最终世界；队伍集结传送也安全复用此入口。
+     */
+    public void handlePlayerTeleport(Player player) {
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (!Dungeongame.isstart) return;
+            if (player.getWorld() != Worldmanager.dungeonWorld || !party.isMember(player)) {
+                sidebar.hide(player);
+                return;
+            }
+            Dungeongame.participants.add(player);
+            sidebar.show(player);
+        });
     }
 
     /** 实体死亡监听器入口；归属判断与清房结算由遭遇服务完成。 */
@@ -238,9 +265,10 @@ public final class DungeonGameManager {
     private void finishGeneration(Player owner) {
         progression.initializePortals();
         Dungeongame.isstart = true;
+        sidebar.start();
         var entered = party.enterOnlineTeam(session.stages.getFirst().start);
         for (Player player : entered) {
-            Bukkit.getScheduler().runTask(plugin, () -> handlePlayerPosition(player));
+            sidebar.show(player);
         }
 
         if (owner.isOnline()) {
@@ -256,6 +284,7 @@ public final class DungeonGameManager {
         disableRuntimeListener();
         generation.cancel();
         Dungeongame.isstart = false;
+        sidebar.stopAndRestore();
         lives.cleanup();
         encounters.cleanup();
         clearRuntimeState();

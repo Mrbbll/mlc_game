@@ -50,15 +50,22 @@ final class DungeonEncounterService {
         UUID uuid = event.getEntity().getUniqueId();
         DungeonSession.Encounter encounter = session.monsterOwners.remove(uuid);
         if (encounter == null) return;
-        drops.replaceDrops(event);
-        encounter.monsters.remove(uuid);
-        if (encounter.monsters.isEmpty()) waves.onCurrentWaveCleared(encounter, this::clear);
+        try {
+            drops.replaceDrops(event);
+        } finally {
+            // 掉落属于附加效果，任何第三方物品异常都不能阻断核心清房和传送门解锁。
+            finishTrackedDeath(encounter, uuid);
+        }
     }
 
     /** 兼容旧 API 的无事件入口；只能推进归属状态，无法改写 Bukkit 掉落列表。 */
     void handleMonsterDeath(UUID uuid) {
         DungeonSession.Encounter encounter = session.monsterOwners.remove(uuid);
         if (encounter == null) return;
+        finishTrackedDeath(encounter, uuid);
+    }
+
+    private void finishTrackedDeath(DungeonSession.Encounter encounter, UUID uuid) {
         encounter.monsters.remove(uuid);
         if (encounter.monsters.isEmpty()) waves.onCurrentWaveCleared(encounter, this::clear);
     }
@@ -84,8 +91,8 @@ final class DungeonEncounterService {
     }
 
     private void activate(DungeonSession.Encounter encounter, Player trigger) {
-        // 必须先切换状态：PlayerTeleportEvent 继承移动事件，集结传送可能同步回到本方法；
-        // 提前标记 ACTIVE 可以保证同一个 WAITING 房间只激活一次。
+        // 只有玩家实际跨方块走入房间才会来到这里。提前标记 ACTIVE 可保证同一个
+        // WAITING 房间只激活一次，也能抵御同 tick 内其他玩家的移动事件重复触发。
         encounter.state = DungeonSession.EncounterState.ACTIVE;
         // 在关门和刷怪前集结队友，这样慢一步的成员不会被屏障留在房间外。
         party.rallyForEncounter(trigger, encounter.bounds);

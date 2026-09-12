@@ -2,6 +2,7 @@ package com.mlc.mlcgames.dungeongame.managers;
 
 import com.mlc.mlcgames.Mlcgames;
 import com.mlc.mlcgames.dungeongame.Dungeongame;
+import com.mlc.mlcgames.dungeongame.rooms.RoomType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -70,6 +71,12 @@ final class DungeonWaveService {
         encounter.currentWave++;
         announce(encounter);
         for (DungeonSession.SpawnMarker marker : encounter.markers) {
+            // Boss 房契约是“一间房只有一个 Boss”。原理图里即使误留普通或精英标记，
+            // 也不能把它们加入存活集合，否则 Boss 已死亡时传送门会一直等待随从。
+            if (encounter.roomType == RoomType.Boss
+                    && marker.kind() != DungeonSession.MarkerKind.BOSS) {
+                continue;
+            }
             LivingEntity living = mobs.spawn(encounter, marker);
             if (living == null) continue;
             encounter.monsters.add(living.getUniqueId());

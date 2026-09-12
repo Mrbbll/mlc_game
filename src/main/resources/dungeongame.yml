@@ -52,6 +52,48 @@ progression:
   # level 1 = x1.0, level 2 = x1.5, level 3 = x2.25.
   level-stat-multiplier: 1.5
 
+# A private scoreboard is created for every player inside the dungeon. Bukkit
+# sends each scoreboard only to its owner, so one player's attributes never
+# overwrite another player's display. Leaving the dungeon restores the normal
+# MLC Games sidebar.
+sidebar:
+  # Entity-scope equipment and the current main-hand item's weapon-scope CE
+  # attributes are combined. Negative weapon deltas (a weapon below the entity's
+  # base value) are applied before the final attribute constraint is evaluated.
+  # Main-hand changes are reflected within this many ticks.
+  # Values are clamped to 5-200 ticks.
+  refresh-ticks: 10
+  title: "<gold><bold>dungeongame"
+  # Up to 12 custom rows can be displayed. Unknown/unregistered CraftEngine
+  # attributes show "--" instead of silently pretending that their value is 0.
+  # Formats:
+  #   number           raw numeric value
+  #   percent          raw value * 100, followed by %
+  #   multiplier       raw value displayed as xN
+  #   bonus-multiplier raw bonus displayed as x(1 + N)
+  attributes:
+    - label: "<gray>命中值："
+      id: "mlcgame:accuracy"
+      format: number
+    - label: "<gray>闪避值："
+      id: "mlcgame:evasion"
+      format: number
+    - label: "<gray>暴击率："
+      id: "mlcgame:critical_chance"
+      format: percent
+    - label: "<gray>暴击抗性："
+      id: "mlcgame:critical_resistance"
+      format: percent
+    - label: "<gray>暴击倍率："
+      id: "mlcgame:critical_multiplier"
+      format: multiplier
+    - label: "<gray>伤害倍率："
+      id: "mlcgame:damage_bonus"
+      format: bonus-multiplier
+    - label: "<gray>伤害减免："
+      id: "mlcgame:damage_reduction"
+      format: percent
+
 # CraftEngine pixel armour is discovered from loaded item IDs matching
 # mlcgame:pixel_<set>_<helmet|chestplate|leggings|boots>. Only complete
 # four-piece sets are eligible, and each mob receives one coherent random set.

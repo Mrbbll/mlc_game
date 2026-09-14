@@ -39,6 +39,7 @@ public class DungeonGame implements TabExecutor {
         return true;
     }
 
+
     private void generate(CommandSender sender, String[] args) {
         if (DungeonGameManager.get().isRunningOrGenerating()) {
             sender.sendMessage("Stop the active dungeon before using the layout debug command.");

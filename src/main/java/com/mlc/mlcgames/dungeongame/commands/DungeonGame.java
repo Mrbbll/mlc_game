@@ -68,6 +68,7 @@ public class DungeonGame implements TabExecutor {
         }
     }
 
+
     private void reload(CommandSender sender) {
         Mlcgames.configManager.reloadConfig("dungeongame.yml");
         Mlcgames.dungeonConfiguration = Mlcgames.configManager.getConfig("dungeongame.yml");

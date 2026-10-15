@@ -1,0 +1,63 @@
+# 原地图移植；参数可调整，坐标统一在 locations.yml。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 600
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks:
+- MAGMA_BLOCK
+elimination-depth: 1
+mode: 0
+between-round-seconds: 5
+pass-cooldown-ticks: 0
+projectile-cooldown-ticks: 60
+holder-counts:
+- min-players: 2
+  value: 1
+- min-players: 5
+  value: 2
+- min-players: 8
+  value: 3
+- min-players: 12
+  value: 4
+- min-players: 16
+  value: 6
+- min-players: 20
+  value: 8
+- min-players: 24
+  value: 9
+- min-players: 28
+  value: 10
+- min-players: 32
+  value: 11
+- min-players: 36
+  value: 12
+- min-players: 40
+  value: 13
+- min-players: 44
+  value: 14
+- min-players: 48
+  value: 15
+- min-players: 52
+  value: 16
+- min-players: 56
+  value: 17
+- min-players: 60
+  value: 18
+explosion-seconds:
+- min-players: 2
+  value: 30
+- min-players: 3
+  value: 40
+- min-players: 4
+  value: 45
+- min-players: 8
+  value: 50
+- min-players: 16
+  value: 60

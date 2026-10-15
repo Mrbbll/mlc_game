@@ -1,0 +1,71 @@
+# 原地图移植；参数可调整，坐标统一在 locations.yml。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 600
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks:
+- MAGMA_BLOCK
+elimination-depth: 1
+floor-materials:
+- SNOW_BLOCK
+- SNOW
+- GLASS
+- GLASS_PANE
+- STONE
+- COBBLESTONE
+- GRASS_BLOCK
+- DIRT
+- OAK_SLAB
+- POWDER_SNOW
+- RED_SAND
+- SAND
+- GRAVEL
+- SOUL_SAND
+- SOUL_SOIL
+- DIRT_PATH
+- FARMLAND
+- LADDER
+- TORCH
+- BOOKSHELF
+- TNT
+- WHITE_TERRACOTTA
+- '#minecraft:logs'
+- '#minecraft:leaves'
+- '#minecraft:doors'
+- '#minecraft:dirt'
+- '#minecraft:planks'
+- '#minecraft:rails'
+- '#minecraft:stairs'
+- '#minecraft:fences'
+- '#minecraft:fence_gates'
+- '#minecraft:trapdoors'
+- '#minecraft:walls'
+- WHITE_STAINED_GLASS
+- ORANGE_STAINED_GLASS
+- MAGENTA_STAINED_GLASS
+- LIGHT_BLUE_STAINED_GLASS
+- YELLOW_STAINED_GLASS
+- LIME_STAINED_GLASS
+- PINK_STAINED_GLASS
+- GRAY_STAINED_GLASS
+- LIGHT_GRAY_STAINED_GLASS
+- CYAN_STAINED_GLASS
+- PURPLE_STAINED_GLASS
+- BLUE_STAINED_GLASS
+- BROWN_STAINED_GLASS
+- GREEN_STAINED_GLASS
+- RED_STAINED_GLASS
+- BLACK_STAINED_GLASS
+fall-delay-ticks: 12
+running-warmup-seconds: 6
+shrink-start-seconds: 45
+shrink-step-seconds: 5
+arrow-radius: 1
+arrows-per-second: 5

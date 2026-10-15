@@ -1,0 +1,27 @@
+schema-version: 1
+disabled: '&c此小游戏未启用。'
+map-unconfigured: '&c地图 {map} 尚未配置，请先填写 locations.yml 的角点和特殊点位。'
+already-running: '&c当前游戏已开始或正在清理。'
+full: '&c人数已满。'
+teleport-failed: '&c传送被阻止，已取消加入或开局。'
+joined: '&a{player} 加入了等待队列，当前 {count} 人。'
+not-enough: '&c人数不足，无法开始。'
+preparing: '&e正在记录场地，准备游戏。'
+countdown: '&e距离开始还有 {seconds} 秒。'
+started: '&a游戏开始！'
+eliminated: '&c{player} 已淘汰。'
+draw: 平局
+finished: '&6游戏结束，获胜者：{winners}'
+legacy-busy: '&e已有游戏开始运行，派对已结束并恢复，避免影响已有游戏。'
+name: 一掘到底
+instructions: '&b使用五种挖掘工具向下挖到底部基岩。所有玩家的随机矿柱相同，按完赛顺序奖励积分。'
+race-finished: '&a{player} 第 {rank} 个完赛，获得 {points} 分。'
+race-shortened: '&e完赛人数达到阈值，剩余时间缩短到 {seconds} 秒。'
+race-retry: '&e本次尝试失败，已返回起点或检查点。'
+race-status: '&e剩余 {seconds} 秒，已有 {finishers} 人完赛。'
+items:
+  tool-1: '&b挖掘镐'
+  tool-2: '&b挖掘斧'
+  tool-3: '&b挖掘锹'
+  tool-4: '&b挖掘锄'
+  tool-5: '&b剪刀'

@@ -1,0 +1,24 @@
+{
+  "source-games": {
+    "2": {"plugin-id": "tntrun", "status": "独立实现、构建通过；待地图实测与原派对计分接入"},
+    "3": {"plugin-id": "spleef", "status": "独立实现、构建通过；待地图实测与原派对计分接入"},
+    "4": {"plugin-id": "repel", "status": "独立实现、构建通过；待实测校准击退与原派对计分接入"},
+    "6": {"plugin-id": "believer", "status": "独立实现、构建通过；待地图实测与原派对计分接入"},
+    "9": {"plugin-id": "hotpotever", "status": "独立实现、构建通过；待地图实测与原派对计分接入"},
+    "10": {"plugin-id": "golf", "status": "独立实现轮流击球、三球场及能量计分；待击球手感实测与轮换汇总"},
+    "12": {"plugin-id": "poolwar", "status": "独立实现体力、冰霜行者和本局积分；待实机与轮换汇总"},
+    "29": {"plugin-id": "snowmix", "status": "独立实现、构建通过；待地图实测与原派对计分接入"},
+    "30": {"plugin-id": "bowspleef", "status": "独立实现、构建通过；待地图实测与原派对计分接入"},
+    "32": {"plugin-id": "miner", "status": "独立实现共享随机矿柱、工具及完赛积分；编号 62 已按确认重抽，待实机"},
+    "34": {"plugin-id": "chair", "status": "独立实现本局积分及移动矿车；待实机与轮换汇总"},
+    "37": {"plugin-id": "fishing", "status": "独立实现原生垂钓、原权重兑换及并列积分；已同意补全宝藏/竹子条件，待实机"},
+    "40": {"plugin-id": "finder", "status": "独立实现收集与并列排名积分；待实机与轮换汇总"},
+    "42": {"plugin-id": "elytra", "status": "独立实现完赛顺序、重试与积分；待实机与轮换汇总"},
+    "46": {"plugin-id": "mutouren", "status": "独立实现冻结、重试与完赛积分；待实机与轮换汇总"}
+  },
+  "independent-games": {
+    "minecraft:dropper/join": {"plugin-id": "dropper", "status": "独立实现十关推进、失败重试和次数；待新地图实测"},
+    "woolwar:join": {"plugin-id": "woolwars", "status": "已按讨论方案独立实现；待地图实测与派对计分接入"},
+    "minecraft:parkourrace/join": {"plugin-id": "parkourrace", "status": "独立实现检查点、效果垫和完赛积分；已同意修正每人完赛 2 分，待实机"}
+  }
+}

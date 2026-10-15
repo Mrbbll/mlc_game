@@ -4,6 +4,9 @@ main: com.mlc.mlcgames.Mlcgames
 api-version: '1.21'
 authors: [ Mr_bl ]
 commands:
+  party:
+    description: 独立派对小游戏
+    usage: /party <list|join|leave|start|stop|check|reload>
   reload:
     description: 重载
   bankgameprepare:
@@ -22,6 +25,12 @@ commands:
     description: Blue Archive style combat attribute tools
     permission: mlcgames.combat.admin
 permissions:
+  mlcgames.party.play:
+    description: 参加新派对小游戏
+    default: true
+  mlcgames.party.admin:
+    description: 检查、开始、停止和重载新派对小游戏
+    default: op
   mlcgames.combat.admin:
     description: Manage MLCGame combat attributes
     default: op

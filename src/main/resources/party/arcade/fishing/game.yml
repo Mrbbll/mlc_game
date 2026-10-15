@@ -1,0 +1,95 @@
+# 原地图移植；参数可调整，坐标统一在 locations.yml。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 6
+max-seconds: 91
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks: []
+elimination-depth: 1
+lure-level: 3
+rank-interval-seconds: 10
+rank-points:
+  first: 3
+  second: 2
+  third: 1
+pool-weights:
+  junk: 10
+  treasure: 5
+  fish: 85
+treasure-condition-chance: 0.8
+coin-values:
+  COD: 3
+  SALMON: 6
+  TROPICAL_FISH: 10
+  PUFFERFISH: 8
+  LILY_PAD: 1
+  LEATHER_BOOTS: 3
+  LEATHER: 3
+  BONE: 3
+  POTION: 3
+  STRING: 5
+  BOWL: 3
+  STICK: 5
+  INK_SAC: 5
+  TRIPWIRE_HOOK: 3
+  ROTTEN_FLESH: 3
+  BAMBOO: 6
+  NAME_TAG: 15
+  SADDLE: 15
+  BOW: 15
+  BOOK: 10
+  ENCHANTED_BOOK: 15
+  NAUTILUS_SHELL: 15
+loot:
+  fish:
+  - material: COD
+    weight: 60
+  - material: SALMON
+    weight: 25
+  - material: TROPICAL_FISH
+    weight: 2
+  - material: PUFFERFISH
+    weight: 13
+  junk:
+  - material: LILY_PAD
+    weight: 17
+  - material: LEATHER_BOOTS
+    weight: 10
+  - material: LEATHER
+    weight: 10
+  - material: BONE
+    weight: 10
+  - material: POTION
+    weight: 10
+  - material: STRING
+    weight: 5
+  - material: BOWL
+    weight: 10
+  - material: STICK
+    weight: 5
+  - material: INK_SAC
+    weight: 5
+  - material: TRIPWIRE_HOOK
+    weight: 10
+  - material: ROTTEN_FLESH
+    weight: 10
+  - material: BAMBOO
+    weight: 10
+    jungle-only: true
+  treasure:
+  - material: NAME_TAG
+    weight: 1
+  - material: SADDLE
+    weight: 1
+  - material: BOW
+    weight: 1
+  - material: ENCHANTED_BOOK
+    weight: 1
+  - material: NAUTILUS_SHELL
+    weight: 1

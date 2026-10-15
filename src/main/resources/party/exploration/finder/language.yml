@@ -1,0 +1,22 @@
+schema-version: 1
+disabled: '&c此小游戏未启用。'
+map-unconfigured: '&c地图 {map} 尚未配置，请先填写 locations.yml 的角点和特殊点位。'
+already-running: '&c当前游戏已开始或正在清理。'
+full: '&c人数已满。'
+teleport-failed: '&c传送被阻止，已取消加入或开局。'
+joined: '&a{player} 加入了等待队列，当前 {count} 人。'
+not-enough: '&c人数不足，无法开始。'
+preparing: '&e正在记录场地，准备游戏。'
+countdown: '&e距离开始还有 {seconds} 秒。'
+started: '&a游戏开始！'
+eliminated: '&c{player} 已淘汰。'
+draw: 平局
+finished: '&6游戏结束，获胜者：{winners}'
+legacy-busy: '&e已有游戏开始运行，派对已结束并恢复，避免影响已有游戏。'
+name: 彩蛋猎人
+instructions: '&b寻找地图中发光的彩蛋，左键或右键领取。收集数量最多的玩家获胜。'
+items:
+  egg: '&d彩蛋'
+egg-found: '&6{player} 找到一个彩蛋，当前 {count} 个。'
+all-eggs-found: '&6所有彩蛋已找到，剩余时间缩短至 {seconds} 秒。'
+egg-rank: '&e第 {rank} 名：{player}（{count} 个彩蛋）'

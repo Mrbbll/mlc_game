@@ -1,0 +1,9 @@
+移植来源：wifi-left 的 Map-MiniGames。
+随附 SOURCE-LICENSE.txt 为原地图许可证及附加协议。
+
+修改说明：MLCGames 将部分数据包玩法改写为 Java/Paper 插件，
+使用独立会话、配置的新地图区域及点位，并增加状态和场地恢复。
+Wool Wars 源入口未完成，当前实现采用与用户讨论的补全规则。
+地图建筑和原地图资源包未随本插件捆绑。
+
+当前移植范围和进度见项目 docs/party/IMPLEMENTATION.md。

@@ -1,0 +1,950 @@
+{
+  "source": "map_game_2nd/miner/map/set_random_block.mcfunction",
+  "missing-roll-policy": "reroll-valid-approved",
+  "entries": [
+    {
+      "roll": 0,
+      "material": "WHITE_WOOL"
+    },
+    {
+      "roll": 1,
+      "material": "ORANGE_WOOL"
+    },
+    {
+      "roll": 2,
+      "material": "MAGENTA_WOOL"
+    },
+    {
+      "roll": 3,
+      "material": "LIGHT_BLUE_WOOL"
+    },
+    {
+      "roll": 4,
+      "material": "YELLOW_WOOL"
+    },
+    {
+      "roll": 5,
+      "material": "LIME_WOOL"
+    },
+    {
+      "roll": 6,
+      "material": "PINK_WOOL"
+    },
+    {
+      "roll": 7,
+      "material": "GRAY_WOOL"
+    },
+    {
+      "roll": 8,
+      "material": "LIGHT_GRAY_WOOL"
+    },
+    {
+      "roll": 9,
+      "material": "CYAN_WOOL"
+    },
+    {
+      "roll": 10,
+      "material": "PURPLE_WOOL"
+    },
+    {
+      "roll": 11,
+      "material": "BLUE_WOOL"
+    },
+    {
+      "roll": 12,
+      "material": "BROWN_WOOL"
+    },
+    {
+      "roll": 13,
+      "material": "GREEN_WOOL"
+    },
+    {
+      "roll": 14,
+      "material": "RED_WOOL"
+    },
+    {
+      "roll": 15,
+      "material": "BLACK_WOOL"
+    },
+    {
+      "roll": 16,
+      "material": "END_STONE"
+    },
+    {
+      "roll": 17,
+      "material": "DARK_OAK_PLANKS"
+    },
+    {
+      "roll": 18,
+      "material": "OBSIDIAN"
+    },
+    {
+      "roll": 19,
+      "material": "WHITE_STAINED_GLASS"
+    },
+    {
+      "roll": 20,
+      "material": "ORANGE_STAINED_GLASS"
+    },
+    {
+      "roll": 21,
+      "material": "MAGENTA_STAINED_GLASS"
+    },
+    {
+      "roll": 22,
+      "material": "LIGHT_BLUE_STAINED_GLASS"
+    },
+    {
+      "roll": 23,
+      "material": "YELLOW_STAINED_GLASS"
+    },
+    {
+      "roll": 24,
+      "material": "LIME_STAINED_GLASS"
+    },
+    {
+      "roll": 25,
+      "material": "PINK_STAINED_GLASS"
+    },
+    {
+      "roll": 26,
+      "material": "GRAY_STAINED_GLASS"
+    },
+    {
+      "roll": 27,
+      "material": "LIGHT_GRAY_STAINED_GLASS"
+    },
+    {
+      "roll": 28,
+      "material": "CYAN_STAINED_GLASS"
+    },
+    {
+      "roll": 29,
+      "material": "PURPLE_STAINED_GLASS"
+    },
+    {
+      "roll": 30,
+      "material": "BLUE_STAINED_GLASS"
+    },
+    {
+      "roll": 31,
+      "material": "BROWN_STAINED_GLASS"
+    },
+    {
+      "roll": 32,
+      "material": "GREEN_STAINED_GLASS"
+    },
+    {
+      "roll": 33,
+      "material": "RED_STAINED_GLASS"
+    },
+    {
+      "roll": 34,
+      "material": "BLACK_STAINED_GLASS"
+    },
+    {
+      "roll": 35,
+      "material": "TINTED_GLASS"
+    },
+    {
+      "roll": 36,
+      "material": "WHITE_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 37,
+      "material": "ORANGE_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 38,
+      "material": "MAGENTA_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 39,
+      "material": "LIGHT_BLUE_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 40,
+      "material": "YELLOW_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 41,
+      "material": "LIME_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 42,
+      "material": "PINK_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 43,
+      "material": "GRAY_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 44,
+      "material": "LIGHT_GRAY_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 45,
+      "material": "CYAN_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 46,
+      "material": "PURPLE_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 47,
+      "material": "BLUE_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 48,
+      "material": "BROWN_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 49,
+      "material": "GREEN_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 50,
+      "material": "RED_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 51,
+      "material": "BLACK_STAINED_GLASS_PANE"
+    },
+    {
+      "roll": 52,
+      "material": "GLASS_PANE"
+    },
+    {
+      "roll": 53,
+      "material": "LADDER"
+    },
+    {
+      "roll": 54,
+      "material": "WET_SPONGE"
+    },
+    {
+      "roll": 55,
+      "material": "SPONGE"
+    },
+    {
+      "roll": 56,
+      "material": "CUT_SANDSTONE"
+    },
+    {
+      "roll": 57,
+      "material": "ACACIA_LOG"
+    },
+    {
+      "roll": 58,
+      "material": "ANDESITE"
+    },
+    {
+      "roll": 59,
+      "material": "ANDESITE_SLAB"
+    },
+    {
+      "roll": 60,
+      "material": "ANDESITE_STAIRS"
+    },
+    {
+      "roll": 61,
+      "material": "ANDESITE_WALL"
+    },
+    {
+      "roll": 63,
+      "material": "BLAST_FURNACE"
+    },
+    {
+      "roll": 64,
+      "material": "CAULDRON"
+    },
+    {
+      "roll": 65,
+      "material": "CHISELED_STONE_BRICKS"
+    },
+    {
+      "roll": 66,
+      "material": "COAL_ORE"
+    },
+    {
+      "roll": 67,
+      "material": "DEEPSLATE_COAL_ORE"
+    },
+    {
+      "roll": 68,
+      "material": "COBBLESTONE"
+    },
+    {
+      "roll": 69,
+      "material": "COBBLESTONE_SLAB"
+    },
+    {
+      "roll": 70,
+      "material": "COBBLESTONE_STAIRS"
+    },
+    {
+      "roll": 71,
+      "material": "COBBLESTONE_WALL"
+    },
+    {
+      "roll": 72,
+      "material": "CRACKED_STONE_BRICKS"
+    },
+    {
+      "roll": 73,
+      "material": "DIAMOND_ORE"
+    },
+    {
+      "roll": 74,
+      "material": "DEEPSLATE_DIAMOND_ORE"
+    },
+    {
+      "roll": 75,
+      "material": "DISPENSER"
+    },
+    {
+      "roll": 76,
+      "material": "DROPPER"
+    },
+    {
+      "roll": 77,
+      "material": "EMERALD_ORE"
+    },
+    {
+      "roll": 78,
+      "material": "DEEPSLATE_EMERALD_ORE"
+    },
+    {
+      "roll": 79,
+      "material": "ENDER_CHEST"
+    },
+    {
+      "roll": 80,
+      "material": "FURNACE"
+    },
+    {
+      "roll": 81,
+      "material": "GOLD_ORE"
+    },
+    {
+      "roll": 82,
+      "material": "DEEPSLATE_GOLD_ORE"
+    },
+    {
+      "roll": 83,
+      "material": "GRAVEL"
+    },
+    {
+      "roll": 84,
+      "material": "HOPPER"
+    },
+    {
+      "roll": 85,
+      "material": "IRON_ORE"
+    },
+    {
+      "roll": 86,
+      "material": "DEEPSLATE_IRON_ORE"
+    },
+    {
+      "roll": 87,
+      "material": "LAPIS_ORE"
+    },
+    {
+      "roll": 88,
+      "material": "DEEPSLATE_LAPIS_ORE"
+    },
+    {
+      "roll": 89,
+      "material": "LAVA_CAULDRON"
+    },
+    {
+      "roll": 90,
+      "material": "MOSSY_COBBLESTONE"
+    },
+    {
+      "roll": 91,
+      "material": "MOSSY_COBBLESTONE_SLAB"
+    },
+    {
+      "roll": 92,
+      "material": "MOSSY_COBBLESTONE_STAIRS"
+    },
+    {
+      "roll": 93,
+      "material": "MOSSY_COBBLESTONE_WALL"
+    },
+    {
+      "roll": 94,
+      "material": "MOSSY_STONE_BRICK_SLAB"
+    },
+    {
+      "roll": 95,
+      "material": "MOSSY_STONE_BRICK_STAIRS"
+    },
+    {
+      "roll": 96,
+      "material": "MOSSY_STONE_BRICK_WALL"
+    },
+    {
+      "roll": 97,
+      "material": "OBSERVER"
+    },
+    {
+      "roll": 98,
+      "material": "PISTON"
+    },
+    {
+      "roll": 99,
+      "material": "DIAMOND_BLOCK"
+    },
+    {
+      "roll": 100,
+      "material": "POLISHED_ANDESITE"
+    },
+    {
+      "roll": 101,
+      "material": "POLISHED_ANDESITE_SLAB"
+    },
+    {
+      "roll": 102,
+      "material": "POLISHED_ANDESITE_STAIRS"
+    },
+    {
+      "roll": 103,
+      "material": "REDSTONE_ORE"
+    },
+    {
+      "roll": 104,
+      "material": "DEEPSLATE_REDSTONE_ORE"
+    },
+    {
+      "roll": 105,
+      "material": "SMOKER"
+    },
+    {
+      "roll": 106,
+      "material": "SMOOTH_STONE"
+    },
+    {
+      "roll": 107,
+      "material": "SMOOTH_STONE_SLAB"
+    },
+    {
+      "roll": 108,
+      "material": "SPAWNER"
+    },
+    {
+      "roll": 109,
+      "material": "STICKY_PISTON"
+    },
+    {
+      "roll": 110,
+      "material": "STONE"
+    },
+    {
+      "roll": 111,
+      "material": "STONE_BRICK_SLAB"
+    },
+    {
+      "roll": 112,
+      "material": "STONE_BRICK_STAIRS"
+    },
+    {
+      "roll": 113,
+      "material": "STONE_BRICK_WALL"
+    },
+    {
+      "roll": 114,
+      "material": "STONE_BRICKS"
+    },
+    {
+      "roll": 115,
+      "material": "STONE_PRESSURE_PLATE"
+    },
+    {
+      "roll": 116,
+      "material": "STONE_SLAB"
+    },
+    {
+      "roll": 117,
+      "material": "STONE_STAIRS"
+    },
+    {
+      "roll": 118,
+      "material": "STONECUTTER"
+    },
+    {
+      "roll": 119,
+      "material": "WATER_CAULDRON"
+    },
+    {
+      "roll": 120,
+      "material": "DEEPSLATE"
+    },
+    {
+      "roll": 121,
+      "material": "COBBLED_DEEPSLATE"
+    },
+    {
+      "roll": 122,
+      "material": "DEEPSLATE"
+    },
+    {
+      "roll": 123,
+      "material": "TUFF"
+    },
+    {
+      "roll": 124,
+      "material": "DEEPSLATE_GOLD_ORE"
+    },
+    {
+      "roll": 125,
+      "material": "DEEPSLATE_IRON_ORE"
+    },
+    {
+      "roll": 126,
+      "material": "DEEPSLATE_EMERALD_ORE"
+    },
+    {
+      "roll": 127,
+      "material": "DEEPSLATE_COAL_ORE"
+    },
+    {
+      "roll": 128,
+      "material": "DEEPSLATE_DIAMOND_ORE"
+    },
+    {
+      "roll": 129,
+      "material": "CLAY"
+    },
+    {
+      "roll": 130,
+      "material": "MOSS_BLOCK"
+    },
+    {
+      "roll": 131,
+      "material": "GLOW_LICHEN"
+    },
+    {
+      "roll": 132,
+      "material": "CAVE_VINES_PLANT"
+    },
+    {
+      "roll": 133,
+      "material": "CAVE_VINES"
+    },
+    {
+      "roll": 134,
+      "material": "COPPER_BLOCK"
+    },
+    {
+      "roll": 135,
+      "material": "DEEPSLATE_LAPIS_ORE"
+    },
+    {
+      "roll": 136,
+      "material": "DEEPSLATE_REDSTONE_ORE"
+    },
+    {
+      "roll": 137,
+      "material": "DEEPSLATE_COPPER_ORE"
+    },
+    {
+      "roll": 138,
+      "material": "WHITE_CONCRETE"
+    },
+    {
+      "roll": 139,
+      "material": "ORANGE_CONCRETE"
+    },
+    {
+      "roll": 140,
+      "material": "MAGENTA_CONCRETE"
+    },
+    {
+      "roll": 141,
+      "material": "LIGHT_BLUE_CONCRETE"
+    },
+    {
+      "roll": 142,
+      "material": "YELLOW_CONCRETE"
+    },
+    {
+      "roll": 143,
+      "material": "LIME_CONCRETE"
+    },
+    {
+      "roll": 144,
+      "material": "PINK_CONCRETE"
+    },
+    {
+      "roll": 145,
+      "material": "GRAY_CONCRETE"
+    },
+    {
+      "roll": 146,
+      "material": "LIGHT_GRAY_CONCRETE"
+    },
+    {
+      "roll": 147,
+      "material": "CYAN_CONCRETE"
+    },
+    {
+      "roll": 148,
+      "material": "PURPLE_CONCRETE"
+    },
+    {
+      "roll": 149,
+      "material": "BLUE_CONCRETE"
+    },
+    {
+      "roll": 150,
+      "material": "BROWN_CONCRETE"
+    },
+    {
+      "roll": 151,
+      "material": "GREEN_CONCRETE"
+    },
+    {
+      "roll": 152,
+      "material": "RED_CONCRETE"
+    },
+    {
+      "roll": 153,
+      "material": "BLACK_CONCRETE"
+    },
+    {
+      "roll": 154,
+      "material": "WHITE_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 155,
+      "material": "ORANGE_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 156,
+      "material": "MAGENTA_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 157,
+      "material": "LIGHT_BLUE_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 158,
+      "material": "YELLOW_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 159,
+      "material": "LIME_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 160,
+      "material": "PINK_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 161,
+      "material": "GRAY_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 162,
+      "material": "LIGHT_GRAY_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 163,
+      "material": "CYAN_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 164,
+      "material": "PURPLE_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 165,
+      "material": "BLUE_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 166,
+      "material": "BROWN_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 167,
+      "material": "GREEN_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 168,
+      "material": "RED_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 169,
+      "material": "BLACK_GLAZED_TERRACOTTA"
+    },
+    {
+      "roll": 170,
+      "material": "OAK_SLAB"
+    },
+    {
+      "roll": 171,
+      "material": "OAK_LOG"
+    },
+    {
+      "roll": 172,
+      "material": "SNOW_BLOCK"
+    },
+    {
+      "roll": 173,
+      "material": "GRASS_BLOCK"
+    },
+    {
+      "roll": 174,
+      "material": "GLASS"
+    },
+    {
+      "roll": 175,
+      "material": "DIRT"
+    },
+    {
+      "roll": 176,
+      "material": "SNOW"
+    },
+    {
+      "roll": 177,
+      "material": "MYCELIUM"
+    },
+    {
+      "roll": 178,
+      "material": "FIRE"
+    },
+    {
+      "roll": 179,
+      "material": "POWDER_SNOW"
+    },
+    {
+      "roll": 180,
+      "material": "RED_SAND"
+    },
+    {
+      "roll": 181,
+      "material": "SAND"
+    },
+    {
+      "roll": 182,
+      "material": "GRAVEL"
+    },
+    {
+      "roll": 183,
+      "material": "ROOTED_DIRT"
+    },
+    {
+      "roll": 184,
+      "material": "PODZOL"
+    },
+    {
+      "roll": 185,
+      "material": "COARSE_DIRT"
+    },
+    {
+      "roll": 186,
+      "material": "SOUL_SAND"
+    },
+    {
+      "roll": 187,
+      "material": "DIRT_PATH"
+    },
+    {
+      "roll": 188,
+      "material": "FARMLAND"
+    },
+    {
+      "roll": 189,
+      "material": "SOUL_SOIL"
+    },
+    {
+      "roll": 190,
+      "material": "STONE"
+    },
+    {
+      "roll": 191,
+      "material": "COBBLESTONE"
+    },
+    {
+      "roll": 192,
+      "material": "JUNGLE_LEAVES"
+    },
+    {
+      "roll": 193,
+      "material": "OAK_LEAVES"
+    },
+    {
+      "roll": 194,
+      "material": "SPRUCE_LEAVES"
+    },
+    {
+      "roll": 195,
+      "material": "PALE_OAK_LEAVES"
+    },
+    {
+      "roll": 196,
+      "material": "DARK_OAK_LEAVES"
+    },
+    {
+      "roll": 197,
+      "material": "ACACIA_LEAVES"
+    },
+    {
+      "roll": 198,
+      "material": "BIRCH_LEAVES"
+    },
+    {
+      "roll": 199,
+      "material": "AZALEA_LEAVES"
+    },
+    {
+      "roll": 200,
+      "material": "FLOWERING_AZALEA_LEAVES"
+    },
+    {
+      "roll": 201,
+      "material": "MANGROVE_LEAVES"
+    },
+    {
+      "roll": 202,
+      "material": "CHERRY_LEAVES"
+    },
+    {
+      "roll": 203,
+      "material": "DIRT"
+    },
+    {
+      "roll": 204,
+      "material": "GRASS_BLOCK"
+    },
+    {
+      "roll": 205,
+      "material": "PODZOL"
+    },
+    {
+      "roll": 206,
+      "material": "COARSE_DIRT"
+    },
+    {
+      "roll": 207,
+      "material": "MYCELIUM"
+    },
+    {
+      "roll": 208,
+      "material": "ROOTED_DIRT"
+    },
+    {
+      "roll": 209,
+      "material": "MOSS_BLOCK"
+    },
+    {
+      "roll": 210,
+      "material": "PALE_MOSS_BLOCK"
+    },
+    {
+      "roll": 211,
+      "material": "MUD"
+    },
+    {
+      "roll": 212,
+      "material": "MUDDY_MANGROVE_ROOTS"
+    },
+    {
+      "roll": 213,
+      "material": "OAK_PLANKS"
+    },
+    {
+      "roll": 214,
+      "material": "SPRUCE_PLANKS"
+    },
+    {
+      "roll": 215,
+      "material": "BIRCH_PLANKS"
+    },
+    {
+      "roll": 216,
+      "material": "JUNGLE_PLANKS"
+    },
+    {
+      "roll": 217,
+      "material": "ACACIA_PLANKS"
+    },
+    {
+      "roll": 218,
+      "material": "DARK_OAK_PLANKS"
+    },
+    {
+      "roll": 219,
+      "material": "PALE_OAK_PLANKS"
+    },
+    {
+      "roll": 220,
+      "material": "CRIMSON_PLANKS"
+    },
+    {
+      "roll": 221,
+      "material": "WARPED_PLANKS"
+    },
+    {
+      "roll": 222,
+      "material": "MANGROVE_PLANKS"
+    },
+    {
+      "roll": 223,
+      "material": "BAMBOO_PLANKS"
+    },
+    {
+      "roll": 224,
+      "material": "CHERRY_PLANKS"
+    },
+    {
+      "roll": 225,
+      "material": "ACACIA_FENCE_GATE"
+    },
+    {
+      "roll": 226,
+      "material": "BIRCH_FENCE_GATE"
+    },
+    {
+      "roll": 227,
+      "material": "DARK_OAK_FENCE_GATE"
+    },
+    {
+      "roll": 228,
+      "material": "PALE_OAK_FENCE_GATE"
+    },
+    {
+      "roll": 229,
+      "material": "JUNGLE_FENCE_GATE"
+    },
+    {
+      "roll": 230,
+      "material": "OAK_FENCE_GATE"
+    },
+    {
+      "roll": 231,
+      "material": "SPRUCE_FENCE_GATE"
+    },
+    {
+      "roll": 232,
+      "material": "CRIMSON_FENCE_GATE"
+    },
+    {
+      "roll": 233,
+      "material": "WARPED_FENCE_GATE"
+    },
+    {
+      "roll": 234,
+      "material": "MANGROVE_FENCE_GATE"
+    },
+    {
+      "roll": 235,
+      "material": "BAMBOO_FENCE_GATE"
+    },
+    {
+      "roll": 236,
+      "material": "CHERRY_FENCE_GATE"
+    }
+  ]
+}

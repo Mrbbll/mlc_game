@@ -1,0 +1,113 @@
+# 原地图移植；参数可调整，坐标统一在 locations.yml。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 600
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks:
+- MAGMA_BLOCK
+elimination-depth: 1
+prepare:
+  min-seconds: 1
+  max-seconds: 10
+claim-seconds: 10
+break-seconds: 5
+velocity:
+  min: 0.1
+  max: 2.0
+cart-max-speed: 0.4
+restart-speed: 0.15
+claim-reach: 4.5
+rank-points:
+  first: 3
+  second: 2
+  third: 1
+chair-counts:
+- min-players: 2
+  value: 1
+- min-players: 3
+  value: 2
+- min-players: 4
+  value: 3
+- min-players: 7
+  value: 5
+- min-players: 10
+  value: 8
+- min-players: 15
+  value: 10
+- min-players: 21
+  value: 15
+- min-players: 31
+  value: 15
+- min-players: 32
+  value: 16
+- min-players: 33
+  value: 16
+- min-players: 34
+  value: 17
+- min-players: 35
+  value: 17
+- min-players: 36
+  value: 18
+- min-players: 37
+  value: 18
+- min-players: 38
+  value: 19
+- min-players: 39
+  value: 19
+- min-players: 40
+  value: 20
+- min-players: 41
+  value: 20
+- min-players: 42
+  value: 21
+- min-players: 43
+  value: 21
+- min-players: 44
+  value: 22
+- min-players: 45
+  value: 22
+- min-players: 46
+  value: 23
+- min-players: 47
+  value: 23
+- min-players: 48
+  value: 24
+- min-players: 49
+  value: 24
+- min-players: 50
+  value: 25
+- min-players: 51
+  value: 25
+- min-players: 52
+  value: 26
+- min-players: 53
+  value: 26
+- min-players: 54
+  value: 27
+- min-players: 55
+  value: 27
+- min-players: 56
+  value: 28
+- min-players: 57
+  value: 28
+- min-players: 58
+  value: 29
+- min-players: 59
+  value: 29
+- min-players: 60
+  value: 30
+- min-players: 61
+  value: 30
+- min-players: 62
+  value: 31
+- min-players: 63
+  value: 31
+- min-players: 64
+  value: 32

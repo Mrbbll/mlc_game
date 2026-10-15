@@ -5,6 +5,7 @@ import com.mlc.mlcgames.bank.utils.Bankgame;
 import com.mlc.mlcgames.dungeongame.managers.DungeonGameManager;
 import com.mlc.mlcgames.sandgame.listener.Packetlistener;
 import com.mlc.mlcgames.utils.file.ConfigManager;
+import com.mlc.mlcgames.party.PartyModule;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
@@ -47,6 +48,7 @@ public final class Mlcgames extends JavaPlugin {
 
 
     public static Bankgame bankgame = new Bankgame();
+    private PartyModule partyModule;
     @Override
     public void onLoad(){
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
@@ -84,12 +86,21 @@ public final class Mlcgames extends JavaPlugin {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        try {
+            partyModule = new PartyModule(this);
+        } catch (RuntimeException e) {
+            getLogger().log(java.util.logging.Level.SEVERE, "派对模块初始化失败；既有模块保留，恢复文件不会删除", e);
+        }
         getLogger().info("\n\nmlcgame插件加载成功\n\n");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        if (partyModule != null) {
+            try { partyModule.close(); }
+            catch (RuntimeException e) { getLogger().log(java.util.logging.Level.SEVERE, "派对恢复失败，记录已保留", e); }
+        }
         DungeonGameManager.shutdownIfInitialized();
         PacketEvents.getAPI().terminate();
         getLogger().info("\n\nmlcgame插件卸载成功\n\n");

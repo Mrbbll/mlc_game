@@ -1,0 +1,18 @@
+schema-version: 1
+help: '&e/party list | join <游戏> [地图] | leave | start | stop | check <游戏> [地图] | reload'
+unknown-game: '&c未知小游戏：{game}'
+no-permission: '&c没有权限。'
+players-only: 此命令仅玩家可用。
+game-row: '&e{game} &7- &f{name}'
+error: '&c{error}'
+legacy-busy: '&c已有游戏正在运行，请先结束已有游戏。'
+legacy-member: '&c请先退出已有游戏的等待队列。'
+recovering: '&e场地正在恢复或恢复受阻；请查看控制台与 party/recovery。'
+player-recovery: '&e你仍有待恢复状态，请先使用 /party leave。'
+player-not-ready: '&c请先复活、离开载具并清空鼠标上的物品。'
+already-joined: '&e你已加入当前游戏。'
+session-busy: '&e已有派对会话，请先结束。'
+not-joined: '&e你没有加入派对小游戏。'
+reloaded: '&a派对配置已重新读取。'
+valid: '&a地图点位及规则校验通过；开局还将检查快照区域的方块。'
+no-session: '&e当前没有派对会话。'

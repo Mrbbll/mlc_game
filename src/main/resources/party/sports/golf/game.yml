@@ -1,0 +1,38 @@
+# 原地图移植；参数可调整，坐标统一在 locations.yml。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 21600
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks: []
+elimination-depth: 1
+play-all-courses: true
+selected-course: 1
+turn-seconds: 421
+course-preview-seconds: 5
+shot-cooldown-ticks: 10
+control-drink-seconds: 1.0
+hit-reach: 4.5
+knockback:
+  per-level: 0.5
+  vertical: 0.4
+reset-energy-on-retry: true
+hole-base-score: 5000
+winner-points: 1
+club-energy:
+  level-1: 5
+  level-2: 10
+  level-3: 15
+  level-4: 20
+  level-5: 25
+  level-6: 30
+goal-materials:
+- COPPER_BLOCK
+hazard-materials:
+- MAGMA_BLOCK

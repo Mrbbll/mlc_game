@@ -1,0 +1,61 @@
+# 原地图移植；参数可调整，坐标统一在 locations.yml。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 600
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks:
+- RED_CONCRETE
+- GRASS_BLOCK
+- BLACK_STAINED_GLASS
+- OAK_LEAVES
+elimination-depth: 1
+finish-materials:
+- EMERALD_BLOCK
+pvp-knockback: false
+shorten-after-finishers: 0
+shortened-seconds: 30
+finish-points:
+  first: 2
+  second: 2
+  third: 2
+  remaining: 2
+checkpoint-materials:
+- GOLD_BLOCK
+pad-effects:
+- region-prefix: speed-pad
+  material: LIGHT_BLUE_CONCRETE
+  effect: SPEED
+  duration-ticks: 20
+  amplifier: 3
+- region-prefix: jump-pad
+  material: LIME_CONCRETE
+  effect: JUMP_BOOST
+  duration-ticks: 20
+  amplifier: 3
+- region-prefix: lift-pad
+  material: BLACK_CONCRETE
+  effect: LEVITATION
+  duration-ticks: 20
+  amplifier: 4
+- region-prefix: slow-pad
+  material: BROWN_CONCRETE
+  effect: SLOWNESS
+  duration-ticks: 40
+  amplifier: 2
+- region-prefix: blind-pad
+  material: YELLOW_CONCRETE
+  effect: BLINDNESS
+  duration-ticks: 40
+  amplifier: 20
+- region-prefix: clear-pad
+  material: GLASS
+  effect: CLEAR
+  duration-ticks: 20
+  amplifier: 0

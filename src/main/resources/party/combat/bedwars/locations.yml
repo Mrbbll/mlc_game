@@ -1,0 +1,74 @@
+# 七张源地图分别对应可配置 arena。每个地图目前共用空白模板；启用前请将别名复制为独立区块，再填写该地图真实坐标。
+schema-version: 1
+maps:
+  arena_1: &bedwars_map_template
+    configured: false
+    world: ''
+    bounds:
+      corner-1:
+        x: null
+        y: null
+        z: null
+      corner-2:
+        x: null
+        y: null
+        z: null
+    points:
+      waiting:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spectator:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      exit:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spawns: []
+      team-spawns:
+        red: []
+        blue: []
+        yellow: []
+        green: []
+      groups:
+        bed-red: []
+        bed-blue: []
+        bed-yellow: []
+        bed-green: []
+        iron-red: []
+        iron-blue: []
+        iron-yellow: []
+        iron-green: []
+        gold-red: []
+        gold-blue: []
+        gold-yellow: []
+        gold-green: []
+        diamond: []
+        emerald: []
+        shops: []
+        wither-spawn: []
+    regions:
+      build:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+  mogu: *bedwars_map_template
+  unnamed: *bedwars_map_template
+  space: *bedwars_map_template
+  special1: *bedwars_map_template
+  glassworld: *bedwars_map_template
+  siheyuan: *bedwars_map_template
+  shenjing: *bedwars_map_template

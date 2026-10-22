@@ -1,0 +1,48 @@
+# 新地图由服主提供；所有角点和特殊点位必须配置后才能启用。
+schema-version: 1
+maps:
+  arena_1:
+    configured: false
+    world: ''
+    bounds:
+      corner-1:
+        x: null
+        y: null
+        z: null
+      corner-2:
+        x: null
+        y: null
+        z: null
+    points:
+      waiting:
+        x: null
+        y: null
+        z: null
+      spectator:
+        x: null
+        y: null
+        z: null
+      exit:
+        x: null
+        y: null
+        z: null
+      spawns: []
+      groups:
+        generator-start:
+        - x: null
+          y: null
+          z: null
+        retry-start:
+        - x: null
+          y: null
+          z: null
+    regions:
+      generator:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null

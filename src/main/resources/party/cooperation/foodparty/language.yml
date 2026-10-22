@@ -1,0 +1,61 @@
+# 原地图逻辑移植；所有地图坐标由服主填写。
+schema-version: 1
+disabled: '&c此小游戏未启用。'
+map-unconfigured: '&c地图 {map} 尚未配置，请先填写 locations.yml 的角点和特殊点位。'
+already-running: '&c当前游戏已开始或正在清理。'
+full: '&c人数已满。'
+teleport-failed: '&c传送被阻止，已取消加入或开局。'
+joined: '&a{player} 加入了等待队列，当前 {count} 人。'
+not-enough: '&c人数不足，无法开始。'
+preparing: '&e正在记录场地，准备游戏。'
+countdown: '&e距离开始还有 {seconds} 秒。'
+started: '&a游戏开始！'
+eliminated: '&c{player} 已淘汰。'
+draw: 平局
+finished: '&6游戏结束，获胜者：{winners}'
+legacy-busy: '&e已有游戏开始运行，派对已结束并恢复，避免影响已有游戏。'
+name: 美食派对
+instructions: '&b采集材料，在厨房点击配方制作美食，手持成品右键顾客交单。每人3个独立60秒订单，180秒内按总得分排名。'
+customer-name: '&e顾客 {number}'
+order: '&b顾客 {number}：{dish}，剩余 {seconds} 秒。'
+order-expired: '&e顾客 {number} 的订单已超时，已刷新。'
+wrong-dish: '&e顾客 {number} 需要 {dish}，剩余 {seconds} 秒；未扣除材料或成品。'
+served: '&a完成顾客 {number} 的订单，+{points} 分，总分 {score}。'
+ingredient-cooldown: '&e该材料站正在冷却，请稍候。'
+inventory-full: '&c背包已满，先腾出空间。'
+menu-title: '&6厨房：点击选择配方'
+recipe-value: '&e基础分：{points}'
+recipe-ingredient: '&7{material} ×{count}'
+already-cooking: '&e你已有一道菜正在制作。'
+missing-ingredients: '&c材料不足，未扣除任何材料。'
+cooking-started: '&e开始制作 {dish}，请等待5秒。'
+cooked: '&a{dish} 已制作完成！手持成品右键相应顾客交单。'
+status: '&6得分 {score}，剩余 {seconds} 秒，制作：{cooking}'
+idle: 空闲
+ranking: '&6第 {rank} 名：{player}（{score}分）'
+recipes:
+  bread: 面包
+  baked_potato: 烤马铃薯
+  beetroot_soup: 甜菜汤
+  pumpkin_pie: 南瓜派
+  cookie: 曲奇
+  mushroom_stew: 蘑菇煲
+  cake: 蛋糕
+  rabbit_stew: 兔肉煲
+  suspicious_stew: 谜之炖菜
+ingredient-names:
+  WHEAT: 小麦
+  POTATO: 马铃薯
+  BEETROOT: 甜菜根
+  BOWL: 碗
+  PUMPKIN: 南瓜
+  SUGAR: 糖
+  EGG: 鸡蛋
+  COCOA_BEANS: 可可豆
+  RED_MUSHROOM: 红蘑菇
+  BROWN_MUSHROOM: 棕蘑菇
+  MILK_BUCKET: 牛奶桶
+  BAKED_POTATO: 烤马铃薯
+  COOKED_RABBIT: 熟兔肉
+  CARROT: 胡萝卜
+  DANDELION: 蒲公英

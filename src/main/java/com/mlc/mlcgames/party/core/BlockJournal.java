@@ -3,7 +3,6 @@ package com.mlc.mlcgames.party.core;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.TileState;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -48,11 +47,11 @@ public final class BlockJournal {
         List<String> blocks = data.getStringList("blocks");
         // Validate all entries before attempting recovery.
         for (String row : blocks) {
-            String[] entry = row.split("\\|", 2);
+            String[] entry = row.split("\\|", 3);
             String[] xyz = entry[0].split(",");
-            if (entry.length != 2 || xyz.length != 3) throw new IllegalArgumentException("场地恢复记录格式错误");
+            if (entry.length < 2 || xyz.length != 3) throw new IllegalArgumentException("场地恢复记录格式错误");
             for (String coordinate : xyz) Integer.parseInt(coordinate);
-            Bukkit.createBlockData(entry[1]);
+            new BlockSnapshot(entry[1], entry.length == 3 ? entry[2] : null).validate();
         }
         return new BlockJournal(file, world, blocks);
     }
@@ -61,9 +60,8 @@ public final class BlockJournal {
         int end = BatchWindow.end(pending.size(), cursor, budget);
         for (; cursor < end; cursor++) {
             Block block = pending.get(cursor);
-            // First-batch games modify plain floor/build blocks only. Never lose tile data.
-            if (block.getState() instanceof TileState) throw new IllegalArgumentException("可修改区域包含容器/告示牌等方块实体：" + block.getLocation() + "；请调整区域");
-            baseline.add(block.getX() + "," + block.getY() + "," + block.getZ() + "|" + block.getBlockData().getAsString());
+            BlockSnapshot snapshot = BlockSnapshot.capture(block);
+            baseline.add(block.getX() + "," + block.getY() + "," + block.getZ() + "|" + snapshot.data() + (snapshot.nbt() == null ? "" : "|" + snapshot.nbt()));
         }
         if (cursor < pending.size()) return false;
         YamlConfiguration data = new YamlConfiguration();
@@ -84,9 +82,9 @@ public final class BlockJournal {
     public boolean restore(int budget) {
         int end = BatchWindow.end(baseline.size(), cursor, budget);
         for (; cursor < end; cursor++) {
-            String[] entry = baseline.get(cursor).split("\\|", 2);
+            String[] entry = baseline.get(cursor).split("\\|", 3);
             String[] xyz = entry[0].split(",");
-            world.getBlockAt(Integer.parseInt(xyz[0]), Integer.parseInt(xyz[1]), Integer.parseInt(xyz[2])).setBlockData(Bukkit.createBlockData(entry[1]), false);
+            new BlockSnapshot(entry[1], entry.length == 3 ? entry[2] : null).apply(world.getBlockAt(Integer.parseInt(xyz[0]), Integer.parseInt(xyz[1]), Integer.parseInt(xyz[2])), false);
         }
         return cursor == baseline.size();
     }

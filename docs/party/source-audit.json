@@ -111,7 +111,11 @@
           "line": 1,
           "command": "execute at @s align xyz run summon block_display ~ ~ ~ {Invulnerable:1b,Tags:[\"hide.animals\",\"neww\"],block_state:\"minecraft:grass_block\"}"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "hideseek",
+        "status": "逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 23,
@@ -218,7 +222,11 @@
           "line": 16,
           "command": "execute if score @s sneak.color matches 16 run fill ~-0.3 ~-0.5 ~-0.3 ~0.3 ~0.5 ~0.3 minecraft:black_wool replace snow_block"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "sneak",
+        "status": "贪吃蛇逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 31,
@@ -305,7 +313,11 @@
           "line": 19,
           "command": "execute unless score pacman.state state matches 1.. if score wait.player tick matches ..1 run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "pacman",
+        "status": "多轮追捕、金币与复活机制已迁移；待地图实测"
+      }
     },
     {
       "id": 32,
@@ -417,7 +429,7 @@
       ],
       "implementation": {
         "plugin-id": "miner",
-        "status": "独立实现共享随机矿柱、工具及完赛积分；编号 62 已按确认重抽，待实机"
+        "status": "原 96 层随机矿柱与工具已迁移；随机编号 62 按确认重抽"
       }
     },
     {
@@ -525,7 +537,11 @@
           "line": 15,
           "command": "execute in airworld positioned -167 -61 625 run function minecraft:mining/map/set_random_block"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "mining",
+        "status": "共享随机矿层、五种精准采集工具及金币榜已迁移；待地图实测"
+      }
     },
     {
       "id": 37,
@@ -587,7 +603,7 @@
       ],
       "implementation": {
         "plugin-id": "fishing",
-        "status": "独立实现原生垂钓、原权重兑换及并列积分；已同意补全宝藏/竹子条件，待实机"
+        "status": "原生钓鱼、旧格式战利品字段与计分已迁移"
       }
     },
     {
@@ -700,7 +716,7 @@
       ],
       "implementation": {
         "plugin-id": "tntrun",
-        "status": "独立实现、构建通过；待地图实测与原派对计分接入"
+        "status": "已迁移，待地图实测与轮换积分接入"
       }
     },
     {
@@ -813,7 +829,7 @@
       ],
       "implementation": {
         "plugin-id": "spleef",
-        "status": "独立实现、构建通过；待地图实测与原派对计分接入"
+        "status": "已迁移，待地图实测与轮换积分接入"
       }
     },
     {
@@ -926,7 +942,7 @@
       ],
       "implementation": {
         "plugin-id": "bowspleef",
-        "status": "独立实现、构建通过；待地图实测与原派对计分接入"
+        "status": "已迁移，待地图实测与轮换积分接入"
       }
     },
     {
@@ -1039,7 +1055,7 @@
       ],
       "implementation": {
         "plugin-id": "snowmix",
-        "status": "独立实现、构建通过；待地图实测与原派对计分接入"
+        "status": "已迁移，待地图实测与轮换积分接入"
       }
     },
     {
@@ -1142,7 +1158,11 @@
           "line": 21,
           "command": "execute unless score wait.player tick matches 2.. run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "blockrace",
+        "status": "生存建造、TEST_BLOCK 终点与重置区逻辑已迁移；待地图实测"
+      }
     },
     {
       "id": 50,
@@ -1251,7 +1271,11 @@
           "line": 8,
           "command": "execute in airworld run tp @a[gamemode=spectator,team=firstoutwins] 206 -22 116 0 90"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "firstoutwins",
+        "status": "生存建造、目标区、名次积分及单人开局已迁移；待地图实测"
+      }
     },
     {
       "id": 34,
@@ -1335,7 +1359,7 @@
       ],
       "implementation": {
         "plugin-id": "chair",
-        "status": "独立实现本局积分及移动矿车；待实机与轮换汇总"
+        "status": "移动椅子、淘汰与积分已迁移；待实机"
       }
     },
     {
@@ -1379,7 +1403,7 @@
       ],
       "implementation": {
         "plugin-id": "repel",
-        "status": "独立实现、构建通过；待实测校准击退与原派对计分接入"
+        "status": "已迁移击退玩法，待地图实测校准"
       }
     },
     {
@@ -1488,7 +1512,11 @@
           "line": 4,
           "command": "$fill -5 17 78 8 17 78 $(c2)"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "color",
+        "status": "逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 6,
@@ -1596,7 +1624,7 @@
       ],
       "implementation": {
         "plugin-id": "believer",
-        "status": "独立实现、构建通过；待地图实测与原派对计分接入"
+        "status": "已迁移，待地图实测与轮换积分接入"
       }
     },
     {
@@ -1667,7 +1695,7 @@
       ],
       "implementation": {
         "plugin-id": "hotpotever",
-        "status": "独立实现、构建通过；待地图实测与原派对计分接入"
+        "status": "已迁移，待地图实测与轮换积分接入"
       }
     },
     {
@@ -1777,7 +1805,11 @@
           "line": 1,
           "command": "tp @a[team=t_says,gamemode=adventure] 165 24 373 -90 0"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "tsays",
+        "status": "任务玩法已迁移；任务 66 仅允许区域内放置指定白色羊毛"
+      }
     },
     {
       "id": 11,
@@ -1888,7 +1920,11 @@
           "line": 22,
           "command": "forceload remove 465 281 539 355"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "tntwars",
+        "status": "逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 21,
@@ -1995,7 +2031,11 @@
           "line": 13,
           "command": "execute if score killer.temp temp matches 11 run tp @s -240 -29 -379"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "killerever",
+        "status": "逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 41,
@@ -2101,7 +2141,11 @@
           "line": 10,
           "command": "execute if score random temp matches 9 run summon item ~ ~ ~ {Item:{id:\"shield\",count:1,components:{\"minecraft:custom_data\":{one_arrow:tool},max_damage:1}},Tags:[\"one_arrow.item.new\"]}"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "one_arrow",
+        "status": "一击箭、道具箱、潜行隐身与随机事件已迁移；待地图实测"
+      }
     },
     {
       "id": 44,
@@ -2201,7 +2245,11 @@
           "line": 19,
           "command": "execute unless score live.state state matches 1.. if score wait.player tick matches ..1 run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "live",
+        "status": "轮次追杀、职业装备及压板补给逻辑已迁移；待地图实测"
+      }
     },
     {
       "id": 48,
@@ -2311,7 +2359,11 @@
           "line": 5,
           "command": "execute positioned 221 -35 20 run kill @e[type=item,distance=..30]"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "disastersnow",
+        "status": "雪灾玩法逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 14,
@@ -2419,7 +2471,11 @@
           "line": 17,
           "command": "execute if score tmp board matches 34 run summon item ~ ~ ~ {Item:{id:\"minecraft:splash_potion\",count:1,components:{\"minecraft:potion_contents\":{custom_color:12392957,potion:slowness}}},Glowing:true,CustomNameVisible:true}"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "endless_wolf",
+        "status": "按有效源码迁移；不添加普通玩家击杀后的自杀惩罚"
+      }
     },
     {
       "id": 40,
@@ -2530,7 +2586,7 @@
       ],
       "implementation": {
         "plugin-id": "finder",
-        "status": "独立实现收集与并列排名积分；待实机与轮换汇总"
+        "status": "彩蛋收集与并列计分已迁移；待地图实测"
       }
     },
     {
@@ -2603,7 +2659,7 @@
       ],
       "implementation": {
         "plugin-id": "elytra",
-        "status": "独立实现完赛顺序、重试与积分；待实机与轮换汇总"
+        "status": "飞行竞速与完赛积分已迁移；待地图实测"
       }
     },
     {
@@ -2706,7 +2762,11 @@
           "line": 19,
           "command": "execute unless score build_guess.state state matches 1.. if score wait.player tick matches ..1 run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "build_guess",
+        "status": "建筑猜词玩法逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 46,
@@ -2791,7 +2851,7 @@
       ],
       "implementation": {
         "plugin-id": "mutouren",
-        "status": "独立实现冻结、重试与完赛积分；待实机与轮换汇总"
+        "status": "冻结、重试与完赛积分已迁移；待地图实测"
       }
     },
     {
@@ -2901,7 +2961,11 @@
           "line": 4,
           "command": "execute positioned ~-1 ~ ~ if block ~ ~ ~ air run setblock ~ ~ ~ structure_void strict"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "build_parkour",
+        "status": "建筑跑酷玩法逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 35,
@@ -3011,7 +3075,11 @@
           "line": 5,
           "command": "fill ~-2 ~ ~-1 ~-2 ~ ~1 ladder[facing=west] replace air strict"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "random_parkour",
+        "status": "已补全会场复原、实体与定时任务清理；待地图实测"
+      }
     },
     {
       "id": 43,
@@ -3124,7 +3192,11 @@
           "line": 4,
           "command": "execute at @s as @a[tag=ball.sel] run tp @s ^ ^ ^-3"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "dodgeball",
+        "status": "躲避球玩法逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 36,
@@ -3237,7 +3309,11 @@
           "line": 4,
           "command": "execute at @s as @a[tag=ball.sel] run tp @s ^ ^ ^-3"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "football",
+        "status": "足球玩法逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 47,
@@ -3347,7 +3423,11 @@
           "line": 6,
           "command": "tp @a[team=play.sheepwars.a] 501 -55 731 0 0"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "sheepwars",
+        "status": "绵羊突击队玩法逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 8,
@@ -3455,7 +3535,11 @@
           "line": 19,
           "command": "fill -379 -6 -69 -251 -4 -83 air replace #minecraft:terracotta"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "duel",
+        "status": "战桥逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 22,
@@ -3565,7 +3649,11 @@
           "line": 15,
           "command": "execute if score pillar.floor board matches 14 in airworld run fill ~-5 -63 ~-5 ~5 -62 ~5 cobweb strict"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "pillar",
+        "status": "已补全原空缺的定时随机发物品逻辑；待地图实测"
+      }
     },
     {
       "id": 16,
@@ -3672,7 +3760,11 @@
           "line": 8,
           "command": "execute if score battle.item.b.4 board matches ..0 run setblock 147 44 -368 minecraft:redstone_block"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "battle",
+        "status": "Battle Box 逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 17,
@@ -3783,7 +3875,11 @@
           "line": 14,
           "command": "summon marker 688 -4 274 {Tags:[\"sw.chest.side\",\"sw.chests\",\"sw.marker\"]}"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "cloud",
+        "status": "旧战利品字段已按意图修复并迁移，待地图实测"
+      }
     },
     {
       "id": 18,
@@ -3880,7 +3976,11 @@
           "line": 21,
           "command": "execute unless score hunger.state state matches 1.. if score wait.player tick matches ..1 run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "hunger",
+        "status": "逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 15,
@@ -4009,7 +4109,11 @@
           "line": 14,
           "command": "execute if score bw.mode board matches 5 run tp @s[team=bw.yellow] -382 33 210 -90 0"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "bedwars",
+        "status": "八种规则模式、2/4 队、七张地图模板、商店/升级/陷阱/特殊事件及经验积分模式已迁移；地图点位待新地图填写及实测"
+      }
     },
     {
       "id": 26,
@@ -4122,7 +4226,11 @@
           "line": 12,
           "command": "execute if score blaze.buy.success board matches 0 at @s run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "blaze_capture",
+        "status": "占点模式逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 27,
@@ -4235,7 +4343,11 @@
           "line": 12,
           "command": "execute if score blaze.buy.success board matches 0 at @s run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "blaze_team",
+        "status": "团战模式逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 28,
@@ -4348,7 +4460,11 @@
           "line": 12,
           "command": "execute if score blaze.buy.success board matches 0 at @s run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "blaze_police",
+        "status": "警匪模式逻辑与三份配置已迁移；待地图实测"
+      }
     },
     {
       "id": 19,
@@ -4459,7 +4575,11 @@
           "line": 15,
           "command": "execute in airworld if score sur.reset board matches -54 run clone -104 -54 1 0 -54 -142 -103 -54 28 strict"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "surgame",
+        "status": "逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 12,
@@ -4501,7 +4621,7 @@
       ],
       "implementation": {
         "plugin-id": "poolwar",
-        "status": "独立实现体力、冰霜行者和本局积分；待实机与轮换汇总"
+        "status": "已迁移体力、冰霜行者与积分；待实机"
       }
     },
     {
@@ -4613,7 +4733,7 @@
       ],
       "implementation": {
         "plugin-id": "golf",
-        "status": "独立实现轮流击球、三球场及能量计分；待击球手感实测与轮换汇总"
+        "status": "已迁移轮流击球、三球场与能量计分；待击球手感实测"
       }
     },
     {
@@ -4722,7 +4842,11 @@
           "line": 4,
           "command": "execute if block 424 -59 625 sculk_shrieker positioned 424 -59 625 run function minecraft:bomb/round/sculk_found"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "bomb",
+        "status": "逻辑与三份配置已迁移；新地图点位待填写及实测"
+      }
     },
     {
       "id": 25,
@@ -4785,7 +4909,11 @@
           "line": 13,
           "command": "execute unless score car.state state matches 1.. if score wait.player tick matches ..1 run playsound entity.enderman.teleport player @s ~ ~ ~ 1 0 1"
         }
-      ]
+      ],
+      "implementation": {
+        "plugin-id": "car_race",
+        "status": "三圈赛猪已迁移；获胜积分修复为 3/2/2/1/1"
+      }
     },
     {
       "id": 7,
@@ -5091,15 +5219,23 @@
   "independent-implementations": {
     "minecraft:dropper/join": {
       "plugin-id": "dropper",
-      "status": "独立实现十关推进、失败重试和次数；待新地图实测"
+      "status": "既有独立实现：十关推进、失败重试和次数；待新地图实测"
     },
     "woolwar:join": {
       "plugin-id": "woolwars",
-      "status": "已按讨论方案独立实现；待地图实测与派对计分接入"
+      "status": "已按确认方案实现四队占点/淘汰回合；待地图实测"
     },
     "minecraft:parkourrace/join": {
       "plugin-id": "parkourrace",
-      "status": "独立实现检查点、效果垫和完赛积分；已同意修正每人完赛 2 分，待实机"
+      "status": "既有独立实现；按确认修复为每位完赛者 2 分"
+    },
+    "minecraft:job_pvp/join": {
+      "plugin-id": "job_pvp",
+      "status": "21 套职业装备及源码明确被动已迁移；缺失的主动技能触发逻辑未推测补写"
+    },
+    "foodparty:join": {
+      "plugin-id": "foodparty",
+      "status": "按确认方案补齐订单、采集、制作、交单与排名积分；待地图实测"
     }
   }
 }

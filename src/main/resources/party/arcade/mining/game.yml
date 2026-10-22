@@ -1,0 +1,70 @@
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 6
+max-seconds: 61
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks: []
+elimination-depth: 1
+mine:
+  layers: 28
+  ore-rolls:
+  - DIRT
+  - CLAY
+  - GRAVEL
+  - DEEPSLATE_LAPIS_ORE
+  - DEEPSLATE_REDSTONE_ORE
+  - DEEPSLATE_COPPER_ORE
+  - COAL_ORE
+  - DEEPSLATE_COAL_ORE
+  - DIAMOND_ORE
+  - DEEPSLATE_DIAMOND_ORE
+  - EMERALD_ORE
+  - DEEPSLATE_EMERALD_ORE
+  - GOLD_ORE
+  - DEEPSLATE_GOLD_ORE
+  - IRON_ORE
+  - DEEPSLATE_IRON_ORE
+  - LAPIS_ORE
+  - DEEPSLATE_LAPIS_ORE
+  - REDSTONE_ORE
+  - DEEPSLATE_REDSTONE_ORE
+  - DEEPSLATE_GOLD_ORE
+  - DEEPSLATE_IRON_ORE
+  - DEEPSLATE_EMERALD_ORE
+  - DEEPSLATE_COAL_ORE
+  - DEEPSLATE_DIAMOND_ORE
+  - DEEPSLATE
+  - TUFF
+coin-convert-interval-seconds: 1
+rank-interval-seconds: 10
+tools:
+  efficiency: 3
+coin-values:
+  DIRT: 1
+  CLAY: 2
+  GRAVEL: 3
+  DEEPSLATE_LAPIS_ORE: 10
+  DEEPSLATE_REDSTONE_ORE: 10
+  DEEPSLATE_COPPER_ORE: 5
+  COAL_ORE: 5
+  DEEPSLATE_COAL_ORE: 5
+  DIAMOND_ORE: 10
+  DEEPSLATE_DIAMOND_ORE: 15
+  EMERALD_ORE: 15
+  DEEPSLATE_EMERALD_ORE: 20
+  GOLD_ORE: 10
+  IRON_ORE: 10
+  DEEPSLATE_IRON_ORE: 15
+  LAPIS_ORE: 15
+  REDSTONE_ORE: 5
+  DEEPSLATE_GOLD_ORE: 5
+  DEEPSLATE: 5
+  TUFF: 5
+  GRASS_BLOCK: 1
+  STONE: 5

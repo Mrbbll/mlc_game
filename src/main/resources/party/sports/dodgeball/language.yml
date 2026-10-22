@@ -1,0 +1,29 @@
+# 新地图由服主提供；所有角点和特殊点位必须配置后才能启用。
+schema-version: 1
+disabled: '&c此小游戏未启用。'
+map-unconfigured: '&c地图 {map} 尚未配置，请先填写 locations.yml 的角点和特殊点位。'
+already-running: '&c当前游戏已开始或正在清理。'
+full: '&c人数已满。'
+teleport-failed: '&c传送被阻止，已取消加入或开局。'
+joined: '&a{player} 加入了等待队列，当前 {count} 人。'
+not-enough: '&c人数不足，无法开始。'
+preparing: '&e正在记录场地，准备游戏。'
+countdown: '&e距离开始还有 {seconds} 秒。'
+started: '&a游戏开始！'
+eliminated: '&c{player} 已淘汰。'
+draw: 平局
+finished: '&6游戏结束，获胜者：{winners}'
+legacy-busy: '&e已有游戏开始运行，派对已结束并恢复，避免影响已有游戏。'
+name: 躲避球
+instructions: '&b左键击球，右键停球。冲刺及高跳有4–6秒共用冷却。躲避五个移动球，红羊毛出界淘汰。球越界会穿越到对边。'
+items:
+  boots: 球鞋
+  force: 力度球鞋
+  rush: 冲刺 - 右键
+  jump: 高跳 - 右键
+  jersey: 队服
+force: '&a力度: {value}'
+serve: '&e本次由 {player} 发球，请选择力度后左键击球。'
+left-serve: '&c发球请使用左键。'
+score: '&bA {a} : {b} B | 第 {round} 轮 | 剩余 {seconds}秒'
+round-result: '&e本轮结束，A {a} : {b} B'

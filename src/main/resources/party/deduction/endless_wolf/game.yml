@@ -1,0 +1,18 @@
+# 原地图逻辑移植；所有地图坐标由服主填写。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 1800
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks: []
+elimination-depth: 1
+day-seconds: 60
+night-seconds: 60
+days: 3
+loot-interval-seconds: 4

@@ -1,0 +1,89 @@
+# 新地图由服主填写；职业装备为原组件参数，不执行命令。
+schema-version: 1
+maps:
+  arena_1:
+    configured: false
+    world: ''
+    bounds:
+      corner-1:
+        x: null
+        y: null
+        z: null
+      corner-2:
+        x: null
+        y: null
+        z: null
+    points:
+      waiting:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spectator:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      exit:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spawns: []
+      team-spawns:
+        red: []
+        blue: []
+      groups:
+        targets: []
+        levers: []
+        chests: []
+        police-spawn: []
+    regions:
+      build:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      red-shop:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      blue-shop:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      door-a:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      door-b:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null

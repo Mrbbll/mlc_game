@@ -1,0 +1,18 @@
+# 独立迁移；新地图角点与特殊点位均由服主填写。
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 8
+countdown-seconds: 5
+max-seconds: 3600
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks:
+- MAGMA_BLOCK
+elimination-depth: 1
+selection-seconds: 60
+round-seconds: 60
+wins-required: 3

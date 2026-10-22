@@ -1,0 +1,26 @@
+schema-version: 1
+disabled: '&c此小游戏未启用。'
+map-unconfigured: '&c地图 {map} 尚未配置，请先填写 locations.yml 的角点和特殊点位。'
+already-running: '&c当前游戏已开始或正在清理。'
+full: '&c人数已满。'
+teleport-failed: '&c传送被阻止，已取消加入或开局。'
+joined: '&a{player} 加入了等待队列，当前 {count} 人。'
+not-enough: '&c人数不足，无法开始。'
+preparing: '&e正在重建矿层，请稍候。'
+countdown: '&e距离开始还有 {seconds} 秒。'
+started: '&a挖矿开始！'
+eliminated: '&c{player} 已淘汰。'
+draw: 平局
+finished: '&6挖矿结束，金币领先者：{winners}'
+legacy-busy: '&e已有游戏开始运行，派对已结束并恢复，避免影响已有游戏。'
+name: 挖矿达人
+instructions: '&b使用五种精准采集工具挖矿，方块自动兑换金币；61 秒后按金币排名。'
+items:
+  pickaxe: '&b挖掘镐'
+  axe: '&b挖掘斧'
+  shovel: '&b挖掘锹'
+  hoe: '&b挖掘锄'
+  shears: '&b剪刀'
+status: '&e金币 {coins}，剩余 {seconds} 秒。'
+rank-title: '&6当前金币排行榜'
+rank-row: '&e第 {rank} 名：{player}（{coins} 金币）'

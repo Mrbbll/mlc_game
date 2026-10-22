@@ -1,0 +1,16 @@
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 600
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks: []
+elimination-depth: 1
+tool-drop-interval-seconds: 4
+random-event-interval-seconds: 15
+random-drop-lifetime-seconds: 30

@@ -1,0 +1,92 @@
+# 原地图逻辑移植；所有地图坐标由服主填写。
+schema-version: 1
+maps:
+  arena_1:
+    configured: false
+    world: ''
+    bounds:
+      corner-1:
+        x: null
+        y: null
+        z: null
+      corner-2:
+        x: null
+        y: null
+        z: null
+    points:
+      waiting:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spectator:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      exit:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spawns: []
+      groups:
+        level-starts: []
+    regions:
+      level-1:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      level-2:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      level-3:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      level-4:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      level-5:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      level-6:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null

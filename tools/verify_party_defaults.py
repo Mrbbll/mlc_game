@@ -16,10 +16,75 @@ def get(data, path):
     return data
 
 
+def assert_unset_coordinates(value, context):
+    if isinstance(value, dict):
+        if {'x', 'y', 'z'} <= value.keys():
+            assert all(value[axis] is None for axis in ('x', 'y', 'z')), f'{context}: coordinates must remain unconfigured'
+        for key, child in value.items():
+            assert_unset_coordinates(child, f'{context}.{key}')
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            assert_unset_coordinates(child, f'{context}[{index}]')
+
+
+def paths(data, prefix=''):
+    if isinstance(data, dict):
+        for key, child in data.items():
+            current = f'{prefix}.{key}' if prefix else str(key)
+            yield current
+            yield from paths(child, current)
+
+
 registry = (JAVA / 'PartyModule.java').read_text(encoding='utf-8')
 games = re.findall(r'register\("([a-z0-9_]+)", "([a-z]+)",', registry)
 assert len({game for game, category in games}) == len(games) > 0
+registered = {f'{category}/{game}' for game, category in games}
+available = {
+    f'{category.name}/{game.name}'
+    for category in RESOURCES.iterdir() if category.is_dir()
+    for game in category.iterdir() if game.is_dir()
+}
+assert registered == available, f'Resource/registry mismatch: missing={registered - available}, extra={available - registered}'
 common = (JAVA / 'core/PartySession.java').read_text(encoding='utf-8')
+
+
+def related_sources(initial, category, game, source_game):
+    """Include game-local helpers and recursively imported plugin source classes."""
+    pending = list(initial)
+    seen = set()
+    allowed_roots = [JAVA / category / source_game, JAVA / 'core', JAVA / category / 'common']
+    if game in ('tntrun', 'spleef', 'bowspleef', 'snowmix'):
+        allowed_roots.append(JAVA / 'survival/snow')
+    if game in ('live', 'pacman'):
+        allowed_roots.append(JAVA / 'survival/chase')
+
+    def allowed(source):
+        return any(source == root or root in source.parents for root in allowed_roots)
+
+    while pending:
+        source = pending.pop()
+        if source in seen:
+            continue
+        seen.add(source)
+        content = source.read_text(encoding='utf-8')
+        for imported in re.findall(r'^import\s+(com\.mlc\.mlcgames\.party\.[\w.*]+);', content, re.MULTILINE):
+            relative = imported.split('.party.', 1)[1]
+            if relative.endswith('.*'):
+                package = JAVA / relative[:-2].replace('.', '/')
+                for candidate in package.glob('*.java'):
+                    if not allowed(candidate) or candidate in seen:
+                        continue
+                    candidate_text = candidate.read_text(encoding='utf-8')
+                    declared_types = re.findall(r'\b(?:class|interface|enum|record)\s+(\w+)', candidate_text)
+                    if any(re.search(r'\b' + re.escape(type_name) + r'\b', content) for type_name in declared_types):
+                        pending.append(candidate)
+            else:
+                dependency = JAVA / (relative.replace('.', '/') + '.java')
+                if dependency.is_file() and allowed(dependency) and dependency not in seen:
+                    pending.append(dependency)
+    return sorted(seen)
+
+
 for game, category in games:
     directory = RESOURCES / category / game
     configs = {name: yaml.safe_load((directory / (name + '.yml')).read_text(encoding='utf-8')) for name in ('game', 'locations', 'language')}
@@ -27,27 +92,44 @@ for game, category in games:
     rules, language, locations = configs['game'], configs['language'], configs['locations']
     arena = get(locations, 'maps.arena_1')
     assert arena['configured'] is False and arena['world'] == ''
+    assert_unset_coordinates(arena, f'{game}.locations')
     for corner in ('corner-1', 'corner-2'):
         assert all(value is None for value in arena['bounds'][corner].values())
     assert get(arena, 'points.spawns') == []
-    assert 2 <= rules['players']['min'] <= rules['players']['max'] <= 64
-    sources = list((JAVA / category / game).glob('*.java'))
+    minimum_players = 1 if game == 'firstoutwins' else 2
+    assert minimum_players <= rules['players']['min'] <= rules['players']['max'] <= 64
+    source_game = {'job_pvp': 'jobpvp', 'one_arrow': 'onearrow', 'random_parkour': 'randomparkour'}.get(game, game)
+    sources = list((JAVA / category / source_game).glob('*.java'))
     assert sources, f'{game}: logic directory missing'
     if game in ('tntrun', 'spleef', 'bowspleef', 'snowmix'):
         sources += list((JAVA / 'survival/snow').glob('*.java'))
-    if category == 'racing' and game != 'dropper' or game == 'miner':
-        sources += list((JAVA / 'racing/common').glob('*.java'))
+    sources = related_sources(sources, category, game, source_game)
     code = common + '\n' + '\n'.join(path.read_text(encoding='utf-8') for path in sources)
     for key in re.findall(r'\.(?:integer|number|materials|thresholds|itemMaterial)\("([\w.-]+)"\s*[,)]', code):
-        get(rules, key)
+        try:
+            get(rules, key)
+        except AssertionError as error:
+            raise AssertionError(f'{category}/{game}: {error}') from error
     for key in re.findall(r'\.(?:text|message|broadcast)\("([\w.-]+)"', code):
-        if not key.endswith('.'):
+        if key.endswith('-'):
+            assert any(path.startswith(key) for path in paths(language)), f'{game}: missing language prefix {key}'
+        elif not key.endswith('.'):
             get(language, key)
     for key in re.findall(r'\.item\([^\n;]*?, "([\w.-]+)"\)', code):
         get(language, key)
+    for receiver, accessor, key in re.findall(
+            r'([\w.]+)\.(getString|getInt|getDouble|getLong|getBoolean|getStringList|getConfigurationSection|contains)\("([\w.-]+)"', code):
+        if 'language' in receiver:
+            get(language, key)
+        elif 'rules' in receiver:
+            get(rules, key)
     for region in re.findall(r'arena\.region\("([\w.-]+)"\)', code):
+        if game == 'dodgeball' and region in ('goal-a', 'goal-b'):
+            continue
         assert region in arena['regions'], f'{game}: missing region {region}'
     for group in re.findall(r'arena\.group\("([\w.-]+)"\)', code):
+        if group == 'police-spawn' and game != 'blaze_police':
+            continue
         assert group in get(arena, 'points.groups'), f'{game}: missing point group {group}'
     for row in rules.get('pad-effects', []):
         assert row['region-prefix'] in arena['regions']
@@ -96,6 +178,16 @@ for game, category in games:
         assert rules['shorten-after-finishers'] == 4 and rules['shortened-seconds'] == 30
         for slot in range(1, 6):
             get(language, f'items.tool-{slot}')
+    if game == 'mining':
+        assert rules['mine']['layers'] == 28
+        assert len(rules['mine']['ore-rolls']) == 27
+        assert rules['max-seconds'] == 61
+        assert rules['coin-values']['STONE'] > 0
+        get(arena, 'regions.mine-area')
+    if game == 'car_race':
+        assert list(rules['finish-points'].values()) == [3, 2, 2, 1, 1]
+        assert rules['laps'] == 3 and rules['finishers-to-end'] == 5
+        assert rules['speed'] == {'acceleration': 6, 'brake': 5, 'friction': 3, 'cap': 100, 'slow-threshold': 10, 'slow-penalty': 5, 'attribute-factor': 0.01}
     if game == 'dropper':
         assert get(arena, 'points.groups.level-starts') == []
         assert rules['attempt-health'] == 2
@@ -105,11 +197,14 @@ for game, category in games:
                 assert all(value is None for value in corner.values())
 
 jar = ROOT / 'build/libs/mlcgames-1.0-SNAPSHOT-all.jar'
-if jar.exists():
+inputs = [JAVA / 'PartyModule.java', *JAVA.rglob('*.java'), *RESOURCES.rglob('*.yml')]
+bundle_checked = False
+if jar.exists() and jar.stat().st_mtime >= max(path.stat().st_mtime for path in inputs):
     with zipfile.ZipFile(jar) as archive:
         names = set(archive.namelist())
         for game, category in games:
             for name in ('game', 'locations', 'language'):
                 assert f'party/{category}/{game}/{name}.yml' in names
         assert 'party/SOURCE-LICENSE.txt' in names and 'party/NOTICE.txt' in names
-print(f'Validated {len(games)} registered games, {len(games)*3} YAML files, required rule/language keys, unset coordinates and bundled resources.')
+    bundle_checked = True
+print(f'Validated {len(games)} registered games, {len(games)*3} YAML files, required rule/language keys, unset coordinates; bundled resources {"verified" if bundle_checked else "not checked (no current jar)"}.')

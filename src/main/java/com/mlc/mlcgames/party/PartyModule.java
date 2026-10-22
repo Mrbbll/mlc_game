@@ -5,6 +5,28 @@ import com.mlc.mlcgames.dungeongame.Dungeongame;
 import com.mlc.mlcgames.sandgame.Sandgame;
 import com.mlc.mlcgames.zombieday.Zombiedaygame;
 import com.mlc.mlcgames.party.core.*;
+import com.mlc.mlcgames.party.arcade.mining.MiningGame;
+import com.mlc.mlcgames.party.building.build_guess.BuildGuessGame;
+import com.mlc.mlcgames.party.building.build_parkour.BuildParkourGame;
+import com.mlc.mlcgames.party.combat.battle.BattleGame;
+import com.mlc.mlcgames.party.combat.bedwars.BedWarsGame;
+import com.mlc.mlcgames.party.combat.blaze_capture.BlazeCaptureGame;
+import com.mlc.mlcgames.party.combat.blaze_police.BlazePoliceGame;
+import com.mlc.mlcgames.party.combat.blaze_team.BlazeTeamGame;
+import com.mlc.mlcgames.party.combat.cloud.CloudGame;
+import com.mlc.mlcgames.party.combat.duel.DuelGame;
+import com.mlc.mlcgames.party.combat.hunger.HungerGame;
+import com.mlc.mlcgames.party.combat.jobpvp.JobPvpGame;
+import com.mlc.mlcgames.party.combat.onearrow.OneArrowGame;
+import com.mlc.mlcgames.party.combat.pillar.PillarGame;
+import com.mlc.mlcgames.party.combat.sheepwars.SheepWarsGame;
+import com.mlc.mlcgames.party.combat.surgame.SurvivalGame;
+import com.mlc.mlcgames.party.combat.tntwars.TntWarsGame;
+import com.mlc.mlcgames.party.cooperation.bomb.BombGame;
+import com.mlc.mlcgames.party.cooperation.foodparty.FoodPartyGame;
+import com.mlc.mlcgames.party.deduction.endless_wolf.EndlessWolfGame;
+import com.mlc.mlcgames.party.deduction.hideseek.HideSeekGame;
+import com.mlc.mlcgames.party.deduction.killerever.KillerEverGame;
 import com.mlc.mlcgames.party.survival.believer.BelieverGame;
 import com.mlc.mlcgames.party.survival.repel.RepelGame;
 import com.mlc.mlcgames.party.survival.hotpotever.HotPotatoGame;
@@ -17,12 +39,24 @@ import com.mlc.mlcgames.party.exploration.finder.FinderGame;
 import com.mlc.mlcgames.party.racing.elytra.ElytraGame;
 import com.mlc.mlcgames.party.racing.mutouren.MutourenGame;
 import com.mlc.mlcgames.party.racing.parkourrace.ParkourRaceGame;
+import com.mlc.mlcgames.party.racing.blockrace.BlockraceGame;
+import com.mlc.mlcgames.party.racing.randomparkour.RandomParkourGame;
 import com.mlc.mlcgames.party.reaction.chair.ChairGame;
+import com.mlc.mlcgames.party.reaction.color.ColorGame;
+import com.mlc.mlcgames.party.reaction.tsays.TSaysGame;
 import com.mlc.mlcgames.party.sports.poolwar.PoolWarGame;
+import com.mlc.mlcgames.party.sports.dodgeball.DodgeballGame;
+import com.mlc.mlcgames.party.sports.football.FootballGame;
 import com.mlc.mlcgames.party.racing.dropper.DropperGame;
 import com.mlc.mlcgames.party.sports.golf.GolfGame;
 import com.mlc.mlcgames.party.arcade.fishing.FishingGame;
 import com.mlc.mlcgames.party.arcade.miner.MinerGame;
+import com.mlc.mlcgames.party.racing.car_race.PigRaceGame;
+import com.mlc.mlcgames.party.survival.disastersnow.DisasterSnowGame;
+import com.mlc.mlcgames.party.survival.firstoutwins.FirstOutWinsGame;
+import com.mlc.mlcgames.party.survival.live.LiveGame;
+import com.mlc.mlcgames.party.survival.pacman.PacmanGame;
+import com.mlc.mlcgames.party.survival.sneak.SneakGame;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -79,6 +113,40 @@ public final class PartyModule implements Listener, TabExecutor {
         register("golf", "sports", GolfGame::new);
         register("fishing", "arcade", FishingGame::new);
         register("miner", "arcade", MinerGame::new);
+        register("car_race", "racing", PigRaceGame::new);
+        register("build_guess", "building", BuildGuessGame::new);
+        register("build_parkour", "building", BuildParkourGame::new);
+        register("battle", "combat", BattleGame::new);
+        register("bedwars", "combat", BedWarsGame::new);
+        register("blaze_capture", "combat", BlazeCaptureGame::new);
+        register("blaze_police", "combat", BlazePoliceGame::new);
+        register("blaze_team", "combat", BlazeTeamGame::new);
+        register("cloud", "combat", CloudGame::new);
+        register("duel", "combat", DuelGame::new);
+        register("hunger", "combat", HungerGame::new);
+        register("job_pvp", "combat", JobPvpGame::new);
+        register("one_arrow", "combat", OneArrowGame::new);
+        register("pillar", "combat", PillarGame::new);
+        register("sheepwars", "combat", SheepWarsGame::new);
+        register("surgame", "combat", SurvivalGame::new);
+        register("tntwars", "combat", TntWarsGame::new);
+        register("bomb", "cooperation", BombGame::new);
+        register("foodparty", "cooperation", FoodPartyGame::new);
+        register("endless_wolf", "deduction", EndlessWolfGame::new);
+        register("hideseek", "deduction", HideSeekGame::new);
+        register("killerever", "deduction", KillerEverGame::new);
+        register("mining", "arcade", MiningGame::new);
+        register("blockrace", "racing", BlockraceGame::new);
+        register("random_parkour", "racing", RandomParkourGame::new);
+        register("color", "reaction", ColorGame::new);
+        register("tsays", "reaction", TSaysGame::new);
+        register("dodgeball", "sports", DodgeballGame::new);
+        register("football", "sports", FootballGame::new);
+        register("disastersnow", "survival", DisasterSnowGame::new);
+        register("firstoutwins", "survival", FirstOutWinsGame::new);
+        register("live", "survival", LiveGame::new);
+        register("pacman", "survival", PacmanGame::new);
+        register("sneak", "survival", SneakGame::new);
         language = PartyConfig.load(plugin, "party/language.yml");
         File journal = new File(plugin.getDataFolder(), "party/recovery/journal.yml");
         if (journal.exists()) {
@@ -196,6 +264,11 @@ public final class PartyModule implements Listener, TabExecutor {
                     else if (recovery.pending(player)) recovery.restore(player);
                     else message(sender, "not-joined");
                 }
+                case "action" -> {
+                    if (!(sender instanceof Player player)) throw new IllegalArgumentException(text("players-only"));
+                    if (session == null || !session.member(player) || !session.active(player)) throw new IllegalStateException(text("not-joined"));
+                    if (!session.game.action(session, player, Arrays.copyOfRange(args, 1, args.length))) message(sender, "help");
+                }
                 case "start", "stop", "check", "reload" -> {
                     if (!sender.hasPermission("mlcgames.party.admin")) { message(sender, "no-permission"); break; }
                     if (action.equals("reload")) {
@@ -241,33 +314,54 @@ public final class PartyModule implements Listener, TabExecutor {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void damage(EntityDamageEvent event) {
+        if (session != null && session.owns(event.getEntity()) && (session.state() == PartySession.State.RUNNING || session.state() == PartySession.State.READY)) session.game.entityDamage(session, event);
         if (!(event.getEntity() instanceof Player victim)) return;
         Player attacker = event instanceof EntityDamageByEntityEvent hit ? attacker(hit.getDamager()) : null;
         if (!member(victim)) { if (attacker != null && member(attacker)) event.setCancelled(true); return; }
         event.setCancelled(true);
-        if (session.active(victim) && !(event instanceof EntityDamageByEntityEvent)) session.game.environmentalDamage(session, victim, event);
+        if (!session.active(victim)) return;
         if (session.active(victim) && attacker != null && session.active(attacker) && !victim.equals(attacker) && event instanceof EntityDamageByEntityEvent hit) {
             session.game.hit(session, attacker, victim, hit);
-            if (!hit.isCancelled() && hit.getFinalDamage() >= victim.getHealth()) { hit.setCancelled(true); session.eliminate(victim); }
+            event = hit;
+        } else if (attacker == null) session.game.environmentalDamage(session, victim, event);
+        if (!event.isCancelled() && event.getFinalDamage() >= victim.getHealth()) {
+            event.setCancelled(true);
+            if (!session.game.lethalDamage(session, victim, event)) session.eliminate(victim);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void entityDeath(EntityDeathEvent event) {
+        if (session != null && session.owns(event.getEntity())
+                && (session.state() == PartySession.State.RUNNING || session.state() == PartySession.State.READY)) session.game.entityDeath(session, event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void breakBlock(BlockBreakEvent event) {
         if (!protectedBlock(event.getBlock()) && !member(event.getPlayer())) return;
+        boolean allowed = member(event.getPlayer()) && session.active(event.getPlayer()) && session.writable(event.getBlock());
+        if (allowed && session.game.nativeBreak(session, event.getPlayer(), event.getBlock())) return;
         event.setCancelled(true);
-        if (member(event.getPlayer()) && session.active(event.getPlayer()) && session.writable(event.getBlock()) && session.game.breakBlock(session, event.getPlayer(), event.getBlock())) session.set(event.getBlock(), Material.AIR);
+        if (allowed && session.game.breakBlock(session, event.getPlayer(), event.getBlock())) session.set(event.getBlock(), Material.AIR);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void placeBlock(BlockPlaceEvent event) {
+        if (event instanceof BlockMultiPlaceEvent) return;
         if (!protectedBlock(event.getBlock()) && !member(event.getPlayer())) return;
         boolean allow = member(event.getPlayer()) && session.active(event.getPlayer()) && session.writable(event.getBlock()) && session.game.placeBlock(session, event.getPlayer(), event.getBlock());
         event.setCancelled(!allow);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void multiPlace(BlockMultiPlaceEvent event) { if (member(event.getPlayer()) || protectedBlock(event.getBlock())) event.setCancelled(true); }
+    public void multiPlace(BlockMultiPlaceEvent event) {
+        boolean relevant = member(event.getPlayer()) || protectedBlock(event.getBlock());
+        if (!relevant) return;
+        boolean allow = member(event.getPlayer()) && session.active(event.getPlayer())
+                && event.getReplacedBlockStates().stream().allMatch(state -> session.writable(state.getBlock()))
+                && session.game.placeBlock(session, event.getPlayer(), event.getBlock());
+        event.setCancelled(!allow);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void blockDamage(BlockDamageEvent event) {
@@ -277,7 +371,14 @@ public final class PartyModule implements Listener, TabExecutor {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void projectileLaunch(ProjectileLaunchEvent event) {
         if (event.getEntity().getShooter() instanceof Player player && member(player)) {
-            if (!session.active(player) || !session.game.launch(session, player)) event.setCancelled(true); else session.track(event.getEntity());
+            if (!session.active(player) || !session.game.launch(session, player)) event.setCancelled(true);
+            else { session.track(event.getEntity()); session.game.launched(session, player, event.getEntity()); }
+        }
+    }
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void bowShoot(EntityShootBowEvent event) {
+        if (event.getEntity() instanceof Player player && member(player)) {
+            if (!session.active(player)) event.setCancelled(true); else session.game.shoot(session, event);
         }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -317,7 +418,12 @@ public final class PartyModule implements Listener, TabExecutor {
         if (!member(event.getPlayer())) return;
         event.setUseInteractedBlock(Event.Result.DENY);
         if (!session.active(event.getPlayer())) event.setUseItemInHand(Event.Result.DENY);
-        else session.game.interact(session, event);
+        else {
+            Block clicked = event.getClickedBlock();
+            if (clicked != null && session.writable(clicked) && session.game.allowBlockInteraction(session, event.getPlayer(), clicked))
+                event.setUseInteractedBlock(Event.Result.DEFAULT);
+            session.game.interact(session, event);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -360,30 +466,55 @@ public final class PartyModule implements Listener, TabExecutor {
         if (session != null && session.owns(event.getVehicle()) && (!(event.getEntered() instanceof Player player) || !session.active(player))) event.setCancelled(true);
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void inventory(InventoryClickEvent event) { if (event.getWhoClicked() instanceof Player p && member(p)) event.setCancelled(true); }
+    public void inventory(InventoryClickEvent event) { if (event.getWhoClicked() instanceof Player p && member(p)) event.setCancelled(!session.active(p) || !session.game.allowInventory(session, event)); }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void drag(InventoryDragEvent event) { if (event.getWhoClicked() instanceof Player p && member(p)) event.setCancelled(true); }
+    public void drag(InventoryDragEvent event) { if (event.getWhoClicked() instanceof Player p && member(p)) event.setCancelled(!session.active(p) || !session.game.allowDrag(session, event)); }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void drop(PlayerDropItemEvent event) { if (member(event.getPlayer())) event.setCancelled(true); }
+    public void drop(PlayerDropItemEvent event) {
+        if (!member(event.getPlayer())) return;
+        boolean allow = session.active(event.getPlayer()) && session.game.allowDrop(session, event.getPlayer(), event.getItemDrop());
+        event.setCancelled(!allow);
+        if (allow) session.track(event.getItemDrop());
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void pickup(EntityPickupItemEvent event) { if (event.getEntity() instanceof Player p && member(p)) event.setCancelled(true); }
+    public void pickup(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player p && member(p)) event.setCancelled(!session.active(p) || !session.game.allowPickup(session, p, event.getItem()));
+        else if (session != null && session.owns(event.getItem()) && (!(event.getEntity() instanceof Player p) || !member(p) || !session.active(p))) event.setCancelled(true);
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void swap(PlayerSwapHandItemsEvent event) { if (member(event.getPlayer())) event.setCancelled(true); }
+    public void swap(PlayerSwapHandItemsEvent event) {
+        if (member(event.getPlayer())) {
+            event.setCancelled(!session.active(event.getPlayer()) || !session.game.allowSwap(session, event.getPlayer()));
+            if (session.active(event.getPlayer())) session.game.swap(session, event);
+        }
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void hunger(FoodLevelChangeEvent event) { if (event.getEntity() instanceof Player p && member(p)) event.setCancelled(true); }
+    public void hunger(FoodLevelChangeEvent event) { if (event.getEntity() instanceof Player p && member(p) && session.game.maintainFood(session)) event.setCancelled(true); }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void physics(BlockPhysicsEvent event) {
-        if (protectedBlock(event.getBlock()) || session != null && session.writable(event.getSourceBlock()))
-            event.setCancelled(!session.writable(event.getBlock()) || !session.game.allowPhysics(session, event.getBlock()));
+        if (protectedBlock(event.getBlock()) || session != null && session.writable(event.getSourceBlock())) {
+            boolean natural = session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session);
+            boolean allowed = session.writable(event.getBlock()) && session.writable(event.getSourceBlock())
+                    && (natural || session.game.allowPhysics(session, event.getBlock()));
+            event.setCancelled(!allowed);
+        }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void spread(BlockSpreadEvent event) {
-        if (protectedBlock(event.getBlock()) || protectedBlock(event.getSource()))
-            event.setCancelled(!session.writable(event.getBlock()) || !session.game.allowPhysics(session, event.getBlock()));
+        if (protectedBlock(event.getBlock()) || protectedBlock(event.getSource())) {
+            boolean natural = session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session)
+                    && session.writable(event.getSource()) && session.writable(event.getBlock());
+            boolean allowed = session.writable(event.getBlock()) && (natural || session.game.allowPhysics(session, event.getBlock()));
+            if (allowed) session.snapshot(event.getBlock());
+            event.setCancelled(!allowed);
+        }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void itemSpawn(ItemSpawnEvent event) {
-        if (session != null && session.arena.contains(event.getLocation()) && session.game.suppressArenaDrops()) event.setCancelled(true);
+        if (session != null && session.arena.contains(event.getLocation())) {
+            if (session.game.suppressArenaDrops()) event.setCancelled(true);
+            else session.track(event.getEntity());
+        }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void spawnerSpawn(SpawnerSpawnEvent event) {
@@ -393,21 +524,46 @@ public final class PartyModule implements Listener, TabExecutor {
         }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void flow(BlockFromToEvent event) { if (protectedBlock(event.getBlock()) || protectedBlock(event.getToBlock())) event.setCancelled(true); }
+    public void flow(BlockFromToEvent event) {
+        if (!protectedBlock(event.getBlock()) && !protectedBlock(event.getToBlock())) return;
+        boolean allow = session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session)
+                && session.writable(event.getBlock()) && session.writable(event.getToBlock());
+        if (!allow) allow = session.writable(event.getBlock()) && session.writable(event.getToBlock())
+                && session.game.allowPhysics(session, event.getToBlock());
+        if (allow) session.snapshot(event.getToBlock());
+        event.setCancelled(!allow);
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void burn(BlockBurnEvent event) { if (protectedBlock(event.getBlock())) event.setCancelled(true); }
+    public void burn(BlockBurnEvent event) {
+        if (!protectedBlock(event.getBlock())) return;
+        boolean allow = session.state() == PartySession.State.RUNNING && session.writable(event.getBlock())
+                && (session.game.allowNaturalChanges(session) || session.game.allowPhysics(session, event.getBlock()));
+        if (allow) session.snapshot(event.getBlock());
+        event.setCancelled(!allow);
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void ignite(BlockIgniteEvent event) { if (protectedBlock(event.getBlock())) event.setCancelled(true); }
+    public void ignite(BlockIgniteEvent event) {
+        if (!protectedBlock(event.getBlock())) return;
+        boolean allow = session.state() == PartySession.State.RUNNING && session.writable(event.getBlock())
+                && (session.game.allowNaturalChanges(session) || session.game.allowPhysics(session, event.getBlock()));
+        if (allow) session.snapshot(event.getBlock());
+        event.setCancelled(!allow);
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void change(EntityChangeBlockEvent event) {
         if (session == null || !protectedBlock(event.getBlock()) && !session.owns(event.getEntity())) return;
         boolean allow = session.writable(event.getBlock()) && session.game.fallingBlockChange(session, event);
+        if (!allow && event.getEntity() instanceof FallingBlock && session.owns(event.getEntity())
+                && session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session)) allow = true;
+        if (allow) session.snapshot(event.getBlock());
         event.setCancelled(!allow);
         if (!allow && event.getEntity() instanceof FallingBlock && session.owns(event.getEntity())) event.getEntity().remove();
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void form(BlockFormEvent event) {
         Player player = event instanceof EntityBlockFormEvent entityForm && entityForm.getEntity() instanceof Player p ? p : null;
+        if (player == null && session != null && session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session)
+                && session.writable(event.getBlock())) { session.snapshot(event.getBlock()); return; }
         if (!protectedBlock(event.getBlock()) && (player == null || !member(player))) return;
         boolean allow = player != null && member(player) && session.active(player) && session.writable(event.getBlock())
                 && session.game.formBlock(session, player, event.getBlock(), event.getNewState().getType());
@@ -419,9 +575,29 @@ public final class PartyModule implements Listener, TabExecutor {
                 || !session.writable(event.getBlock()) || !session.game.fadeBlock(session, event.getBlock(), event.getNewState().getType()));
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void explode(EntityExplodeEvent event) { event.blockList().removeIf(this::protectedBlock); }
+    public void explode(EntityExplodeEvent event) {
+        if (session != null && session.owns(event.getEntity()) && session.state() == PartySession.State.RUNNING)
+            session.game.explode(session, event);
+        Iterator<Block> blocks = event.blockList().iterator();
+        while (blocks.hasNext()) {
+            Block block = blocks.next();
+            if (!protectedBlock(block)) continue;
+            boolean allow = session.state() == PartySession.State.RUNNING && session.writable(block)
+                    && session.game.allowNaturalChanges(session);
+            if (allow) session.snapshot(block); else blocks.remove();
+        }
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void blockExplode(BlockExplodeEvent event) { event.blockList().removeIf(this::protectedBlock); }
+    public void blockExplode(BlockExplodeEvent event) {
+        Iterator<Block> blocks = event.blockList().iterator();
+        while (blocks.hasNext()) {
+            Block block = blocks.next();
+            if (!protectedBlock(block)) continue;
+            boolean allow = session.state() == PartySession.State.RUNNING && session.writable(block)
+                    && session.game.allowNaturalChanges(session);
+            if (allow) session.snapshot(block); else blocks.remove();
+        }
+    }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void pistonExtend(BlockPistonExtendEvent event) {
         if (protectedBlock(event.getBlock()) || event.getBlocks().stream().anyMatch(b -> protectedBlock(b) || protectedBlock(b.getRelative(event.getDirection())))) event.setCancelled(true);
@@ -440,6 +616,11 @@ public final class PartyModule implements Listener, TabExecutor {
         event.setKeepLevel(true);
         session.eliminate(event.getPlayer());
         Bukkit.getScheduler().runTask(plugin, () -> { if (event.getPlayer().isOnline() && event.getPlayer().isDead()) event.getPlayer().spigot().respawn(); });
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void bookEdit(PlayerEditBookEvent event) {
+        if (member(event.getPlayer())) session.game.editBook(session, event);
     }
 
     @EventHandler public void respawn(PlayerRespawnEvent event) {

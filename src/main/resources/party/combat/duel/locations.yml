@@ -1,0 +1,94 @@
+# 独立迁移；新地图角点与特殊点位均由服主填写。
+schema-version: 1
+maps:
+  arena_1:
+    configured: false
+    world: ''
+    bounds:
+      corner-1:
+        x: null
+        y: null
+        z: null
+      corner-2:
+        x: null
+        y: null
+        z: null
+    points:
+      waiting:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spectator:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      exit:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spawns: []
+      team-spawns:
+        red: []
+        blue: []
+      groups: {}
+    regions:
+      build:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      red-goal:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      blue-goal:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      red-cage:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      blue-cage:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      no-build-1:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null

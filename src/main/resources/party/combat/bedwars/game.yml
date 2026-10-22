@@ -1,0 +1,69 @@
+# Bedwars keeps all editable blocks inside regions.build; complete every location before enabling.
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 10
+max-seconds: 2160
+# 源码提供 8 种规则模式；队伍数只支持 2 或 4。
+mode: normal
+team-count: 4
+# 原地图选择器编号到可配置 arena 名称的映射；实际选择由 /party join bedwars <arena> 完成。
+source-maps:
+  1: mogu
+  2: unnamed
+  3: space
+  4: special1
+  5: glassworld
+  6: siheyuan
+  7: shenjing
+# 原规则模式编号。每个插件配置一次选择一个规则模式；地图布局通过 source-maps 单独选择。
+source-rule-modes:
+  0: normal
+  1: no-beds
+  2: unlocked
+  3: xp
+  4: double-resources
+  5: class
+  6: zombie-wave
+  7: permanent-bed
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 1000000
+  blocks-per-tick: 1000
+elimination-blocks: []
+elimination-depth: 1
+respawn-seconds: 5
+shop-radius: 5
+trap-radius: 12
+events:
+  bed-gone-seconds: 1560
+  final-battle-seconds: 1860
+  wither-spawn-group: wither-spawn
+generator:
+  iron-ticks: 50
+  gold-ticks: 160
+  diamond-start-seconds: 48
+  emerald-start-seconds: 60
+building-materials:
+  - WHITE_WOOL
+  - RED_WOOL
+  - BLUE_WOOL
+  - YELLOW_WOOL
+  - LIME_WOOL
+  - END_STONE
+  - OAK_PLANKS
+  - DARK_OAK_PLANKS
+  - GLASS
+  - SANDSTONE
+  - CUT_SANDSTONE
+  - WHITE_STAINED_GLASS
+  - RED_STAINED_GLASS
+  - BLUE_STAINED_GLASS
+  - YELLOW_STAINED_GLASS
+  - LIME_STAINED_GLASS
+  - SPONGE
+  - OBSIDIAN
+  - LADDER
+  - TNT

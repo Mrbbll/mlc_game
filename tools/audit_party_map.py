@@ -39,6 +39,7 @@ def write_inventory(result, target):
     excluded = {
         'minecraft:pvelobby/join': '排除：PVE 大厅',
         'minecraft:desk/join': '排除：全部桌游，用户已确认（包括掷骰子、俄罗斯轮盘、商贾传奇）',
+        'minecraft:twolf/join': '排除：狼人杀为桌游，用户已确认排除全部桌游',
         'minecraft:small_games/chess/join': '排除：棋类',
         'minecraft:small_games/total/join': '派对调度系统，单独实现；不算小游戏',
         'woolwar:join': '已按讨论方案独立实现；待地图实测与派对计分接入，ID: woolwars',

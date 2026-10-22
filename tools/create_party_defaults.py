@@ -1,4 +1,4 @@
-"""Maintainer helper: creates bundled defaults; never writes live server configuration."""
+"""Maintainer helper: create missing legacy defaults without replacing migrated configurations."""
 from pathlib import Path
 import json
 import yaml
@@ -7,8 +7,11 @@ ROOT = Path(__file__).resolve().parents[1] / 'src/main/resources/party'
 
 
 def write(path, data, comment=''):
+    if path.exists():
+        return False
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(comment + yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding='utf-8')
+    return True
 
 
 def point():
@@ -38,6 +41,7 @@ names = {
     'golf': ('sports', '高尔夫游戏', '轮流用六档球杆把球击入铜块目标区。进洞得分为 5000 减已用能量，总分最高者获胜。'),
     'fishing': ('arcade', '钓鱼达人', '使用饵钓 III 钓竿钓鱼，鱼获自动兑换金币。金币最多者获胜，前三名奖励派对积分，允许并列。'),
     'miner': ('arcade', '一掘到底', '使用五种挖掘工具向下挖到底部基岩。所有玩家的随机矿柱相同，按完赛顺序奖励积分。'),
+    'car_race': ('racing', '赛猪', '手持矿车按交换副手键召唤坐骑，全员上车后开始。前进加速、后退刹车、跳跃急停，完成三圈获胜。'),
 }
 
 common_language = {
@@ -106,7 +110,7 @@ for game_id, (category, name, instructions) in names.items():
                          'round-start': '&e新回合开始！红队 {red} : {blue} 蓝队',
                          'round-end': '&6本回合结果：{team}',
                          'items': {'sword': '&f基础武器', 'shears': '&f羊毛剪刀', 'wool': '&f本队羊毛'}})
-    if category == 'racing' and game_id != 'dropper' or game_id == 'miner':
+    if category == 'racing' and game_id not in ('dropper', 'car_race') or game_id == 'miner':
         regions['finish'] = region()
         rules.update({'max-seconds': 600 if game_id == 'parkourrace' else 240, 'finish-materials': ['EMERALD_BLOCK'],
                       'pvp-knockback': game_id == 'mutouren',
@@ -220,6 +224,22 @@ for game_id, (category, name, instructions) in names.items():
                       'random-layers': 96, 'tools': {'efficiency': 3}, 'finish-materials': ['BEDROCK'],
                       'block-palette': [row['material'] for row in palette['entries']]})
         language['items'] = {f'tool-{i+1}': '&b' + name for i, name in enumerate(['挖掘镐', '挖掘斧', '挖掘锹', '挖掘锄', '剪刀'])}
+    if game_id == 'car_race':
+        regions.update({name: region() for name in ('gate', 'finish', 'launch-pad', 'slow-pad')})
+        points['groups'] = {'lap-return': []}
+        rules.update({'countdown-seconds': 6, 'max-seconds': 600, 'elimination-blocks': [], 'laps': 3,
+                      'ready-timeout-seconds': 120, 'finishers-to-end': 5, 'remount-reach': 5.0,
+                      'finish-points': {f'rank-{rank}': value for rank, value in enumerate([3,2,2,1,1], 1)},
+                      'speed': {'acceleration': 6, 'brake': 5, 'friction': 3, 'cap': 100, 'slow-threshold': 10, 'slow-penalty': 5, 'attribute-factor': 0.01},
+                      'finish-materials': ['RED_WOOL'], 'launch-materials': ['LIME_GLAZED_TERRACOTTA'], 'slow-materials': ['GLOWSTONE'],
+                      'launch-duration-ticks': 20, 'launch-amplifier': 4})
+        language.update({'car-name': '&bGCAR', 'items': {'summon': '&aGCAR - 手持后按交换副手键召唤', 'steering': '&a坐骑方向控制'},
+                         'car-ready': '&b手持矿车按交换副手键召唤坐骑，全员上车后开始倒计时。',
+                         'car-ready-timeout': '&c等待上车超时，本局已取消并清理。',
+                         'car-lost': '&c附近没有可用坐骑，你已转为旁观。',
+                         'car-lap': '&b{player} 完成了第 {lap} 圈。',
+                         'car-finished': '&a{player} 第 {rank} 个完赛，获得 {points} 分。',
+                         'car-status': '&6速度 {speed}，已完成 {lap}/{laps} 圈；前进加速，后退刹车，跳跃急停。'})
     locations = {'schema-version': 1, 'maps': {'arena_1': {'configured': False, 'world': '', 'bounds': region(), 'points': points, 'regions': regions}}}
     write(directory / 'language.yml', language)
     write(directory / 'game.yml', rules, '# 原地图移植；参数可调整，坐标统一在 locations.yml。\n')
@@ -239,4 +259,4 @@ write(ROOT / 'language.yml', {
     'not-joined': '&e你没有加入派对小游戏。', 'reloaded': '&a派对配置已重新读取。',
     'valid': '&a地图点位及规则校验通过；开局还将检查快照区域的方块。', 'no-session': '&e当前没有派对会话。',
 })
-print('Created defaults for', len(names), 'games')
+print('Checked legacy defaults for', len(names), 'games; existing configuration files were preserved.')

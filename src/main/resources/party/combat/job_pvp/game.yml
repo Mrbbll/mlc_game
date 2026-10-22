@@ -1,0 +1,401 @@
+# Source-backed job kits for the job_pvp datapack area.
+schema-version: 1
+enabled: true
+players:
+  min: 2
+  max: 16
+countdown-seconds: 5
+max-seconds: 7200
+limits:
+  max-arena-blocks: 1000000
+  max-snapshot-blocks: 100000
+  blocks-per-tick: 1000
+elimination-blocks: []
+elimination-depth: 1
+# want_job accepts a kill threshold argument, but no per-job values are defined in the inspected source.
+job-requirements: {}
+kits:
+  assassin:
+    - slot: 0
+      input: 'minecraft:wooden_sword[enchantments={"minecraft:unbreaking":1},tooltip_display={hidden_components:[enchantments,unbreakable,attribute_modifiers]},custom_name={"text":"刺客木剑","color":"#e4a10f","italic": false},lore=["\u00a77刺客木剑"],unbreakable={},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:6d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+    - slot: chest
+      input: 'minecraft:leather_chestplate[unbreakable={},dyed_color=2]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[unbreakable={},dyed_color=3]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[unbreakable={},dyed_color=1,enchantments={"minecraft:feather_falling":5}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[unbreakable={},dyed_color=0]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:"fly_arrow"},custom_name="\u00a79飞行箭 \u00a77- 右键使用",lore=["\u00a78乘坐着箭飞走了"],custom_model_data={floats:[6f]}]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:wind_charge'
+      amount: 16
+  axe:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:iron_boots[unbreakable={}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_axe[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §fIron §bAxe"],lore=[["§f7§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"www",amount:7d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"sqw2",amount:-3.1,operation:"add_value"}]]'
+      amount: 1
+  cactus:
+    - slot: head
+      input: 'minecraft:cactus[unbreakable={},enchantments={"minecraft:protection":2s,"minecraft:thorns":2s},attribute_modifiers=[{type:"movement_speed",slot:"any",id:"uuid_1693985146726648",amount:0.01d,operation:"add_value"}]]'
+      amount: 1
+    - slot: chest
+      input: 'minecraft:leather_chestplate[tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[unbreakable={}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:iron_leggings[unbreakable={}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §rIron §bSword"],lore=[["§f5§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:5d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+  clock:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=13825332,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=13825332,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=13825332,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=13825332,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 1
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:7},custom_name="\u00a72\u00a7l古老的钟",lore=["\u00a7b右键使用"],tooltip_display={hidden_components:[unbreakable,enchantments,attribute_modifiers]},unbreakable={},enchantments={"minecraft:unbreaking":1},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:0d,operation:"add_value"}],custom_model_data={floats:[1f]}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §rIron §bSword"],lore=[["§f5§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:5d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+  creeper:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=5764183,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:tnt[unbreakable={},enchantments={"minecraft:binding_curse":1}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=5764183,unbreakable={},enchantments={"minecraft:blast_protection":1}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=5764183,unbreakable={},enchantments={"minecraft:fire_protection":1}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:green_dye[tooltip_display={hidden_components:[unbreakable,enchantments,attribute_modifiers]},unbreakable={},custom_name=["§2Green §bSword"],lore=[["§c5 HP"]],enchantments={"minecraft:unbreaking":1},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:5d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:4},custom_name="\u00a72苦力怕 \u00a77- 右键使用",lore=["\u00a7c小心！他可能会误伤你"],custom_model_data={floats:[2f]}]'
+      amount: 1
+  feather:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=16777215,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=16777215,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=16777215,unbreakable={},enchantments={"minecraft:feather_falling":3}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=16777215,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 1
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:5},custom_name="\u00a72\u00a7l羽毛 \u00a77- 右键使用",lore=["\u00a7b右键使用","\u00a7a君を見てるといつもハートとき~とき","\u00a7b每次看到你的样子 我心里总是怦怦直跳","\u00a7a揺れる思いはマシュマロみたいにふわ~ふわ","\u00a7b我微微颤动的思念 像棉花糖般轻轻飘飘","\u00a7aいつもがんばる 君の横顔","\u00a7b看着你的侧脸 总是那么努力","\u00a7aずっと見てても気づかないよね","\u00a7b对你注视再久 你也不会留意","\u00a7a夢の中なら","\u00a7b要是在梦里该多好","\u00a7a二人の距離","\u00a7b那样我就能","\u00a7a縮められるのにな","\u00a7b拉近你我之间的距离","\u00a7aあぁ 神様 お願い","\u00a7b啊 神啊求求你","\u00a7a二人だけのDream Timeください","\u00a7b赐予我一段 与你独处的美梦时光","\u00a7aお気に入りのうさちゃん抱いで","\u00a7b我要抱着我心爱的小兔","\u00a7a今夜もお休み","\u00a7b希望今夜早早步入梦乡","\u00a7aふわふわ時間 ふわふわ時間","\u00a7b轻飘飘的时光 轻飘飘的时光","\u00a7aふわふわ時間 ふわふわ時間","\u00a7b轻飘飘的时光 轻飘飘的时光","\u00a7aふわふわ時間 ふわふわ時間","\u00a7b轻飘飘的时光 轻飘飘的时光"],tooltip_display={hidden_components:[unbreakable,enchantments,attribute_modifiers]},unbreakable={},enchantments={"minecraft:unbreaking":1},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:0d,operation:"add_value"}],custom_model_data={floats:[18f]}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §rIron §bSword"],lore=[["§f5§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:5d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+  fire:
+    - slot: head
+      input: 'minecraft:bone[tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},dyed_color=16711808,enchantments={"minecraft:protection":1s,"minecraft:fire_protection":2s,"minecraft:binding_curse":1s}]'
+      amount: 1
+    - slot: chest
+      input: 'minecraft:leather_chestplate[tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},dyed_color=16711808,enchantments={"minecraft:protection":1s,"minecraft:fire_protection":2s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:iron_boots[tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},dyed_color=16711808,enchantments={"minecraft:protection":1s,"minecraft:fire_protection":2s}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},dyed_color=16711808,enchantments={"minecraft:protection":1s,"minecraft:fire_protection":2s}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers,enchantments]},unbreakable={},custom_name=["§bSOMTHING JUST LIKE THIS"],lore=[["§f7§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:6d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}],enchantments={"minecraft:fire_aspect":1}]'
+      amount: 1
+  fireball:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=15488341,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s,"minecraft:fire_protection":1}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:note_block[unbreakable={},enchantments={"minecraft:binding_curse":1}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=15488341,unbreakable={},enchantments={"minecraft:blast_protection":1}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=15488341,unbreakable={},enchantments={"minecraft:fire_protection":1}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:red_dye[tooltip_display={hidden_components:[unbreakable,enchantments,attribute_modifiers]},unbreakable={},custom_name=["§4Red §bSword"],lore=[["§c4 HP"]],enchantments={"minecraft:unbreaking":1},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:4d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.2,operation:"add_value"}]]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:carrot_on_a_stick[enchantments={"minecraft:unbreaking":1},tooltip_display={hidden_components:[enchantments]},custom_name="\u00a74\u00a7lFIREBALL \u00a77- 右键发射",lore=["\u00a7b小心！火球可能会误伤你"],custom_data={job:"fireball"},item_model="fire_charge"]'
+      amount: 1
+  fisherman:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=15158200,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=10554854,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=16711786,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=8852467,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 1
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:6},custom_name="\u00a76\u00a7l交换位置 \u00a77- 右键发射使用",lore=["\u00a7b右键使用","\u00a7aあの日見わたした渚","\u00a7b那天所眺望的海岸","\u00a7a今も思い出すんだ","\u00a7b直至今日仍能想起","\u00a7a砂の上に刻んだ言葉","\u00a7b在沙滩上刻下的话语","\u00a7a君の後ろ姿","\u00a7b和你的背影","\u00a7a寄り返す波が足元をよぎり","\u00a7b涌动的波浪 掠过脚边","\u00a7a何かをさらう","\u00a7b究竟掠走了什么","\u00a7a夕凪の中","\u00a7b风平浪静之中","\u00a7a日暮れだけが通り過ぎてゆく","\u00a7b只有黄昏悄悄地流逝","\u00a7aパッと光って咲いた","\u00a7b光芒怦然绽放","\u00a7a花火を見てた","\u00a7b烟花映入眼帘","\u00a7aきっとまだ終わらない夏が","\u00a7b一定是夏天还未结束","\u00a7a曖昧な心を","\u00a7b将暧昧的心结       ","\u00a7a解かして繋いだ","\u00a7b解开再紧紧相连","\u00a7aこの夜が続いて欲しかった","\u00a7b愿今夜永不结束"],tooltip_display={hidden_components:[unbreakable,enchantments,attribute_modifiers]},unbreakable={},enchantments={"minecraft:unbreaking":1},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:0d,operation:"add_value"}],custom_model_data={floats:[19f]}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §rIron §bSword"],lore=[["§f5§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:5d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+  giant:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=15158200,unbreakable={},enchantments={binding_curse:1},attribute_modifiers=[{id:"b",type:"safe_fall_distance",amount:2,slot:"any",operation:"add_value"},{id:"ss",operation:"add_value",amount:1,type:"minecraft:step_height"},{id:"c",type:"jump_strength",amount:0.2,slot:"any",operation:"add_value"},{id:"d",type:"knockback_resistance",amount:-10,slot:"any",operation:"add_value"},{id:"d",type:"attack_knockback",amount:1,slot:"any",operation:"add_value"},{id:"e",type:"scale",amount:1,slot:"any",operation:"add_value"},{id:"f",type:"block_interaction_range",amount:2,slot:"any",operation:"add_value"},{id:"h",type:"entity_interaction_range",amount:2,slot:"any",operation:"add_value"},{id:"h",type:"movement_speed",amount:0.05,slot:"any",operation:"add_value"}],tooltip_display={hide_tooltip:true}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=10554854,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=16711786,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=8852467,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:carrot[unbreakable={},item_name={text:"胡萝卜",color:gold,shadow_color:[0,0.4,0.5,0.7]},attribute_modifiers=[{id:"a",type:"attack_damage",amount:3,slot:"any",operation:"add_value"},{id:"a",type:"attack_speed",amount:-2.7,slot:"any",operation:"add_value"}]]'
+      amount: 1
+  haerkala:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=3319573,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=16775968,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=7814157,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=2659444,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 1
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:9},custom_name="\u00a76\u00a7l哈尔克拉特制营养酒 \u00a77- 右键饮用",lore=["\u00a7d\u00a7l饮下后，获得随机神奇效果。","\u00a7b持续时间：\u00a7a15s","\u00a7b冷却时间：\u00a7e45s","","\u00a7a累的时候来一瓶","\u00a7b头脑清醒，身体健壮","\u00a7c\u00a7l哈尔克拉特制营养酒","\u00a7d克服劳累的工作吧！","\u00a7e（喝下后）","\u00a7f啊！ 充满能量！"],tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:0d,operation:"add_value"}],custom_model_data={floats:[20f]}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§f§l小刀"],lore=[["\u00a7b默认伤害：§f5§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:5d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.6,operation:"add_value"}]]'
+      amount: 1
+  icarus:
+    - slot: chest
+      input: 'minecraft:elytra[enchantments={"minecraft:unbreaking":1},tooltip_display={hidden_components:[enchantments]},custom_name=["§6伊卡洛斯之翼"]]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[tooltip_display={hidden_components:[unbreakable]},unbreakable={}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[tooltip_display={hidden_components:[unbreakable]},unbreakable={}]'
+      amount: 1
+    - slot: offhand
+      input: 'minecraft:crossbow[enchantments={"minecraft:quick_charge":1},custom_name=["§9伊卡洛斯之弩"]]'
+      amount: 1
+    - slot: mainhand
+      input: 'minecraft:wooden_sword[unbreakable={},enchantments={"minecraft:knockback":2},custom_name=["§c伊卡洛斯之剑"]]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:arrow'
+      amount: 3
+    - slot: inventory
+      input: 'minecraft:firework_rocket'
+      amount: 5
+  lianjinshu:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=16556054,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=14857765,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=3737721,unbreakable={},enchantments={"minecraft:feather_falling":1}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=15520669,unbreakable={},enchantments={"minecraft:fire_protection":1}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§f§l小刀"],lore=[["\u00a7b默认伤害：§c5 ♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:5d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.6,operation:"add_value"}]]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:potion[potion_contents={custom_effects:[{id:"minecraft:speed",duration:200,amplifier:2b,ambient:false,show_particles:false},{id:"haste",duration:200,amplifier:1b,ambient:false,show_particles:false},{id:"strength",duration:200,amplifier:1b,ambient:false,show_particles:false},{id:"slowness",duration:400,amplifier:2b,ambient:false,show_particles:false},{id:"regeneration",duration:200,amplifier:1b,ambient:false,show_particles:false}],custom_color:3392158},custom_name="\u00a7a魔法药水"]'
+      amount: 2
+    - slot: inventory
+      input: 'minecraft:potion[potion_contents={custom_effects:[{id:"regeneration",duration:200,amplifier:1b,ambient:false,show_particles:false},{id:"absorption",duration:2000,amplifier:1b,ambient:false,show_particles:false}],custom_color:14365954},custom_name="\u00a7c恢复药水"]'
+      amount: 2
+  normal:
+    - slot: chest
+      input: 'minecraft:iron_chestplate[unbreakable={}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:iron_helmet[unbreakable={}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:iron_boots[unbreakable={}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:iron_leggings[unbreakable={}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §rIron §bSword"],lore=[["§f6§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:6d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+  old:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=16039255,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={},enchantments={"minecraft:protection":1s}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:player_head[unbreakable={},profile=MHF_ArrowUp,enchantments={"minecraft:binding_curse":1}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=16039255,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=16039255,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:1},custom_name="\u00a72\u00a7l古老的剑",lore=["\u00a7b右键释放剑气"],tooltip_display={hidden_components:[unbreakable,enchantments,attribute_modifiers]},unbreakable={},enchantments={"minecraft:unbreaking":1},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:2d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}],custom_model_data={floats:[3f]}]'
+      amount: 1
+  scientist:
+    - slot: 0
+      input: 'minecraft:diamond_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:6d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+    - slot: chest
+      input: 'minecraft:leather_chestplate[unbreakable={},dyed_color=7963501]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:player_head[unbreakable={},profile=MHF_ArrowUp]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[unbreakable={},dyed_color=7963501]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[unbreakable={},dyed_color=8950395]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:2},custom_name="\u00a7a肾      宝",lore=["\u00a77右键使用","","\u00a7d肾宝，","\u00a7b一瓶提神醒脑，","\u00a76二瓶永不疲劳，","\u00a7e三瓶长生不老","\u00a78\u00a7n\u00a7m下次一定"],custom_model_data={floats:[4f]}]'
+      amount: 1
+  shooter:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[tooltip_display={hidden_components:[unbreakable]},unbreakable={}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:iron_helmet[unbreakable={}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:iron_boots[unbreakable={}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:iron_leggings[unbreakable={}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §rIron §bSword"],lore=[["§f3§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:3d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+    - slot: 1
+      input: 'minecraft:bow[unbreakable={},custom_name=["§aR§ba§ci§dn §eB§fo§6w"],lore=[["§aR§ba§ci§dn §eB§fo§6w"],["§aR§ba§ci§dn §eB§fo§6w"],["§aR§ba§ci§dn §eB§fo§6w"]],enchantment_glint_override=true]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:arrow'
+      amount: 32
+  small:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=15158200,unbreakable={},enchantments={binding_curse:1},attribute_modifiers=[{id:"a",type:"attack_damage",amount:-0.5,slot:"any",operation:"add_value"},{id:"b",type:"safe_fall_distance",amount:2,slot:"any",operation:"add_value"},{id:"d",type:"attack_knockback",amount:-0.8,slot:"any",operation:"add_value"},{id:"e",type:"scale",amount:-0.5,slot:"any",operation:"add_value"},{id:"f",type:"block_interaction_range",amount:0,slot:"any",operation:"add_value"},{id:"h",type:"entity_interaction_range",amount:-1,slot:"any",operation:"add_value"},{id:"h",type:"movement_speed",amount:0,slot:"any",operation:"add_value"}],tooltip_display={hide_tooltip:true}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=10554854,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=16711786,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=8852467,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:potato[unbreakable={},item_name={text:"洋芋",color:aqua,shadow_color:[1,0.25,1,0.7]},attribute_modifiers=[{id:"a",type:"attack_damage",amount:1.5,slot:"any",operation:"add_value"},{id:"a",type:"attack_speed",amount:-2.7,slot:"any",operation:"add_value"}]]'
+      amount: 1
+  tank:
+    - slot: chest
+      input: 'minecraft:diamond_chestplate[tooltip_display={hidden_components:[unbreakable,enchantments,attribute_modifiers]},unbreakable={},enchantments={"minecraft:protection":1s},attribute_modifiers=[{type:"movement_speed",slot:"any",id:"uuid_1693985146726648",amount:-0.03d,operation:"add_value"},{type:"knockback_resistance",slot:"any",id:"uuid_1393985146726648",amount:-0.3d,operation:"add_value"},{type:"armor",slot:"any",id:"uuid_1393985144726648",amount:10d,operation:"add_value"}]]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:diamond_helmet[unbreakable={}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:iron_boots[unbreakable={}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:iron_leggings[unbreakable={}]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:iron_sword[tooltip_display={hidden_components:[unbreakable,attribute_modifiers]},unbreakable={},custom_name=["§6Golden §rIron §bSword"],lore=[["§f5§c♥"]],attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:3d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+    - slot: offhand
+      input: 'minecraft:shield[damage=250]'
+      amount: 1
+  tp:
+    - slot: 0
+      input: 'minecraft:wooden_sword[enchantments={"minecraft:unbreaking":1},tooltip_display={hidden_components:[enchantments,unbreakable,attribute_modifiers]},custom_name={"text":"桃木剑","color":"#e4a10f","italic": false},lore=["\u00a77一个很基础的木剑"],unbreakable={},attribute_modifiers=[{type:"attack_damage",slot:mainhand,id:"uuid_4894794278636495",amount:6d,operation:"add_value"},{type:"attack_speed",slot:"mainhand",id:"uuid_1145514511455145",amount:-2.4,operation:"add_value"}]]'
+      amount: 1
+    - slot: chest
+      input: 'minecraft:leather_chestplate[unbreakable={},dyed_color=24768]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:player_head[unbreakable={},profile=MHF_CoconutG]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[unbreakable={},dyed_color=14983439,enchantments={"minecraft:feather_falling":5}]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[unbreakable={},dyed_color=12583002]'
+      amount: 1
+    - slot: inventory
+      input: 'minecraft:carrot_on_a_stick[custom_data={job:3},custom_name="\u00a79空间移动 \u00a77- 右键使用",lore=["\u00a78你突然就消失了"],custom_model_data={floats:[6f]}]'
+      amount: 1
+  uma:
+    - slot: chest
+      input: 'minecraft:leather_chestplate[dyed_color=851764,unbreakable={},enchantments={binding_curse:1},attribute_modifiers=[{id:"a",type:"gravity",amount:-0.08,slot:"any",operation:"add_value"},{id:"b",type:"safe_fall_distance",amount:200000000,slot:"any",operation:"add_value"},{id:"b",type:"max_health",amount:-12,slot:"any",operation:"add_value"}],tooltip_display={hide_tooltip:true},custom_data={job:uma}]'
+      amount: 1
+    - slot: head
+      input: 'minecraft:leather_helmet[dyed_color=851764,tooltip_display={hidden_components:[unbreakable,enchantments]},unbreakable={}]'
+      amount: 1
+    - slot: feet
+      input: 'minecraft:leather_boots[dyed_color=16775936,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: legs
+      input: 'minecraft:leather_leggings[dyed_color=16775936,unbreakable={},enchantment_glint_override=true]'
+      amount: 1
+    - slot: 0
+      input: 'minecraft:stick[unbreakable={},item_name={text:"外星武器",color:aqua,shadow_color:[255,25,255,0.7]},attribute_modifiers=[{id:"s",type:attack_damage,slot:mainhand,amount:3,operation:"add_value"}]]'
+      amount: 1
+    - slot: 1
+      input: 'minecraft:paper[unbreakable={},item_name={text:"提示：使用跳跃键和潜行键控制升降；将此物品放在副手停止飞行模式",color:green},custom_data={job:uma_stop}]'
+      amount: 1

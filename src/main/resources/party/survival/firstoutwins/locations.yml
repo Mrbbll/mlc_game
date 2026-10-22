@@ -1,0 +1,56 @@
+# 新地图模板：所有角点和点位由地图负责人填写；角点为整数方块坐标。
+# spawns 至少提供 players.max 个不重叠的起点。build 是允许生存挖掘与放置的范围。
+# goal 是玩家进入即完成比赛的 3D 区域。
+schema-version: 1
+maps:
+  arena_1:
+    configured: false
+    world: ''
+    bounds:
+      corner-1:
+        x: null
+        y: null
+        z: null
+      corner-2:
+        x: null
+        y: null
+        z: null
+    points:
+      waiting:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spectator:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      exit:
+        x: null
+        y: null
+        z: null
+        yaw: 0
+        pitch: 0
+      spawns: []
+    regions:
+      build:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null
+      goal:
+        corner-1:
+          x: null
+          y: null
+          z: null
+        corner-2:
+          x: null
+          y: null
+          z: null

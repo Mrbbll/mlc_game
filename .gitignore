@@ -2,3 +2,6 @@
 .gradle
 build
 web/.npm-cache/
+.jar
+.gradle-cache
+.gradle-home

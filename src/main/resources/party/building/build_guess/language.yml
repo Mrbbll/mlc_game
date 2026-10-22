@@ -1,0 +1,32 @@
+# 原地图逻辑移植；所有地图坐标由服主填写。
+schema-version: 1
+disabled: '&c此小游戏未启用。'
+map-unconfigured: '&c地图 {map} 尚未配置，请先填写 locations.yml 的角点和特殊点位。'
+already-running: '&c当前游戏已开始或正在清理。'
+full: '&c人数已满。'
+teleport-failed: '&c传送被阻止，已取消加入或开局。'
+joined: '&a{player} 加入了等待队列，当前 {count} 人。'
+not-enough: '&c人数不足，无法开始。'
+preparing: '&e正在记录场地，准备游戏。'
+countdown: '&e距离开始还有 {seconds} 秒。'
+started: '&a游戏开始！'
+eliminated: '&c{player} 已淘汰。'
+draw: 平局
+finished: '&6游戏结束，获胜者：{winners}'
+legacy-busy: '&e已有游戏开始运行，派对已结束并恢复，避免影响已有游戏。'
+name: 建筑猜猜乐
+instructions: '&b轮流建造指定词汇，其他人使用书与笔猜测；按金币排名。'
+builder-turn: '&b轮到 {player} 建造了。'
+coins: '&e金币 +{amount}，当前 {total}。'
+ranking: '&6第 {rank} 名：{player}（{coins} 金币）'
+items:
+  tool: '&b建造工具'
+  book: '&b书与笔：在第一页写下猜测并保存，无需署名'
+  helmet: '&b建造辅助头盔'
+secret-word: '&e你的词汇：{word}。建造让其他玩家猜出，禁止直接泄露原文。'
+word-length: '&b本轮词汇长度：{length}。使用书与笔作答。'
+builder-status: '&b剩余 {seconds} 秒，词汇：{word}'
+guesser-status: '&b剩余 {seconds} 秒，提示：{tip}'
+guessed: '&a{player} 猜对了！'
+guess-wrong: '&b{player} 的猜测是 {guess}，未猜中。'
+answer: '&6本轮结束，答案：{word}。'

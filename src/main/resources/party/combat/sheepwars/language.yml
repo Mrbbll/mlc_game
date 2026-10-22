@@ -1,0 +1,30 @@
+# 新地图由服主提供；所有角点和特殊点位必须配置后才能启用。
+schema-version: 1
+disabled: '&c此小游戏未启用。'
+map-unconfigured: '&c地图 {map} 尚未配置，请先填写 locations.yml 的角点和特殊点位。'
+already-running: '&c当前游戏已开始或正在清理。'
+full: '&c人数已满。'
+teleport-failed: '&c传送被阻止，已取消加入或开局。'
+joined: '&a{player} 加入了等待队列，当前 {count} 人。'
+not-enough: '&c人数不足，无法开始。'
+preparing: '&e正在记录场地，准备游戏。'
+countdown: '&e距离开始还有 {seconds} 秒。'
+started: '&a游戏开始！'
+eliminated: '&c{player} 已淘汰。'
+draw: 平局
+finished: '&6游戏结束，获胜者：{winners}'
+legacy-busy: '&e已有游戏开始运行，派对已结束并恢复，避免影响已有游戏。'
+name: 绵羊突击队
+instructions: '&b木剑与弓近战，搭建或破坏场地。右键发射有重力绵羊；按F发射直线绵羊。爆炸、高爆、骑乘、治疗、地震和黑洞六种供给；全灭敌队获胜。'
+status: '&b比赛进行 {seconds}秒'
+items:
+  sword: 木剑
+  bow: 弓
+  chest: 防爆队服
+  boots: 防摔鞋
+  small: 爆炸绵羊
+  big: 高爆绵羊
+  rider: 云霄绵羊
+  health: 治疗绵羊
+  earthquake: 地震绵羊
+  blackhole: 黑洞绵羊

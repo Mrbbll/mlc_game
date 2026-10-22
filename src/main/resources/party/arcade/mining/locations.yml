@@ -1,0 +1,19 @@
+# 由你提供新地图。mine-area 需保持 33x33x33，覆盖基岩、28层矿区、表土与上方空气。
+schema-version: 1
+maps:
+  arena_1:
+    configured: false
+    world: ''
+    bounds:
+      corner-1: {x: null, y: null, z: null}
+      corner-2: {x: null, y: null, z: null}
+    points:
+      waiting: {x: null, y: null, z: null, yaw: 0, pitch: 0}
+      spectator: {x: null, y: null, z: null, yaw: 0, pitch: 0}
+      exit: {x: null, y: null, z: null, yaw: 0, pitch: 0}
+      spawns: []
+      groups: {}
+    regions:
+      mine-area:
+        corner-1: {x: null, y: null, z: null}
+        corner-2: {x: null, y: null, z: null}

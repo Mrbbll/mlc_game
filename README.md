@@ -13,6 +13,7 @@ MLCGame 是一个面向 Paper 服务端的 Minecraft 小游戏插件，包含既
 
 ## 环境要求
 
+
 - Paper 服务端；插件元数据中的 `api-version` 为 `26.3`。
 - Java 25。
 - **FastAsyncWorldEdit（FAWE）**：插件声明为必需依赖。

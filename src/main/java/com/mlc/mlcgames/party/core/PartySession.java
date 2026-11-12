@@ -25,6 +25,7 @@ public final class PartySession {
     private final List<Cuboid> writable;
     private BlockJournal journal;
     private boolean baselineReady;
+    private boolean discardBaseline;
     private State state = State.WAITING;
     private Runnable afterReset;
     private int ticks;
@@ -144,6 +145,11 @@ public final class PartySession {
             return;
         }
         if (state == State.RESETTING || state == State.ENDING) {
+            if (discardBaseline) {
+                if (!journal.discardCapture()) return;
+                journal = null;
+                discardBaseline = false;
+            }
             if (journal == null || journal.restore(budget)) {
                 if (state == State.RESETTING) { state = State.RUNNING; afterReset.run(); afterReset = null; }
                 else {
@@ -238,7 +244,7 @@ public final class PartySession {
     public void stop() {
         if (state == State.ENDING) return;
         // A partially captured baseline has never been used to mutate the world.
-        if (state == State.PREPARING && !baselineReady) journal = null;
+        if (state == State.PREPARING && !baselineReady) discardBaseline = true;
         state = State.ENDING;
         try { game.stopped(this); }
         catch (RuntimeException e) { module.plugin().getLogger().warning("小游戏清理失败，继续恢复场地：" + e.getMessage()); }
@@ -249,7 +255,7 @@ public final class PartySession {
             try { module.recovery().restore(player); }
             catch (RuntimeException e) { module.plugin().getLogger().warning("派对玩家恢复延后：" + e.getMessage()); }
         }
-        if (journal != null) journal.rewind();
+        if (journal != null && !discardBaseline) journal.rewind();
     }
 
     public void resetRound(Runnable next) {
@@ -266,7 +272,14 @@ public final class PartySession {
     public void shutdown() {
         stop();
         // Disable has no future ticks. Finish bounded journal restoration now.
-        if (journal != null) { journal.restore(Integer.MAX_VALUE); try { journal.delete(); } catch (Exception e) { module.plugin().getLogger().warning(e.getMessage()); } }
+        if (journal != null) {
+            if (discardBaseline) {
+                try { journal.discardCaptureOnShutdown(); } catch (Exception e) { module.plugin().getLogger().warning(e.getMessage()); }
+            } else {
+                journal.restore(Integer.MAX_VALUE);
+                try { journal.delete(); } catch (Exception e) { module.plugin().getLogger().warning(e.getMessage()); }
+            }
+        }
     }
 
     private void cleanEntities() {

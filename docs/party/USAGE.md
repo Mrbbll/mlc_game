@@ -14,6 +14,10 @@
 
 默认 `configured: false`，坐标是 `null`。需要填写真实新地图坐标，再设为 true；仅改开关不会绕过校验。
 
+配置后先执行 `/party check <游戏 ID> [地图名称]`，再执行 `/party save <游戏 ID> [地图名称]`，等待保存成功。该命令通过 FAWE 为游戏声明的各个可修改区域保存结构文件；比赛的回合重置和结束恢复都使用这些结构，空气与方块实体也会恢复。更改世界或可修改区域坐标后需要重新保存；手动修改场地并希望采用新布局时也应重新保存。保存期间不能开始派对，也不要启动其他游戏或修改场地。
+
+结构按可修改区域分别保存，重叠区域会在 `limits.max-snapshot-blocks` 限制中重复计数。
+
 ## 地图角点
 
 `maps.arena_1.bounds.corner-1` 与 `corner-2` 是比赛区域三维包围盒的两个对角方块坐标。可反向选择角点，程序会归一化。区域应覆盖玩家所有正常跳跃、摔落和游戏活动空间；越界会淘汰。不要仅将 bounds 填成地板的一层。
@@ -95,12 +99,13 @@ Wool Wars 还必须填写 `regions.build`（允许放置区）、其内部的单
 /party join <游戏 ID> [地图名称]
 /party leave
 /party check <游戏 ID> [地图名称]
+/party save <游戏 ID> [地图名称]
 /party start
 /party stop
 /party reload
 ```
 
-普通玩家拥有 `mlcgames.party.play`。check、start、stop、reload 需要 `mlcgames.party.admin`，默认 OP。start 为当前等待队列开局，stop 强制清理；目前不是自动轮换派对。
+普通玩家拥有 `mlcgames.party.play`。check、save、start、stop、reload 需要 `mlcgames.party.admin`，默认 OP。start 为当前等待队列开局，stop 强制清理；目前不是自动轮换派对。
 
 未填写地图名称时使用 `arena_1`。目前一次只运行一个新游戏会话；在同一队列加入时使用不带地图名称的 join 命令。地图可在 maps 下配置多份供开局选择。
 
@@ -108,6 +113,6 @@ Wool Wars 还必须填写 `regions.build`（允许放置区）、其内部的单
 
 ## 第一次实测
 
-每个小游戏按自己的 `game.yml` 最低人数准备玩家。先使用 check 校验点位，再 join，由管理员 start。分别检查正常获胜、淘汰、leave、掉线和 stop；检查原物品恢复、返回点、场地复原和控制台错误。Wool Wars 还需要验证完整多回合。
+每个小游戏按自己的 `game.yml` 最低人数准备玩家。先使用 check 校验点位并使用 save 保存结构，再 join，由管理员 start。分别检查正常获胜、淘汰、leave、掉线和 stop；检查返回大厅状态、返回点、场地复原和控制台错误。Wool Wars 还需要验证完整多回合。
 
 请以 IMPLEMENTATION.md 的验证边界为准。Java 构建和静态配置检查不替代新地图联机验收。

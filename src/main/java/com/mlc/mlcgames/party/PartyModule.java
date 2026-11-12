@@ -89,7 +89,9 @@ public final class PartyModule implements Listener, TabExecutor {
     private final BukkitTask ticker;
     private YamlConfiguration language;
     private PartySession session;
-    private BlockJournal crashRecovery;
+    private FaweJournal faweRecovery;
+    private java.util.concurrent.CompletableFuture<Void> templateSave;
+    private CommandSender templateSender;
     private boolean recoveryBlocked;
 
     public PartyModule(JavaPlugin plugin) {
@@ -148,9 +150,9 @@ public final class PartyModule implements Listener, TabExecutor {
         register("pacman", "survival", PacmanGame::new);
         register("sneak", "survival", SneakGame::new);
         language = PartyConfig.load(plugin, "party/language.yml");
-        File journal = new File(plugin.getDataFolder(), "party/recovery/journal.yml");
-        if (journal.exists()) {
-            try { crashRecovery = BlockJournal.recover(journal); }
+        File active = new File(plugin.getDataFolder(), "party/recovery/active.dat");
+        if (active.exists()) {
+            try { faweRecovery = FaweJournal.recover(active.getParentFile().toPath()); }
             catch (Exception e) { recoveryBlocked = true; plugin.getLogger().severe(e.getMessage()); }
         }
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -210,8 +212,14 @@ public final class PartyModule implements Listener, TabExecutor {
 
     private void tick() {
         try {
-            if (crashRecovery != null) {
-                if (crashRecovery.restore(1000)) { crashRecovery.delete(); crashRecovery = null; }
+            if (templateSave != null && templateSave.isDone()) {
+                try { templateSave.join(); templateSender.sendMessage("§a场地结构保存完成。"); }
+                catch (Exception e) { plugin.getLogger().log(java.util.logging.Level.SEVERE, "场地结构保存失败", e); templateSender.sendMessage("§c场地结构保存失败，请查看控制台。"); }
+                templateSave = null;
+                templateSender = null;
+            }
+            if (faweRecovery != null) {
+                if (faweRecovery.restore()) { faweRecovery.delete(); faweRecovery = null; }
                 return;
             }
             if (session != null) {
@@ -220,7 +228,7 @@ public final class PartyModule implements Listener, TabExecutor {
             }
         } catch (Exception e) {
             plugin.getLogger().log(java.util.logging.Level.SEVERE, "派对处理失败，保留恢复记录", e);
-            if (crashRecovery != null) { crashRecovery = null; recoveryBlocked = true; }
+            if (faweRecovery != null) { faweRecovery = null; recoveryBlocked = true; }
             if (session != null && session.state() != PartySession.State.ENDING) session.stop();
             else if (session != null) { recoveryBlocked = true; session = null; }
         }
@@ -229,8 +237,6 @@ public final class PartyModule implements Listener, TabExecutor {
     public void close() {
         ticker.cancel();
         if (session != null) session.shutdown();
-        if (crashRecovery != null) try { crashRecovery.restore(Integer.MAX_VALUE); crashRecovery.delete(); }
-        catch (Exception e) { plugin.getLogger().warning("场地恢复记录已保留：" + e.getMessage()); }
         HandlerList.unregisterAll(this);
     }
 
@@ -246,7 +252,7 @@ public final class PartyModule implements Listener, TabExecutor {
                     if (!(sender instanceof Player player)) throw new IllegalArgumentException(text("players-only"));
                     if (args.length < 2 || args.length > 3) { message(sender, "help"); break; }
                     if (legacyBusy()) throw new IllegalStateException(text("legacy-busy"));
-                    if (recoveryBlocked || crashRecovery != null) throw new IllegalStateException(text("recovering"));
+                    if (recoveryBlocked || faweRecovery != null || templateSave != null) throw new IllegalStateException(text("recovering"));
                     if (recovery.pending(player)) throw new IllegalStateException(text("player-recovery"));
                     if (player.isDead() || player.isInsideVehicle() || !player.getItemOnCursor().getType().isAir()) throw new IllegalStateException(text("player-not-ready"));
                     org.bukkit.scoreboard.Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
@@ -269,13 +275,30 @@ public final class PartyModule implements Listener, TabExecutor {
                     if (session == null || !session.member(player) || !session.active(player)) throw new IllegalStateException(text("not-joined"));
                     if (!session.game.action(session, player, Arrays.copyOfRange(args, 1, args.length))) message(sender, "help");
                 }
-                case "start", "stop", "check", "reload" -> {
+                case "start", "stop", "check", "reload", "save" -> {
                     if (!sender.hasPermission("mlcgames.party.admin")) { message(sender, "no-permission"); break; }
                     if (action.equals("reload")) {
                         if (session != null) throw new IllegalStateException(text("session-busy"));
                         language = PartyConfig.load(plugin, "party/language.yml");
                         for (String id : definitions.keySet()) configuration(id);
                         message(sender, "reloaded");
+                    } else if (action.equals("save")) {
+                        if (session != null || templateSave != null || faweRecovery != null || recoveryBlocked || legacyBusy()) throw new IllegalStateException(text("session-busy"));
+                        if (args.length < 2 || args.length > 3) { message(sender, "help"); break; }
+                        PartyConfig config = configuration(args[1]);
+                        PartyConfig.Arena arena = config.arena(args.length == 3 ? args[2] : "arena_1");
+                        PartySession checked = new PartySession(this, config, arena, definitions.get(args[1]).factory.get());
+                        var regions = checked.writableRegions();
+                        var world = com.sk89q.worldedit.bukkit.BukkitAdapter.adapt(arena.world());
+                        var worldId = arena.world().getUID();
+                        int limit = config.integer("limits.max-snapshot-blocks", 1, 1000000);
+                        var root = new File(plugin.getDataFolder(), "party/recovery/templates").toPath();
+                        templateSender = sender;
+                        templateSave = java.util.concurrent.CompletableFuture.runAsync(() -> {
+                            try { FaweJournal.saveTemplate(root, worldId, world, regions, limit); }
+                            catch (Exception e) { throw new java.util.concurrent.CompletionException(e); }
+                        });
+                        sender.sendMessage("§e正在保存场地结构，请等待完成。");
                     } else if (action.equals("check")) {
                         if (args.length < 2 || args.length > 3) { message(sender, "help"); break; }
                         PartyConfig config = configuration(args[1]);
@@ -298,8 +321,8 @@ public final class PartyModule implements Listener, TabExecutor {
 
     @Override public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> values = args.length == 1 ? new ArrayList<>(List.of("list", "join", "leave")) : new ArrayList<>();
-        if (args.length == 1 && sender.hasPermission("mlcgames.party.admin")) values.addAll(List.of("start", "stop", "check", "reload"));
-        if (args.length == 2 && List.of("join", "check").contains(args[0])) values.addAll(definitions.keySet());
+        if (args.length == 1 && sender.hasPermission("mlcgames.party.admin")) values.addAll(List.of("start", "stop", "check", "reload", "save"));
+        if (args.length == 2 && List.of("join", "check", "save").contains(args[0])) values.addAll(definitions.keySet());
         String prefix = args.length == 0 ? "" : args[args.length - 1].toLowerCase(Locale.ROOT);
         return values.stream().filter(v -> v.startsWith(prefix)).toList();
     }
@@ -505,7 +528,6 @@ public final class PartyModule implements Listener, TabExecutor {
             boolean natural = session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session)
                     && session.writable(event.getSource()) && session.writable(event.getBlock());
             boolean allowed = session.writable(event.getBlock()) && (natural || session.game.allowPhysics(session, event.getBlock()));
-            if (allowed) session.snapshot(event.getBlock());
             event.setCancelled(!allowed);
         }
     }
@@ -530,7 +552,6 @@ public final class PartyModule implements Listener, TabExecutor {
                 && session.writable(event.getBlock()) && session.writable(event.getToBlock());
         if (!allow) allow = session.writable(event.getBlock()) && session.writable(event.getToBlock())
                 && session.game.allowPhysics(session, event.getToBlock());
-        if (allow) session.snapshot(event.getToBlock());
         event.setCancelled(!allow);
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -538,7 +559,6 @@ public final class PartyModule implements Listener, TabExecutor {
         if (!protectedBlock(event.getBlock())) return;
         boolean allow = session.state() == PartySession.State.RUNNING && session.writable(event.getBlock())
                 && (session.game.allowNaturalChanges(session) || session.game.allowPhysics(session, event.getBlock()));
-        if (allow) session.snapshot(event.getBlock());
         event.setCancelled(!allow);
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -546,7 +566,6 @@ public final class PartyModule implements Listener, TabExecutor {
         if (!protectedBlock(event.getBlock())) return;
         boolean allow = session.state() == PartySession.State.RUNNING && session.writable(event.getBlock())
                 && (session.game.allowNaturalChanges(session) || session.game.allowPhysics(session, event.getBlock()));
-        if (allow) session.snapshot(event.getBlock());
         event.setCancelled(!allow);
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -555,7 +574,6 @@ public final class PartyModule implements Listener, TabExecutor {
         boolean allow = session.writable(event.getBlock()) && session.game.fallingBlockChange(session, event);
         if (!allow && event.getEntity() instanceof FallingBlock && session.owns(event.getEntity())
                 && session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session)) allow = true;
-        if (allow) session.snapshot(event.getBlock());
         event.setCancelled(!allow);
         if (!allow && event.getEntity() instanceof FallingBlock && session.owns(event.getEntity())) event.getEntity().remove();
     }
@@ -563,7 +581,7 @@ public final class PartyModule implements Listener, TabExecutor {
     public void form(BlockFormEvent event) {
         Player player = event instanceof EntityBlockFormEvent entityForm && entityForm.getEntity() instanceof Player p ? p : null;
         if (player == null && session != null && session.state() == PartySession.State.RUNNING && session.game.allowNaturalChanges(session)
-                && session.writable(event.getBlock())) { session.snapshot(event.getBlock()); return; }
+                && session.writable(event.getBlock())) return;
         if (!protectedBlock(event.getBlock()) && (player == null || !member(player))) return;
         boolean allow = player != null && member(player) && session.active(player) && session.writable(event.getBlock())
                 && session.game.formBlock(session, player, event.getBlock(), event.getNewState().getType());
@@ -584,7 +602,7 @@ public final class PartyModule implements Listener, TabExecutor {
             if (!protectedBlock(block)) continue;
             boolean allow = session.state() == PartySession.State.RUNNING && session.writable(block)
                     && session.game.allowNaturalChanges(session);
-            if (allow) session.snapshot(block); else blocks.remove();
+            if (!allow) blocks.remove();
         }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -595,7 +613,7 @@ public final class PartyModule implements Listener, TabExecutor {
             if (!protectedBlock(block)) continue;
             boolean allow = session.state() == PartySession.State.RUNNING && session.writable(block)
                     && session.game.allowNaturalChanges(session);
-            if (allow) session.snapshot(block); else blocks.remove();
+            if (!allow) blocks.remove();
         }
     }
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

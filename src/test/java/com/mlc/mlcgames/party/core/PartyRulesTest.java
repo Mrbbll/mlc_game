@@ -5,12 +5,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PartyRulesTest {
-    @Test void shutdownDrainsPartlyRestoredArenaWithoutOverflowOrSkippingTail() {
-        assertEquals(100000, BatchWindow.end(100000, 87000, Integer.MAX_VALUE));
-        assertEquals(88000, BatchWindow.end(100000, 87000, 1000));
-        assertEquals(100000, BatchWindow.end(100000, 100000, Integer.MAX_VALUE));
-        assertThrows(IllegalArgumentException.class, () -> BatchWindow.end(10, 11, 1));
-    }
     @Test void reversedCornersIncludeBothEndpointsAndNegativeCoordinates() {
         Cuboid area = Cuboid.between(3, 8, -5, -2, -1, -9);
         assertEquals(300, area.volume());

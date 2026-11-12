@@ -39,7 +39,7 @@ build/libs/mlcgames-1.0-SNAPSHOT-all.jar
 1. 在服务器安装 FAWE。
 2. 将 `mlcgames-1.0-SNAPSHOT-all.jar` 放入服务器的 `plugins/` 目录并启动服务器。
 3. 编辑插件数据目录中的配置。派对小游戏配置位于 `party/<分类>/<游戏 ID>/`，每个游戏包含 `language.yml`、`locations.yml` 和 `game.yml`。
-4. 按对应玩法填写地图世界、边界、出生点和特殊区域。用 `/party check <游戏 ID> [地图名]` 检查配置，再加入队列并开局。
+4. 按对应玩法填写地图世界、边界、出生点和特殊区域。用 `/party check <游戏 ID> [地图名]` 检查配置，再用 `/party save <游戏 ID> [地图名]` 保存场地结构；等待完成后加入队列并开局。
 
 更多地图坐标规范、玩法特殊配置和实测步骤见[派对小游戏使用指南](docs/party/USAGE.md)。`/party reload` 只能在没有进行中会话时执行；地图改动后建议先结束当前局，再检查配置。
 
@@ -52,6 +52,7 @@ build/libs/mlcgames-1.0-SNAPSHOT-all.jar
 /party join <游戏 ID> [地图名]
 /party leave
 /party check <游戏 ID> [地图名]
+/party save <游戏 ID> [地图名]
 /party start
 /party stop
 /party reload

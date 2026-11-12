@@ -23,16 +23,14 @@ public final class PartySession {
     private final Set<UUID> alive = new LinkedHashSet<>();
     private final Set<UUID> entities = new HashSet<>();
     private final List<Cuboid> writable;
-    private BlockJournal journal;
-    private boolean baselineReady;
-    private boolean discardBaseline;
+    private FaweJournal journal;
     private State state = State.WAITING;
     private Runnable afterReset;
     private int ticks;
     private int elapsed;
     private int mutationTick = -1;
     private int applied;
-    private final Map<Block, BlockSnapshot> changes = new LinkedHashMap<>();
+    private final Map<Block, org.bukkit.block.data.BlockData> changes = new LinkedHashMap<>();
     private final Map<UUID, Integer> scores = new LinkedHashMap<>();
     private Set<UUID> winners = Set.of();
     private boolean settled;
@@ -54,6 +52,7 @@ public final class PartySession {
     }
 
     public State state() { return state; }
+    public List<Cuboid> writableRegions() { return writable; }
     public int elapsed() { return elapsed; }
     public boolean active(Player player) { return alive.contains(player.getUniqueId()) && (state == State.RUNNING || state == State.READY); }
     public boolean member(Player player) { return participants.contains(player.getUniqueId()); }
@@ -65,17 +64,15 @@ public final class PartySession {
     public void set(Block block, Material material) {
         setData(block, material.createBlockData());
     }
-    public void setData(Block block, org.bukkit.block.data.BlockData data) { setSnapshot(block, new BlockSnapshot(data.getAsString(), null)); }
-    public BlockSnapshot snapshot(Block block) { return BlockSnapshot.capture(block); }
     public boolean mutationsPending() { return !changes.isEmpty(); }
-    public void setSnapshot(Block block, BlockSnapshot snapshot) {
+    public void setData(Block block, org.bukkit.block.data.BlockData data) {
         if (journal == null || !writable(block)) throw new IllegalArgumentException("尝试修改未声明区域 " + block.getLocation());
         if (mutationTick != Bukkit.getCurrentTick()) { mutationTick = Bukkit.getCurrentTick(); applied = 0; }
         if (applied < config.integer("limits.blocks-per-tick", 1, 2000)) {
             changes.remove(block);
-            snapshot.apply(block, game.physicsOnWrite(this));
+            block.setBlockData(data, game.physicsOnWrite(this));
             applied++;
-        } else changes.put(block, snapshot);
+        } else changes.put(block, data.clone());
     }
     public void track(Entity entity) { entities.add(entity.getUniqueId()); entity.addScoreboardTag(PartyModule.ENTITY_TAG); }
     public boolean owns(Entity entity) { return entities.contains(entity.getUniqueId()); }
@@ -118,8 +115,10 @@ public final class PartySession {
     public void start() {
         if (state != State.WAITING) throw new IllegalStateException(config.text("already-running"));
         if (participants.size() < config.integer("players.min", game.minimumPlayers(), 64)) throw new IllegalStateException(config.text("not-enough"));
-        journal = new BlockJournal(new File(module.plugin().getDataFolder(), "party/recovery/journal.yml"), arena.world(), writable,
-                config.integer("limits.max-snapshot-blocks", 1, 1000000));
+        try {
+            journal = FaweJournal.begin(new File(module.plugin().getDataFolder(), "party/recovery").toPath(), arena.world(), writable,
+                    config.integer("limits.max-snapshot-blocks", 1, 1000000));
+        } catch (java.io.IOException e) { throw new IllegalStateException("无法创建场地恢复记录", e); }
         state = State.PREPARING;
         broadcast("preparing");
     }
@@ -128,12 +127,11 @@ public final class PartySession {
         int budget = config.integer("limits.blocks-per-tick", 1, 2000);
         if (state != State.ENDING && state != State.RESETTING) {
             // Defer excess writes instead of allowing a volley of arrows to spike one tick.
-            List<Map.Entry<Block, BlockSnapshot>> queued = new ArrayList<>(changes.entrySet());
-            for (Map.Entry<Block, BlockSnapshot> entry : queued.subList(0, Math.min(queued.size(), budget))) setSnapshot(entry.getKey(), entry.getValue());
+            List<Map.Entry<Block, org.bukkit.block.data.BlockData>> queued = new ArrayList<>(changes.entrySet());
+            for (Map.Entry<Block, org.bukkit.block.data.BlockData> entry : queued.subList(0, Math.min(queued.size(), budget))) setData(entry.getKey(), entry.getValue());
         }
         if (state == State.PREPARING) {
-            if (!baselineReady) baselineReady = journal.capture(budget);
-            if (baselineReady && game.prepare(this, budget) && changes.isEmpty()) {
+            if (game.prepare(this, budget) && changes.isEmpty()) {
                 if (game.hasReadyPhase()) { state = State.READY; resetPlayers(); game.setupReady(this); }
                 else { state = State.COUNTDOWN; ticks = config.integer("countdown-seconds", 1, 60) * 20; }
             }
@@ -145,12 +143,7 @@ public final class PartySession {
             return;
         }
         if (state == State.RESETTING || state == State.ENDING) {
-            if (discardBaseline) {
-                if (!journal.discardCapture()) return;
-                journal = null;
-                discardBaseline = false;
-            }
-            if (journal == null || journal.restore(budget)) {
+            if (journal == null || journal.restore()) {
                 if (state == State.RESETTING) { state = State.RUNNING; afterReset.run(); afterReset = null; }
                 else {
                     if (journal != null) journal.delete();
@@ -227,9 +220,11 @@ public final class PartySession {
     public void leave(Player player) {
         eliminate(player);
         participants.remove(player.getUniqueId());
-        module.recovery().restore(player);
-        if (participants.isEmpty()) stop();
-        else if ((state == State.COUNTDOWN || state == State.PREPARING || state == State.READY) && participants.size() < config.integer("players.min", game.minimumPlayers(), 64)) stop();
+        try { module.recovery().restore(player); }
+        finally {
+            if (participants.isEmpty()) stop();
+            else if ((state == State.COUNTDOWN || state == State.PREPARING || state == State.READY) && participants.size() < config.integer("players.min", game.minimumPlayers(), 64)) stop();
+        }
     }
 
     public void finish(Collection<Player> winners) {
@@ -243,8 +238,6 @@ public final class PartySession {
 
     public void stop() {
         if (state == State.ENDING) return;
-        // A partially captured baseline has never been used to mutate the world.
-        if (state == State.PREPARING && !baselineReady) discardBaseline = true;
         state = State.ENDING;
         try { game.stopped(this); }
         catch (RuntimeException e) { module.plugin().getLogger().warning("小游戏清理失败，继续恢复场地：" + e.getMessage()); }
@@ -255,7 +248,7 @@ public final class PartySession {
             try { module.recovery().restore(player); }
             catch (RuntimeException e) { module.plugin().getLogger().warning("派对玩家恢复延后：" + e.getMessage()); }
         }
-        if (journal != null && !discardBaseline) journal.rewind();
+        if (journal != null) journal.rewind();
     }
 
     public void resetRound(Runnable next) {
@@ -271,15 +264,7 @@ public final class PartySession {
 
     public void shutdown() {
         stop();
-        // Disable has no future ticks. Finish bounded journal restoration now.
-        if (journal != null) {
-            if (discardBaseline) {
-                try { journal.discardCaptureOnShutdown(); } catch (Exception e) { module.plugin().getLogger().warning(e.getMessage()); }
-            } else {
-                journal.restore(Integer.MAX_VALUE);
-                try { journal.delete(); } catch (Exception e) { module.plugin().getLogger().warning(e.getMessage()); }
-            }
-        }
+        // Keep the active marker: restoration resumes after the server restarts.
     }
 
     private void cleanEntities() {

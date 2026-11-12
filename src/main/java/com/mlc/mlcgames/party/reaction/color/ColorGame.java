@@ -37,7 +37,11 @@ public final class ColorGame implements PartyGame {
         for(Player p:s.survivors()){p.getInventory().clear();p.getInventory().setItem(4,new org.bukkit.inventory.ItemStack(target));p.sendActionBar(s.config.message("target","round",round,"target",target.name()));}
     }
     @Override public void tick(PartySession s,int elapsed){
-        if(write<1600){flush(s,s.config.integer("limits.blocks-per-tick",1,2000));return;}
+        if(write<1600 || s.mutationsPending()){
+            if(write<1600)flush(s,s.config.integer("limits.blocks-per-tick",1,2000));
+            deadline++;
+            return;
+        }
         for(Player p:List.copyOf(s.survivors())){Location l=p.getLocation();if(l.getY()<floor.minY()-3||l.getBlock().getType()==Material.WATER||l.clone().subtract(0,1,0).getBlock().getType()==Material.WATER)s.eliminate(p);if(decision<=4)p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,40,1,true,false));if(decision<=2)p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,40,1,true,false));}
         if(phase==0){if(elapsed>=deadline)next(s);return;}
         if(phase==1){if(elapsed>=deadline){phase=2;int decreases=Math.min(s.config.integer("maximum-decreases",0,28),round/s.config.integer("decrease-every-rounds",1,100));decision=Math.max(2,s.config.integer("decision-seconds",2,30)-decreases);deadline=elapsed+decision*20;}else if(elapsed%20==0)generate(s);}

@@ -34,23 +34,8 @@ public final class PlayerRecovery {
     public void capture(Player player, Location exit) {
         if (pending(player)) throw new IllegalStateException("玩家仍有未恢复数据");
         String key = player.getUniqueId().toString();
-        saveLocation(key + ".location", player.getLocation());
         saveLocation(key + ".exit", exit);
-        data.set(key + ".mode", player.getGameMode().name());
-        data.set(key + ".contents", Arrays.asList(player.getInventory().getContents()));
-        data.set(key + ".health", player.getHealth());
-        data.set(key + ".food", player.getFoodLevel());
-        data.set(key + ".saturation", player.getSaturation());
-        data.set(key + ".exhaustion", player.getExhaustion());
-        data.set(key + ".level", player.getLevel());
-        data.set(key + ".exp", player.getExp());
-        data.set(key + ".total-exp", player.getTotalExperience());
-        data.set(key + ".allow-flight", player.getAllowFlight());
-        data.set(key + ".flying", player.isFlying());
-        data.set(key + ".fire", player.getFireTicks());
-        data.set(key + ".fall", player.getFallDistance());
-        data.set(key + ".effects", new ArrayList<>(player.getActivePotionEffects()));
-        data.set(key + ".glowing", player.isGlowing());
+        data.set(key + ".lobby-reset", true);
         save();
         scoreboards.put(player.getUniqueId(), player.getScoreboard());
     }
@@ -63,6 +48,26 @@ public final class PlayerRecovery {
         if (location == null || location.getWorld() == null) throw new IllegalStateException("玩家原位置世界尚未加载，保留恢复数据");
         player.closeInventory();
         player.getInventory().clear();
+        if (saved.getBoolean("lobby-reset")) {
+            player.leaveVehicle();
+            player.setGameMode(GameMode.ADVENTURE);
+            player.setAllowFlight(false);
+            player.clearActivePotionEffects();
+            player.setGlowing(false);
+            var health = Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH));
+            for (var modifier : List.copyOf(health.getModifiers())) health.removeModifier(modifier);
+            health.setBaseValue(20);
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setSaturation(20);
+            player.setExhaustion(0);
+            player.setTotalExperience(0);
+            player.setLevel(0);
+            player.setExp(0);
+            player.setFireTicks(0);
+            player.setFallDistance(0);
+        } else {
+            // Existing recovery records still contain a player's original state.
         List<?> contents = saved.getList("contents", List.of());
         player.getInventory().setContents(contents.toArray(new ItemStack[0]));
         player.setGameMode(GameMode.valueOf(saved.getString("mode", "ADVENTURE")));
@@ -80,6 +85,7 @@ public final class PlayerRecovery {
         player.setExp((float) saved.getDouble("exp"));
         player.setFireTicks(saved.getInt("fire"));
         player.setFallDistance((float) saved.getDouble("fall"));
+        }
         Scoreboard scoreboard = scoreboards.remove(player.getUniqueId());
         if (scoreboard != null) player.setScoreboard(scoreboard);
         if (!player.teleport(location)) throw new IllegalStateException("恢复位置传送被取消，保留恢复数据");

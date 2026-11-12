@@ -1,5 +1,5 @@
 schema-version: 1
-help: '&e/party list | join <游戏> [地图] | leave | start | stop | check <游戏> [地图] | reload'
+help: '&e/party list | join <游戏> [地图] | leave | start | stop | check <游戏> [地图] | save <游戏> [地图] | reload'
 unknown-game: '&c未知小游戏：{game}'
 no-permission: '&c没有权限。'
 players-only: 此命令仅玩家可用。
